@@ -78,30 +78,42 @@
                 <div class="col-xl-6 col-lg-6">
                     <div class="featured-text text-center text-lg-left">
                         <h4>- Formulir -</h4>
-                        <form action="">
+                        <form action="/input/customer/booking" method="post">
+                            @csrf
                             <div class="input-group input-group-lg flex-nowrap mb-2 mt-2">
                                 <input type="text" class="form-control" placeholder="Email" aria-label="email"
-                                    aria-describedby="addon-wrapping">
+                                    name="email" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="text" class="form-control" placeholder="Nama" aria-label="nama"
-                                    aria-describedby="addon-wrapping">
+                                    name="nama" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="text" class="form-control" placeholder="No Polisi"
+                                <input type="text" class="form-control" placeholder="Alamat" aria-label="alamat"
+                                    name="alamat" aria-describedby="addon-wrapping">
+                            </div>
+                            <div class="input-group input-group-lg flex-nowrap mb-2">
+                                <input type="tnumber" class="form-control" placeholder="No telp" aria-label="no_telp"
+                                    name="no_telp" aria-describedby="addon-wrapping">
+                            </div>
+                            <div class="input-group input-group-lg flex-nowrap mb-2">
+                                <input type="text" class="form-control" placeholder="No Polisi" name="no_polisi"
                                     aria-label="plat_nomor" aria-describedby="addon-wrapping">
                             </div>
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                                name="jenis_mobil">
                                 <option selected>Pilih Jenis Mobil</option>
-                                <option value="1">BMW SPORT</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option value="BMW SPORT">BMW SPORT</option>
+                                <option value="Two">Two</option>
+                                <option value="Three">Three</option>
                             </select>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="date" class="form-control" placeholder="tanggal Booking"
-                                    aria-label="tanggal_booking" aria-describedby="addon-wrapping">
+                                    aria-label="tanggal_booking" aria-describedby="addon-wrapping"
+                                    name="tgl_booking">
                             </div>
                             <button class="btn btn-success w-100" type="submit">Confirm</button>
+                            <p class="fs-5">Sudah Booking? <a href="/login/customer">klik disini</a></p>
                         </form>
                     </div>
                 </div>
