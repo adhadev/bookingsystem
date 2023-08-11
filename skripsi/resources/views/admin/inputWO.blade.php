@@ -6,6 +6,7 @@
                 {{-- <div class="text-center"> --}}
                 <div class="card w-100 border-0 rounded-3">
                     <form action="/submit/wo/baru" method="post">
+                        @csrf
                         <div class="card-header " style="background-color: #241468;color: white;">
                             <div class="row">
                                 <div class="col-8 d-flex justify-content-start">
@@ -26,19 +27,22 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="no_wo" class="form-label">Nomor Wo</label>
-                                                <input type="text" class="form-control" id="no_wo">
+                                                <input required type="text" class="form-control" id="no_wo"
+                                                    name="no_wo">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="tgl_mulai" class="form-label">Tanggal Mulai</label>
-                                                <input type="date" class="form-control" id="tgl_mulai">
+                                                <input required type="date" class="form-control" id="tgl_mulai"
+                                                    name="tgl_mulai">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="waktu_mulai" class="form-label">Waktu Mulai</label>
-                                                <input type="time" class="form-control" id="waktu_mulai">
+                                                <input required type="time" class="form-control" id="waktu_mulai"
+                                                    name="waktu_mulai">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -46,13 +50,15 @@
                                                 <div class="col-6">
                                                     <div class="mb-3">
                                                         <label for="pic_service" class="form-label">Penasehat Servis</label>
-                                                        <input type="text" class="form-control" id="pic_service">
+                                                        <input required type="text" class="form-control" id="pic_service"
+                                                            name="pic_Service" value="{{ ucwords(Auth::user()->nama) }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="mb-3">
                                                         <label for="no_tlp_pic" class="form-label">No Telepon</label>
-                                                        <input type="number" class="form-control" id="no_tlp_pic">
+                                                        <input required type="number" class="form-control" id="no_tlp_pic"
+                                                            name="no_tlp_pic" value="{{ ucwords(Auth::user()->no_telp) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,58 +66,67 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="no_wip" class="form-label">NO WIP</label>
-                                                <input type="number" class="form-control" id="no_wip">
+                                                <input required type="number" class="form-control" id="no_wip"
+                                                    name="no_wip">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="no_polisi" class="form-label">No Polisi</label>
+                                                        <input required type="text" class="form-control" id="no_polisi"
+                                                            name="no_polisi" onchange="pelanggan()">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="jenis_mobil" class="form-label">Jenis Mobil</label>
+                                                        <input required type="text" class="form-control" id="jenis_mobil"
+                                                            name="jenis_mobil">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="nama_customer" class="form-label">Nama Pelanggan</label>
-                                                <input type="text" class="form-control" id="nama_customer">
+                                                <input required type="text" class="form-control" id="nama_customer"
+                                                    name="nama_pelanggan">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="alamat" class="form-label">Alamat</label>
-                                                <input type="text" class="form-control" id="alamat">
+                                                <input required type="text" class="form-control" id="alamat"
+                                                    name="alamat">
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="mb-3">
-                                                        <label for="jenis_mobil" class="form-label">Jenis Mobil</label>
-                                                        <input type="text" class="form-control" id="jenis_mobil">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="mb-3">
-                                                        <label for="nomor_wo" class="form-label">No Polisi</label>
-                                                        <input type="text" class="form-control" id="nomor_wo">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <label for="no_kerangka" class="form-label">No Kerangka</label>
-                                                <input type="number" class="form-control" id="no_kerangka">
+                                                <input required type="text" class="form-control" id="no_kerangka"
+                                                    name="no_kerangka">
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <div class="mb-3">
-                                                        <label for="tanggal" class="form-label">Tanggal
+                                                        <label for="tanggal_registrasi" class="form-label">Tanggal
                                                             Registrasi</label>
-                                                        <input type="number" class="form-control" id="tanggal">
+                                                        <input required type="date" class="form-control"
+                                                            name="tanggal_registrasi" id="tanggal_registrasi">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="mb-3">
-                                                        <label for="nomor_wo" class="form-label">Kilometer</label>
-                                                        <input type="number" class="form-control" id="nomor_wo">
+                                                        <label for="kilometer" class="form-label">Kilometer</label>
+                                                        <input required type="number" class="form-control"
+                                                            id="kilometer" name="kilometer">
                                                     </div>
                                                 </div>
                                             </div>
@@ -158,10 +173,10 @@
             var number = 0;
         @else
 
-            let last_wo = '{{ $last_wo->no_wo }}';
-            let lastValue = last_wo.substring(last_wo.lastIndexOf('-') + 1);
-            let lastValueNumber = parseInt(lastValue);
-            let sort = lastValueNumber;
+            let last_wip = '{{ $last_wo->no_wo }}';
+            let lastValueWip = last_wip.substring(last_wip.lastIndexOf('-') + 1);
+            let lastValueNumberWip = parseInt(lastValueWip);
+            let sort = lastValueNumberWip;
             var number = 0;
         @endif
 
@@ -192,5 +207,23 @@
         // document.getElementById("judulWO").innerHTML = wo;
         document.getElementById("no_wo").value = nomor;
         document.getElementById("no_wip").value = nomor;
+
+        function pelanggan() {
+            let id = document.getElementById("no_polisi").value;
+            let url = '/api/pelanggan' + '/' + id;
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+
+                url: url,
+
+                success: function(data) {
+                    console.log(data);
+                    document.getElementById("jenis_mobil").value = data.jenis_mobil;
+                    document.getElementById("nama_customer").value = data.nama;
+                    document.getElementById("alamat").value = data.alamat;
+                }
+            });
+        }
     </script>
 @endsection

@@ -31,10 +31,12 @@ Route::get('/input/customer/booking', [ServiceController::class, 'inputCustomer'
 Route::get('/input/customer/booking', [ServiceController::class, 'inputCustomer'])->name('inputBooking');
 
 Route::get('/data/wo', [ServiceController::class, 'dataWO'])->name('data.wo')->middleware('auth');
+// Route::get('/pelanggan/{id}', [ServiceController::class, 'getPelanggan'])->name('getPelanggan')->middleware('auth');
 
 Route::get('/wo/table', [ServiceController::class, 'woTable'])->name('woTable');
 Route::get('/input/wo', [ServiceController::class, 'inputWO'])->name('inputWO');
-
+Route::post('/submit/wo/baru', [ServiceController::class, 'submitWO'])->name('submitWO');
+Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('detailWO');
 
 //AuthController
 Route::get('/login/admin', [AuthController::class, 'tampilanLoginAdmin'])->name('login_admin');

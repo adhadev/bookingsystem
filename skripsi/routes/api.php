@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\PelangganModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+// API Data Pelanggan Spesifik
+Route::get('/pelanggan/{id}', function ($id) {
+    $berhasil = PelangganModel::where('no_polisi', $id)->first();
+    return $berhasil;
 });

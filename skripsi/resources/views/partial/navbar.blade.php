@@ -26,8 +26,8 @@
                                 </ul>
                             </li>
                         @elseif(Auth::user()->isAdmin())
-                            <li><a href="index.html"><span>WO</span></a></li>
-                            <li><a href="index.html"><span>Tagihan</span></a></li>
+                            <li><a href="/wo/table"><span>WO</span></a></li>
+                            <li><a href="/wo/tagihan"><span>Tagihan</span></a></li>
                             <li class="has-children">
                                 <a><span>Data Master</span></a>
                                 <ul class="dropdown arrow-top">
