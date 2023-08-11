@@ -59,6 +59,7 @@ class ServiceController extends Controller
             User::create([
                 'no_polisi' =>  $noPolisi,
                 'nama' => $request->nama,
+                'username' => $request->nama
             ]);
 
             BookingModel::create([
@@ -87,6 +88,53 @@ class ServiceController extends Controller
         return view('admin.inputWO', compact('title', 'dataWo', 'dataWip'));
     }
 
+    public function submitWO(Request $request)
+    {
+        $user = User::where('nama', $request->pic_Service)->first();
+        WorkingOrderModel::create([
+            'no_wo' => $request->no_wo,
+            'tanggal_mulai' => $request->tgl_mulai,
+            'waktu_mulai' => $request->waktu_mulai,
+            'no_polisi' => $request->no_polisi,
+            'service_advisor' =>  $user->id,
+            'status' => 'prepare'
+        ]);
+
+        WIPModel::create([
+            'no_wip' => $request->no_wip,
+            'no_wo' => $request->no_wo
+        ]);
+
+        //Update Pelanggan
+        $pelanggan = PelangganModel::where('no_polisi', $request->no_polisi)->first();
+
+        $pelanggan->update([
+            'no_rangka' => $request->no_kerangka,
+            'kilometer' => $request->kilometer,
+            'tanggal_registrasi' => $request->tanggal_registrasi
+        ]);
+
+        $wo = WorkingOrderModel::all();
+        $last = $wo->last();
+        $id = $last->no_wo;
+        $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+        $dataWip = WIPModel::where('no_wo', $id)->first();
+        $title = 'BMW OFFICE';
+
+        // Debug output
+        // dd($id, $dataWo, $dataWip); // Add this line to see the values
+
+        return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title', 'dataWip'));
+    }
+
+    public function detailWO($id)
+    {
+        $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+        $dataWip = WIPModel::where('no_wip', $id)->first();
+        $title = 'BMW OFFICE';
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataWip'));
+    }
+
     public function dataWO(Request $request)
     {
         if ($request->ajax()) {
@@ -108,5 +156,12 @@ class ServiceController extends Controller
         // return  view('createWO', [
         //     "title" => 'Create WO'
         // ], compact('data'));
+    }
+
+    public function getPelanggan($id)
+    {
+        $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
+        return json_decode($pelanggan);
+        // return view('admin.inputWO', compact('title', 'dataWo', 'dataWip'));
     }
 }
