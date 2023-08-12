@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\ForemanModel;
 use App\Models\TeknisiModel;
+use App\Models\LayananModel;
 use Carbon\Carbon; 
 
 
@@ -106,7 +107,12 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::all();
         $dataWip = WIPModel::all();
         $title = 'BMW OFFICE';
-        return view('admin.inputWO', compact('title', 'dataWo', 'dataWip'));
+        $layananOptions = LayananModel::where('kode', 2)->get();
+        $spareparts = LayananModel::where('kode', 1)->get();
+
+
+
+        return view('admin.inputWO', compact('title', 'dataWo', 'dataWip', 'layananOptions','spareparts'));
     }
 
     public function submitWO(Request $request)
@@ -161,9 +167,10 @@ class ServiceController extends Controller
     public function detailWO($id)
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+        $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
         $dataWip = WIPModel::where('no_wip', $id)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataWip'));
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataWip','dataPelanggan'));
     }
 
     public function dataWO(Request $request)

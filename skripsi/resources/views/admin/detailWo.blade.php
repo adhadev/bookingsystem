@@ -27,21 +27,24 @@
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="no_wo" class="form-label">WO Number</label>
-                                            <input required type="text" class="form-control" id="no_wo" name="no_wo" readonly>
+                                            <input required type="text" class="form-control" id="no_wo" name="no_wo" 
+                                            value="{{ $dataWo->no_wo }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="tgl_mulai" class="form-label">Start Date</label>
                                             <input required type="date" class="form-control" id="tgl_mulai"
-                                                name="tgl_mulai">
+                                                name="tgl_mulai"
+                                                value="{{ $dataWo->tanggal_mulai }}">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="waktu_mulai" class="form-label">Start Time</label>
                                             <input required type="time" class="form-control" id="waktu_mulai"
-                                                name="waktu_mulai">
+                                                name="waktu_mulai"
+                                                value="{{ $dataWo->waktu_mulai }}">
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -67,7 +70,8 @@
                                         <div class="mb-3">
                                             <label for="kilometer" class="form-label">Mileage</label>
                                             <input type="number" class="form-control" id="kilometer"
-                                                value="{{ $dataWo->pelanggan->kilometer }}" name="kilometer">
+                                                value="{{ $dataWo->pelanggan->kilometer }}" name="kilometer"
+                                                value="{{ $dataPelanggan->kilometer }}">
                                         </div>
                                     </div>
                                 </div>
@@ -78,14 +82,16 @@
                                                 <div class="mb-3">
                                                     <label for="no_polisi" class="form-label">Police Number</label>
                                                     <input required type="text" class="form-control" id="no_polisi"
-                                                        name="no_polisi" onchange="pelanggan()">
+                                                        name="no_polisi" onchange="pelanggan()"
+                                                        value="{{ $dataPelanggan->no_polisi }}">
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="mb-3">
                                                     <label for="jenis_mobil" class="form-label">Car Model</label>
                                                     <input required type="text" class="form-control" id="jenis_mobil"
-                                                        name="jenis_mobil">
+                                                        name="jenis_mobil"
+                                                        value="{{ $dataPelanggan->jenis_mobil }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -94,14 +100,17 @@
                                         <div class="mb-3">
                                             <label for="nama_customer" class="form-label">Customer Name</label>
                                             <input required type="text" class="form-control" id="nama_customer"
-                                                name="nama_pelanggan">
+                                                name="nama_pelanggan"
+                                                value="{{ $dataPelanggan->nama }}">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <label for="alamat" class="form-label">Address</label>
                                             <input required type="text" class="form-control" id="alamat"
-                                                name="alamat">
+                                                name="alamat"
+                                                value="{{ $dataPelanggan->alamat }}">
+
                                         </div>
                                     </div>
 
@@ -109,7 +118,9 @@
                                         <div class="mb-3">
                                             <label for="no_kerangka" class="form-label">Chassis Number</label>
                                             <input required type="text" class="form-control" id="no_kerangka"
-                                                name="no_kerangka">
+                                                name="no_kerangka"
+                                                value="{{ $dataPelanggan->no_rangka }}">
+
                                         </div>
                                     </div>
                                     

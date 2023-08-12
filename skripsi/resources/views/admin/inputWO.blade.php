@@ -149,22 +149,31 @@
         <div class="mb-1">
             <label for="service" class="form-label">Jenis Layanan</label>
             <select class="form-select" id="service" name="service">
-                <option value="1">Service Rutin</option>
+                <!-- <option value="1">Service Rutin</option>
                 <option value="2">Ganti Oli</option>
-                <option value="3">Perbaikan Mesin</option>
+                <option value="3">Perbaikan Mesin</option> -->
+                @foreach ($layananOptions as $layanan)
+                    <option value="{{ $layanan->harga }}">{{ $layanan->nama }}</option>
+                @endforeach
                 <!-- Tambahkan opsi lainnya di sini -->
             </select>
         </div>
         <div class="mb-3">
             <label for="parts" class="form-label">Sparepart</label>
-            <div class="form-check">
+            <!-- <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="oli" id="checkOli" name="parts[]">
                 <label class="form-check-label" for="checkOli">Oli</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="filter_udara" id="checkFilterUdara" name="parts[]">
                 <label class="form-check-label" for="checkFilterUdara">Filter Udara</label>
-            </div>
+            </div> -->
+            @foreach ($spareparts as $sparepart)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]">
+                    <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
+                </div>
+            @endforeach
             <!-- Tambahkan checkbox sparepart lainnya di sini -->
         </div>
         <div class="mb-3">
@@ -216,9 +225,14 @@
         event.preventDefault();
 
         // Contoh perhitungan estimasi biaya (hanya simulasi)
-        const selectedService = document.getElementById('service').value;
-        const selectedParts = document.querySelectorAll('input[name="parts[]"]:checked').length;
+        const selectedService = parseFloat(document.getElementById('service').value);
+        const selectedParts = document.querySelectorAll('input[name="parts[]"]:checked');
         const hoursOfWork = parseFloat(document.getElementById('hours').value);
+
+        let totalCostForParts = 0;
+        selectedParts.forEach(checkbox => {
+            totalCostForParts += parseFloat(checkbox.value);
+        });
 
         const baseCost = 50000; // Biaya dasar
         const costPerService = {
@@ -230,7 +244,9 @@
         const costPerPart = 10000; // Biaya tambahan per sparepart
         const hourlyRate = 15000; // Biaya per jam kerja
 
-        const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
+        // const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
+        const totalCost = (baseCost + selectedService + totalCostForParts + (hoursOfWork * hourlyRate));
+        // const totalCost = totalCostForParts;
 
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
     });

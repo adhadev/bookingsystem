@@ -18,6 +18,7 @@ class DbLayanan extends Migration
             $table->string('nama');
             $table->integer('kode'); 
             $table->decimal('harga', 10, 2); 
+            $table->time('waktu')->nullable();
             $table->timestamps();
         });
     }
