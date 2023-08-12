@@ -49,3 +49,7 @@ Route::get('/logout/foreman', [AuthController::class, 'logoutForeman'])->name('l
 Route::post('/login/masuk/Foreman', [AuthController::class, 'LoginForeman'])->name('proses_login_Foreman');
 Route::get('/logout/customer', [AuthController::class, 'logoutCustomer'])->name('logoutCustomer');
 Route::post('/login/masuk/customer', [AuthController::class, 'LoginCustomer'])->name('proses_login_customer');
+
+
+Route::get('/foreman/{foremanId}/teknisi', [ServiceController::class, 'teknisiForeman'])->name('teknisiForeman');
+Route::post('/wo/update-teknisi/{id}', [ServiceController::class, 'updateTeknisiInWo'])->name('updateTeknisiInWo');
