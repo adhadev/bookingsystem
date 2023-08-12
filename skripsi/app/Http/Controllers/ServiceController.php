@@ -10,6 +10,9 @@ use App\Models\WIPModel;
 use DbPelanggan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Models\ForemanModel;
+use App\Models\TeknisiModel;
+
 
 class ServiceController extends Controller
 {
@@ -160,8 +163,61 @@ class ServiceController extends Controller
 
     public function getPelanggan($id)
     {
-        $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
-        return json_decode($pelanggan);
+        // $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
+        // return json_decode($pelanggan);
         // return view('admin.inputWO', compact('title', 'dataWo', 'dataWip'));
+        $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
+    
+        if ($pelanggan) {
+            return json_decode($pelanggan);
+        } else {
+            return response()->json([], 200); // Mengembalikan JSON kosong dengan status 200
+        }
     }
+
+    public function teknisiForeman($foremanId)
+    {
+        $foreman = ForemanModel::find($foremanId);
+        
+        if (!$foreman) {
+            return response()->json(['message' => 'Foreman not found'], 404);
+        }
+        
+        $teknisi = $foreman->teknisi;
+        
+        return response()->json(['foreman' => $foreman, 'teknisi' => $teknisi]);
+    }
+
+    public function updateTeknisiInWo($id, Request $request)
+    {
+        $workOrder = WorkingOrderModel::find($id);
+
+        if (!$workOrder) {
+            // Handle jika working order tidak ditemukan
+            return response()->json(['message' => 'Working order not found'], 404);
+        }
+
+        $teknisiId = $request->input('teknisi_id');
+
+        if (!$teknisiId) {
+            // Handle jika teknisi_id tidak ada dalam request
+            return response()->json(['message' => 'Teknisi ID is required'], 400);
+        }
+
+        // Lakukan pengecekan apakah teknisi_id valid dan ada dalam tabel teknisi
+        $teknisi = TeknisiModel::find($teknisiId);
+
+        if (!$teknisi) {
+            // Handle jika teknisi tidak ditemukan
+            return response()->json(['message' => 'Teknisi not found'], 404);
+        }
+
+        // Update id_teknisi dalam working order
+        $workOrder->id_teknisi = $teknisiId;
+        $workOrder->save();
+
+        return response()->json(['message' => 'Teknisi updated successfully', 'teknisi_id' => $teknisiId], 200);
+    }
+
+
 }
