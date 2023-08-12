@@ -14,7 +14,7 @@ class DbWo extends Migration
     public function up()
     {
         Schema::create('db_wo', function (Blueprint $table) {
-            $table->increments('no_wo');
+            $table->string('no_wo')->primary();
             $table->string('status');
             $table->date('tanggal_mulai');
             $table->time('waktu_mulai');
@@ -22,6 +22,8 @@ class DbWo extends Migration
             $table->time('waktu_estimasi_selesai')->nullable();
             $table->date('tanggal_selesai')->nullable();
             $table->string('no_polisi');
+            $table->json('sparepart')->nullable();
+            $table->unsignedBigInteger('biaya')->nullable();
             $table->unsignedBigInteger('id_teknisi')->nullable();
             $table->foreign('no_polisi')->references('no_polisi')->on('db_pelanggan')->onDelete('cascade');
             $table->unsignedBigInteger('service_advisor');

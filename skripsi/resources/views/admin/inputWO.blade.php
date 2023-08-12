@@ -138,41 +138,41 @@
                                                                 <label class="form-check-label" for="checkOli">Oli</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="Filter Udara" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">Filter Udara</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="busi" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">busi</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="aki" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">aki</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="kampas rem" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">kampas rem</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-4 no-wrap">
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="ban" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">ban</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="kampas kopling" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">kampas kopling</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="kompresor AC" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">kompresor AC</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="kondensor" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">kondensor</label>
                                                             </div>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
+                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="sockbreaker" id="checkFilterUdara">
                                                                 <label class="form-check-label" for="checkFilterUdara">sockbreaker</label>
                                                             </div>
                                                         </div>

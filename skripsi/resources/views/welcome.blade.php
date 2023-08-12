@@ -91,7 +91,7 @@
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="text" class="form-control" placeholder="Fullname" aria-label="nama"
-                                    name="Fullname" aria-describedby="addon-wrapping">
+                                    name="nama" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="text" class="form-control" placeholder="Address" aria-label="alamat"

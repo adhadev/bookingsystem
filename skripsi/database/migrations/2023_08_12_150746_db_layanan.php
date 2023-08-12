@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DbWip extends Migration
+class DbLayanan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class DbWip extends Migration
      */
     public function up()
     {
-        Schema::create('db_wip', function (Blueprint $table) {
-            $table->string('no_wip')->primary();
-            $table->string('no_wo');
-            $table->foreign('no_wo')->references('no_wo')->on('db_wo')->onDelete('cascade');
+        Schema::create('db_layanan', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+            $table->integer('kode'); 
+            $table->decimal('harga', 10, 2); 
             $table->timestamps();
         });
     }

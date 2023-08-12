@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\ForemanModel;
 use App\Models\TeknisiModel;
+use Carbon\Carbon; 
 
 
 class ServiceController extends Controller
@@ -41,13 +42,26 @@ class ServiceController extends Controller
     {
         $title = 'Service';
         $noPolisi = $request->no_polisi;
+        $tglBooking = $request->tgl_booking;
+    
+        $jumlahBookingHariIni = BookingModel::whereDate('tgl_booking', $tglBooking)->count();
+    
+        $batasBookingPerHari = 20;
+    
+        if ($jumlahBookingHariIni >= $batasBookingPerHari) {
+            $antrianPenuh = BookingModel::whereDate('tgl_booking', Carbon::today())
+                ->orderBy('created_at', 'asc')
+                ->first();
+                $tanggalPenuh = Carbon::parse($antrianPenuh->tgl_booking)->format('d F Y');
+            return redirect()->back()->with('error', "Maaf, antrian tanggal $tanggalPenuh sudah penuh.");
+        }
+
         $checkNo = PelangganModel::where('no_polisi',  $noPolisi)->first();
         // dd($checkNo);
         if ($checkNo != null) {
             BookingModel::create([
                 'no_polisi' =>   $noPolisi,
                 'tgl_booking' => $request->tgl_booking,
-
             ]);
         } else {
             PelangganModel::create([
@@ -98,13 +112,23 @@ class ServiceController extends Controller
     public function submitWO(Request $request)
     {
         $user = User::where('nama', $request->pic_Service)->first();
+        $sparepart = $request->input('sparepart', []);
+        $sparepartJSON = json_encode($sparepart);
+        $sparepartCount = count($sparepart);
+
+        $biaya = $sparepartCount * 5000; 
+        $estimasi_waktu = $sparepartCount * 5; 
+
         WorkingOrderModel::create([
             'no_wo' => $request->no_wo,
             'tanggal_mulai' => $request->tgl_mulai,
             'waktu_mulai' => $request->waktu_mulai,
             'no_polisi' => $request->no_polisi,
             'service_advisor' =>  $user->id,
-            'status' => 'prepare'
+            'status' => 'prepare',
+            'waktu_estimasi_selesai' => $estimasi_waktu,
+            'biaya' => $biaya,
+            'sparepart' => $sparepartJSON,
         ]);
 
         WIPModel::create([
@@ -145,7 +169,7 @@ class ServiceController extends Controller
     public function dataWO(Request $request)
     {
         if ($request->ajax()) {
-            $data = WorkingOrderModel::with('db_pelanggan')->select('*');
+            $data = WorkingOrderModel::with('pelanggan')->select('*');
             return Datatables::of($data)
                 ->addColumn('no_wo', function ($data) {
                     $wo = '<a href="/detail/wo/' . $data->no_wo . '" style="text-decoration: none;">' . $data->no_wo . '</a>';

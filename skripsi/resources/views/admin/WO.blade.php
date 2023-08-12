@@ -18,7 +18,6 @@
                             <table class="table table-bordered m-3 data-table">
                                 <thead>
                                     <th>NO WO</th>
-                                    <th>Tanggal Registrasi</th>
                                     <th>Nama Customer</th>
                                     <th>NO Polisi</th>
                                     <th>Jenis Mobil</th>
@@ -27,7 +26,7 @@
                                     <th>Sparepart</th>
                                 </thead>
                                 <tbody>
-
+                               
                                 </tbody>
                             </table>
                         </div>
@@ -48,12 +47,8 @@
                         name: 'no_wo'
                     },
                     {
-                        data: 'tanggal_registrasi',
-                        name: 'tanggal_registrasi'
-                    },
-                    {
-                        data: 'pelanggan.nama',
-                        name: 'pelanggan.nama'
+                        data: 'pelanggan',
+                        name: 'pelanggan'
                     },
                     {
                         data: 'no_polisi',
