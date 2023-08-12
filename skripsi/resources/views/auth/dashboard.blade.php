@@ -33,7 +33,7 @@
                     <div class="col-9 ms-5 mt-3">
                         <div class="mb-3">
                             <input type="text" id="form3Example1" class="form-control form-control-md"
-                                name="username" placeholder="Masukan username anda" />
+                                name="username" placeholder="username" />
                         </div>
                         @error('username')
                             <span>
