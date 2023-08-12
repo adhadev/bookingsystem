@@ -79,7 +79,11 @@ class ServiceController extends Controller
         $title = 'BMW OFFICE';
         return view('admin.WO', ['title' => $title]);
     }
-
+    public function dashboardTable()
+    {
+        $title = 'BMW OFFICE';
+        return view('admin.Dashboard', ['title' => $title]);
+    }
     public function inputWO()
     {
         $dataWo = WorkingOrderModel::all();
