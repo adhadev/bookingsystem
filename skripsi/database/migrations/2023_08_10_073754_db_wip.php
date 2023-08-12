@@ -15,7 +15,7 @@ class DbWip extends Migration
     {
         Schema::create('db_wip', function (Blueprint $table) {
             $table->string('no_wip')->primary();
-            $table->string('no_wo');
+            $table->unsignedInteger('no_wo');
             $table->foreign('no_wo')->references('no_wo')->on('db_wo')->onDelete('cascade');
             $table->timestamps();
         });

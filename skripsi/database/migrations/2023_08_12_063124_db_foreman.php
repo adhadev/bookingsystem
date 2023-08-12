@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DbTeknisi extends Migration
+class DbForeman extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class DbTeknisi extends Migration
      */
     public function up()
     {
-        Schema::create('db_teknisi', function (Blueprint $table) {
-            $table->id('id_teknisi');
-            $table->string('nama_teksini');
+        Schema::create('db_foreman', function (Blueprint $table) {
+            $table->id('id_foreman');
+            $table->string('nama_foreman');
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class DbDetailWo extends Migration
             $table->unsignedBigInteger('id_service');
             $table->foreign('id_service')->references('id_service')->on('db_jenis_service')->onDelete('cascade');
             $table->string('status');
-            $table->string('no_wo');
+            $table->unsignedInteger('no_wo');
             $table->foreign('no_wo')->references('no_wo')->on('db_wo')->onDelete('cascade');
             $table->timestamps();
         });

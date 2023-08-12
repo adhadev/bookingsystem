@@ -15,7 +15,7 @@ class DbInvoice extends Migration
     {
         Schema::create('db_invoice', function (Blueprint $table) {
             $table->string('no_invoice')->primary();
-            $table->string('no_wo');
+            $table->unsignedInteger('no_wo');
             $table->foreign('no_wo')->references('no_wo')->on('db_wo')->onDelete('cascade');
             $table->date('tgl_pembayaran');
             $table->integer('total_pembayaran');

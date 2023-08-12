@@ -31,7 +31,7 @@ Route::get('/input/customer/booking', [ServiceController::class, 'inputCustomer'
 Route::get('/input/customer/booking', [ServiceController::class, 'inputCustomer'])->name('inputBooking');
 
 Route::get('/data/wo', [ServiceController::class, 'dataWO'])->name('data.wo')->middleware('auth');
-// Route::get('/pelanggan/{id}', [ServiceController::class, 'getPelanggan'])->name('getPelanggan')->middleware('auth');
+Route::get('/pelanggan/{id}', [ServiceController::class, 'getPelanggan'])->name('getPelanggan');
 
 Route::get('/wo/table', [ServiceController::class, 'woTable'])->name('woTable');
 Route::get('/input/wo', [ServiceController::class, 'inputWO'])->name('inputWO');
@@ -45,3 +45,7 @@ Route::post('/login/masuk/admin', [AuthController::class, 'LoginAdmin'])->name('
 Route::get('/login/customer', [AuthController::class, 'masukCustomer'])->name('loginCustomer');
 Route::get('/logout/customer', [AuthController::class, 'logoutCustomer'])->name('logoutCustomer');
 Route::post('/login/masuk/customer', [AuthController::class, 'LoginCustomer'])->name('proses_login_customer');
+
+
+Route::get('/foreman/{foremanId}/teknisi', [ServiceController::class, 'teknisiForeman'])->name('teknisiForeman');
+Route::post('/wo/update-teknisi/{id}', [ServiceController::class, 'updateTeknisiInWo'])->name('updateTeknisiInWo');

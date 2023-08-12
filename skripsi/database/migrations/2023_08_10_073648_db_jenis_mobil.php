@@ -27,6 +27,7 @@ class DbJenisMobil extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('db_jenis_mobil');
+
     }
 }

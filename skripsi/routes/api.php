@@ -24,4 +24,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/pelanggan/{id}', function ($id) {
     $berhasil = PelangganModel::where('no_polisi', $id)->first();
     return $berhasil;
-});
+}); 
