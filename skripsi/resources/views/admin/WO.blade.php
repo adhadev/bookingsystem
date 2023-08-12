@@ -24,6 +24,7 @@
                                     <th>Jenis Mobil</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Status</th>
+                                    <th>Sparepart</th>
                                 </thead>
                                 <tbody>
 
