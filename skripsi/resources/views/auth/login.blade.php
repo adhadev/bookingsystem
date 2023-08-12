@@ -23,7 +23,7 @@
                 @endif
                 <form class="form-horizontal form-material text-center" method="post" action="/login/masuk/admin">
                     @csrf
-                    <img src="/logobmw.png" alt="homepage" class="light-logo mt-2" style="width: 180px" />
+                    <img src="https://img.freepik.com/premium-vector/call-center-technical-support-customer-online-consultation-flat-illustration-vector_128772-1123.jpg?w=2000" alt="homepage" class="light-logo mt-2" style="width: 180px; border-radius: 30px;">
 
                     <div class="form-group m-10" id="login-alert"></div>
 
@@ -33,7 +33,7 @@
                     <div class="col-9 ms-5 mt-3">
                         <div class="mb-3">
                             <input type="text" id="form3Example1" class="form-control form-control-md"
-                                name="username" placeholder="Masukan username anda" />
+                                name="username" placeholder="username" />
                         </div>
                         @error('username')
                             <span>
@@ -45,7 +45,7 @@
                     <div class="col-9 ms-5">
                         <div class="mb-3">
                             <input type="password" id="form3Example4" class="form-control form-control-md"
-                                name="password" placeholder="Masukan password" />
+                                name="password" placeholder="password" />
                         </div>
                         @error('password')
                             <span>

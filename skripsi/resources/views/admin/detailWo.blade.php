@@ -63,13 +63,12 @@
                                         </div>
                                     
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="no_wip" class="form-label">WIP NO</label>
-                                            <input required type="text" class="form-control" id="no_wip"
-                                                name="no_wip" pattern="[A-Za-z0-9]+">
+                                            <label for="kilometer" class="form-label">Mileage</label>
+                                            <input type="number" class="form-control" id="kilometer"
+                                                value="{{ $dataWo->pelanggan->kilometer }}" name="kilometer">
                                         </div>
-                                        
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -113,17 +112,7 @@
                                                 name="no_kerangka">
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label for="kilometer" class="form-label">Mileage</label>
-                                                    <input type="number" class="form-control" id="kilometer"
-                                                        value="{{ $dataWo->pelanggan->kilometer }}" name="kilometer">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-12 d-flex justify-content-center mt-4">
                                         <div class="col-6"><button class="btn fs-4  " type="button"
                                                 style="background-color: #241468;color: white;"

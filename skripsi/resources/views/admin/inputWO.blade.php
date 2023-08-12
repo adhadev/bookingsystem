@@ -1,4 +1,9 @@
 @extends('main')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css">
+  </head>
 <style>
     .no-wrap {
         white-space: nowrap;
@@ -71,14 +76,13 @@
                                             </div>
                                         
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-auto">
                                             <div class="mb-3">
-                                                <label for="no_wip" class="form-label">WIP NO</label>
-                                                <input required type="text" class="form-control" id="no_wip"
-                                                    name="no_wip" pattern="[A-Za-z0-9]+">
+                                                <label for="kilometer1" class="form-label">Mileage</label>
+                                                <input required type="number" class="form-control" id="kilometer1" name="kilometer1">
                                             </div>
-                                            
                                         </div>
+                                        
                                     </div>
                                     <div class="col-6">
                                         <div class="col-12">
@@ -123,21 +127,68 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="row">
-                                                <div class="col-auto">
-                                                    <div class="mb-3">
-                                                        <label for="kilometer1" class="form-label">Mileage</label>
-                                                        <input required type="number" class="form-control" id="kilometer1" name="kilometer1">
-                                                    </div>
-                                                </div>
+                                                
                                                
                                         
-                                        <div class="col-12 d-flex justify-content-center mt-4">
-                                            <div class="col-6">
-                                                <button class="btn fs-4" type="button" style="background-color: #241468; color: white;"
-                                                    onclick="openDetailModal()">Detail Service</button>
-                                            </div>
-                                        </div>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                                                    Detail Service
+                                                  </button>
+
                                     </div>
+                                    <div class="modal fade" id="myModal">
+                                        <div class="modal-dialog">
+                                        <!-- Bagian Konten Modal -->
+<div class="modal-content" style="width: 800px; margin: 0 auto;">
+    <div class="modal-header">
+        <h4 class="modal-title">Detail Service</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    
+<div class="container mt-3">
+    <form>
+        <div class="mb-1">
+            <label for="service" class="form-label">Jenis Layanan</label>
+            <select class="form-select" id="service" name="service">
+                <option value="1">Service Rutin</option>
+                <option value="2">Ganti Oli</option>
+                <option value="3">Perbaikan Mesin</option>
+                <!-- Tambahkan opsi lainnya di sini -->
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="parts" class="form-label">Sparepart</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="oli" id="checkOli" name="parts[]">
+                <label class="form-check-label" for="checkOli">Oli</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="filter_udara" id="checkFilterUdara" name="parts[]">
+                <label class="form-check-label" for="checkFilterUdara">Filter Udara</label>
+            </div>
+            <!-- Tambahkan checkbox sparepart lainnya di sini -->
+        </div>
+        <div class="mb-3">
+            <label for="hours" class="form-label">Jam Kerja</label>
+            <input type="number" class="form-control" id="hours" name="hours" step="0.5">
+        </div>
+        <button type="submit" class="btn btn-primary">Hitung Estimasi</button>
+    </form>
+
+    <!-- Tampilkan hasil estimasi biaya di sini -->
+    <div class="mt-4">
+        <h3>Estimasi Biaya: <span id="estimatedCost">0</span> Rp.</h3>
+    </div>
+</div>
+    <!-- Bagian Footer Modal -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary">Simpan</button>
+    </div>
+</div>
+
+                                        </div>
+                                      </div>
+                                      
                                 </div>
                             </div>
                         </div>
@@ -152,6 +203,39 @@
         $last_wip = $dataWip->last();
         // dd($last_pr);
     @endphp
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Simulasi perhitungan estimasi biaya
+    const form = document.querySelector('form');
+    const estimatedCostSpan = document.getElementById('estimatedCost');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Contoh perhitungan estimasi biaya (hanya simulasi)
+        const selectedService = document.getElementById('service').value;
+        const selectedParts = document.querySelectorAll('input[name="parts[]"]:checked').length;
+        const hoursOfWork = parseFloat(document.getElementById('hours').value);
+
+        const baseCost = 50000; // Biaya dasar
+        const costPerService = {
+            1: 20000,
+            2: 30000,
+            3: 40000
+        }; // Biaya tambahan berdasarkan jenis layanan
+
+        const costPerPart = 10000; // Biaya tambahan per sparepart
+        const hourlyRate = 15000; // Biaya per jam kerja
+
+        const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
+
+        estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
+    });
+</script>
+
 
 
 <script>
