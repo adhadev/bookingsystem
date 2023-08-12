@@ -108,14 +108,14 @@
 
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label for="no_kerangka" class="form-label">No Kerangka</label>
+                                            <label for="no_kerangka" class="form-label">No Rangka</label>
                                             <input type="text" class="form-control" id="no_kerangka"
                                                 value="{{ $dataWo->pelanggan->no_rangka }}" name="no_kerangka">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="row">
-                                            <div class="col-6">
+                                            {{-- <div class="col-6">
                                                 <div class="mb-3">
                                                     <label for="tanggal_registrasi" class="form-label">Tanggal
                                                         Registrasi</label>
@@ -123,7 +123,7 @@
                                                         value="{{ $dataWo->pelanggan->tanggal_registrasi }}"
                                                         id="tanggal_registrasi">
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-6">
                                                 <div class="mb-3">
                                                     <label for="kilometer" class="form-label">Kilometer</label>

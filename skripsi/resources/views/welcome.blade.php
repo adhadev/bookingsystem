@@ -104,8 +104,15 @@
                                 name="jenis_mobil">
                                 <option selected>Pilih Jenis Mobil</option>
                                 <option value="BMW SPORT">BMW SPORT</option>
-                                <option value="Two">Two</option>
-                                <option value="Three">Three</option>
+                                <option value="Seri 2">Seri 2</option>
+                                <option value="Seri 3">Seri 3</option>
+                                <option value="X1">X1</option>
+                                <option value="X2">X2</option>
+                                <option value="X3">X3</option>
+                                <option value="X4">X4</option>
+                                <option value="X5">X5</option>
+                                <option value="X6">X6</option>
+                                <option value="X7">X7</option>
                             </select>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="date" class="form-control" placeholder="tanggal Booking"

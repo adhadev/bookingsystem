@@ -14,7 +14,7 @@ class DbWo extends Migration
     public function up()
     {
         Schema::create('db_wo', function (Blueprint $table) {
-            $table->string('no_wo')->primary();
+            $table->increments('no_wo')->primary();
             $table->string('status');
             $table->date('tanggal_mulai');
             $table->time('waktu_mulai');
