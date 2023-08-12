@@ -64,7 +64,7 @@
                                                 <div class="col-6">
                                                     <div class="mb-3">
                                                         <label for="no_tlp_pic" class="form-label">Phone Number</label>
-                                                        <input required type="tel" class="form-control" id="no_tlp_pic" placeholder="diawali dengan +62" name="no_tlp_pic"
+                                                        <input required type="tel" class="form-control" id="no_tlp_pic" placeholder="+62" name="no_tlp_pic"
                                                             value="{{ Auth::user()->no_telp }}">
                                                     </div>
                                                 </div>
@@ -129,57 +129,7 @@
                                                         <input required type="number" class="form-control" id="kilometer1" name="kilometer1">
                                                     </div>
                                                 </div>
-                                                <div class="mr-7">
-                                                    <label class="form-label">Sparepart</label>
-                                                    <div class="row">
-                                                        <div class="col-auto no-wrap">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="oli" id="checkOli">
-                                                                <label class="form-check-label" for="checkOli">Oli</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">Filter Udara</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">busi</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">aki</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">kampas rem</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4 no-wrap">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">ban</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">kampas kopling</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">kompresor AC</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">kondensor</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="sparepart[]" value="filter_udara" id="checkFilterUdara">
-                                                                <label class="form-check-label" for="checkFilterUdara">sockbreaker</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                               
                                         
                                         <div class="col-12 d-flex justify-content-center mt-4">
                                             <div class="col-6">
@@ -203,12 +153,6 @@
         // dd($last_pr);
     @endphp
 
-    <!-- Modul Detail Service -->
-<div id="detailModal" class="modal">
-    <div class="modal-content">
-        <!-- Isi konten modul di sini -->
-    </div>
-</div>
 
 <script>
     document.getElementById("no_tlp_pic").addEventListener("input", function() {
@@ -229,8 +173,8 @@
     function openDetailModal() {
         var modal = document.getElementById("detailModal");
         modal.style.display = "block";
-        // Isi konten modul dengan informasi yang sesuai
-        // Contoh: document.querySelector(".modal-content").innerHTML = "<p>Detail service content</p>";
+        document.querySelector(".modal-content").innerHTML = "<p>Detail service content</p>";
+        
     }
 
     // Fungsi untuk menutup modul saat di klik di luar area modul
