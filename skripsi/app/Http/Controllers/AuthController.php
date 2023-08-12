@@ -18,6 +18,11 @@ class AuthController extends Controller
         return view('masukCustomer');
     }
 
+    public function dashboard()
+{
+    return view('auth.dashboard'); // 'dashboard' adalah nama view (blade) halaman kosong
+}
+
     public function tampilanLoginAdmin()
     {
         return view('auth.login');
@@ -50,12 +55,39 @@ class AuthController extends Controller
         return redirect('/login/admin');
     }
 
+    public function loginForeman(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        // Retrieve the user by the provided username
+        $user = User::where('username', $credentials['username'])->first();
+
+        // Check if the user exists and the provided password matches
+        if ($user && $user->password === $credentials['password']) {
+            // User is authenticated, log them in
+            // Note: This is NOT secure in production. Use proper password encryption like bcrypt.
+            auth()->login($user);
+
+            // Redirect the user to the desired location after login
+            return redirect()->route('dashboardTable');
+        } else {
+            // Authentication failed, redirect back to the login page with an error message.
+            return redirect()->route('login_admin')->with('error', 'Invalid username or password.');
+        }
+    }
+
+    public function logoutForeman(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
+    }
+
     public function loginCustomer(Request $request)
     {
         $noPol = $request->input('no_polisi');
 
         // Find the user by the given no_polisi
-        $user = \App\Models\User::where('no_polisi', $noPol)->first();
+        $user = User::where('no_polisi', $noPol)->first();
 
         if (!$user) {
             // If the user is not found, redirect back with an error message

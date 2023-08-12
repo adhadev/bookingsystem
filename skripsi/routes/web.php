@@ -34,6 +34,7 @@ Route::get('/data/wo', [ServiceController::class, 'dataWO'])->name('data.wo')->m
 Route::get('/pelanggan/{id}', [ServiceController::class, 'getPelanggan'])->name('getPelanggan');
 
 Route::get('/wo/table', [ServiceController::class, 'woTable'])->name('woTable');
+Route::get('/dashboard/table', [ServiceController::class, 'dashboardTable'])->name('dashboardTable');
 Route::get('/input/wo', [ServiceController::class, 'inputWO'])->name('inputWO');
 Route::post('/submit/wo/baru', [ServiceController::class, 'submitWO'])->name('submitWO');
 Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('detailWO');
@@ -43,9 +44,8 @@ Route::get('/login/admin', [AuthController::class, 'tampilanLoginAdmin'])->name(
 Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout_admin');
 Route::post('/login/masuk/admin', [AuthController::class, 'LoginAdmin'])->name('proses_login_admin');
 Route::get('/login/customer', [AuthController::class, 'masukCustomer'])->name('loginCustomer');
+Route::get('/login/foreman', [AuthController::class, 'loginForeman'])->name('loginForeman');
+Route::get('/logout/foreman', [AuthController::class, 'logoutForeman'])->name('logoutForeman');
+Route::post('/login/masuk/Foreman', [AuthController::class, 'LoginForeman'])->name('proses_login_Foreman');
 Route::get('/logout/customer', [AuthController::class, 'logoutCustomer'])->name('logoutCustomer');
 Route::post('/login/masuk/customer', [AuthController::class, 'LoginCustomer'])->name('proses_login_customer');
-
-
-Route::get('/foreman/{foremanId}/teknisi', [ServiceController::class, 'teknisiForeman'])->name('teknisiForeman');
-Route::post('/wo/update-teknisi/{id}', [ServiceController::class, 'updateTeknisiInWo'])->name('updateTeknisiInWo');

@@ -16,15 +16,7 @@
 
                     <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
                         @if (Auth::user()->isCustomer())
-                            <li><a href="/customer/service"><span>Biodata</span></a></li>
-                            <li class="has-children">
-                                <a><span>Service</span></a>
-                                <ul class="dropdown arrow-top">
-                                    <li><a href="/customer/service/booking">On Booking</a></li>
-                                    <li><a href="/customer/service/onservice">On Service</a></li>
-                                    {{-- <li><a href="#">Menu Three</a></li> --}}
-                                </ul>
-                            </li>
+                           
                         @elseif(Auth::user()->isAdmin())
                             <li><a href="/wo/table"><span>WO</span></a></li>
                             <li><a href="/wo/tagihan"><span>Tagihan</span></a></li>

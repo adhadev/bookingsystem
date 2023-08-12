@@ -21,46 +21,51 @@
 
 <body id="page-top">
     <!-- Navigation-->
+
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#page-top">BMW TEBET</a>
+            <a class="navbar-brand" href="#page-top" style="font-family: 'Montserrat', sans-serif; color:  white;">
+                <img src="https://static.vecteezy.com/system/resources/previews/021/671/890/original/bmw-logo-transparent-free-png.png"
+                    alt="BMW Logo" style="height: 30px; margin-right: 10px;">
+                BMW TEBET
+            </a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
+                aria-label="Toggle navigation" style="color: white;">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projects">Booking</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about" style="font-family: 'Montserrat', sans-serif; color: white;font-weight:bold;">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects" style="font-family: 'Montserrat', sans-serif; color: white;font-weight:bold;">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#signup" style="font-family: 'Montserrat', sans-serif; color: white;font-weight:bold;">Contact</a></li>
                 </ul>
             </div>
-        </div>
+        </div>  
     </nav>
     <!-- Masthead-->
-    <header class="masthead">
+    <header class="masthead" style="font-family: 'Montserrat', sans-serif;">
         <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
             <div class="d-flex justify-content-center">
                 <div class="text-center">
-                    <h1 class="mx-auto my-0 text-uppercase">Let's repair</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Sulap Mobilmu Menjadi Seperti Baru</h2>
+                    <h1 class="mx-auto my-0 text-uppercase" style="color: white;">Let's repair</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5" style="font-size: 24px; color: white;text-align: center;">Enchanting Transformations for a Brand-New Feel</h2>
                     <a class="btn btn-primary" href="#projects">Book Now</a>
                 </div>
             </div>
         </div>
     </header>
+    
+    
     <!-- About-->
     <section class="about-section text-center" id="about">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-lg-8">
-                    <h2 class="text-white mb-4">Kenyamanan Anda adalah Prioritas Kami</h2>
+                    <h2 class="text-white mb-4">"Your Comfort is Our Priority"</h2>
                     <p class="text-white-50">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, id. Repellendus error ipsam
-                        quam animi facilis, eveniet odit magnam, sapiente vero voluptatum rerum, cumque ea enim quis
-                        soluta ad beatae.
+                        Discover ultimate comfort with BMW. Our top priority is ensuring your comfort in every interaction. From our welcoming ambiance to our attentive staff, every detail is designed to make you feel at ease. Experience service that revolves around your well-being. Explore BMW today.
                     </p>
                 </div>
             </div>
@@ -85,24 +90,24 @@
                                     name="email" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="text" class="form-control" placeholder="Nama" aria-label="nama"
-                                    name="nama" aria-describedby="addon-wrapping">
+                                <input type="text" class="form-control" placeholder="Fullname" aria-label="nama"
+                                    name="Fullname" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="text" class="form-control" placeholder="Alamat" aria-label="alamat"
+                                <input type="text" class="form-control" placeholder="Address" aria-label="alamat"
                                     name="alamat" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="tnumber" class="form-control" placeholder="No telp" aria-label="no_telp"
+                                <input type="tnumber" class="form-control" placeholder="Phone Number" aria-label="no_telp"
                                     name="no_telp" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="text" class="form-control" placeholder="No Polisi" name="no_polisi"
+                                <input type="text" class="form-control" placeholder="Police Number" name="no_polisi"
                                     aria-label="plat_nomor" aria-describedby="addon-wrapping">
                             </div>
                             <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
                                 name="jenis_mobil">
-                                <option selected>Pilih Jenis Mobil</option>
+                                <option selected>Select Car Model</option>
                                 <option value="BMW SPORT">BMW SPORT</option>
                                 <option value="Seri 2">Seri 2</option>
                                 <option value="Seri 3">Seri 3</option>
@@ -117,10 +122,10 @@
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="date" class="form-control" placeholder="tanggal Booking"
                                     aria-label="tanggal_booking" aria-describedby="addon-wrapping"
-                                    name="tgl_booking">
+                                    name="tgl_booking" min="<?php echo date("Y-m-d"); ?>">
                             </div>
                             <button class="btn btn-success w-100" type="submit">Confirm</button>
-                            <p class="fs-5">Sudah Booking? <a href="/login/customer">klik disini</a></p>
+                            <p class="fs-5">Already Booked? <a href="/login/customer">klik disini</a></p>
                         </form>
                     </div>
                 </div>
@@ -148,9 +153,9 @@
                     <div class="card py-4 h-100">
                         <div class="card-body text-center">
                             <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                            <h4 class="text-uppercase m-0">Address</h4>
+                            <h4 class="text-uppercase m-0">BMW Tunas Mobilindo Parama</h4>
                             <hr class="my-4 mx-auto" />
-                            <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                            <div class="small text-black-50">Jl. Dr.Soepomo No. 174, Tebet, Jakarta -12810</div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +165,7 @@
                             <i class="fas fa-envelope text-primary mb-2"></i>
                             <h4 class="text-uppercase m-0">Email</h4>
                             <hr class="my-4 mx-auto" />
-                            <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
+                            <div class="small text-black-50"><a href="#!">BMW@yourdomain.com</a></div>
                         </div>
                     </div>
                 </div>
@@ -175,16 +180,11 @@
                     </div>
                 </div>
             </div>
-            <div class="social d-flex justify-content-center">
-                <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-                <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
-            </div>
         </div>
     </section>
     <!-- Footer-->
     <footer class="footer bg-black small text-center text-white-50">
-        <div class="container px-4 px-lg-5">Copyright &copy; Your Website 2023</div>
+        <div class="container px-4 px-lg-5">Copyright &copy; skripsi Abel</div>
     </footer>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
