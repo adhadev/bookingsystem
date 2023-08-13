@@ -153,7 +153,7 @@
                 <option value="2">Ganti Oli</option>
                 <option value="3">Perbaikan Mesin</option> -->
                 @foreach ($layananOptions as $layanan)
-                    <option value="{{ $layanan->harga }}">{{ $layanan->nama }}</option>
+                    <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
                 @endforeach
                 <!-- Tambahkan opsi lainnya di sini -->
             </select>
@@ -170,7 +170,8 @@
             </div> -->
             @foreach ($spareparts as $sparepart)
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]">
+                    <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
+                    <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
                     <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
                 </div>
             @endforeach
@@ -225,13 +226,21 @@
         event.preventDefault();
 
         // Contoh perhitungan estimasi biaya (hanya simulasi)
-        const selectedService = parseFloat(document.getElementById('service').value);
+        const selectedService = JSON.parse(document.getElementById('service').value);
+        const hargaService = parseFloat(selectedService.harga);
+
+        // const selectedServiceData = JSON.parse(selectedService); 
+        // const hargaService = parseFloat(selectedServiceData.harga); 
+        // $selectedService = json_decode($_POST['service']); // Mendekode JSON menjadi objek PHP
+        // $hargaService = floatval($selectedService->harga);
+        
         const selectedParts = document.querySelectorAll('input[name="parts[]"]:checked');
         const hoursOfWork = parseFloat(document.getElementById('hours').value);
 
         let totalCostForParts = 0;
         selectedParts.forEach(checkbox => {
-            totalCostForParts += parseFloat(checkbox.value);
+            const data = JSON.parse(checkbox.value);
+            totalCostForParts +=  parseFloat(data.harga);
         });
 
         const baseCost = 50000; // Biaya dasar
@@ -245,8 +254,7 @@
         const hourlyRate = 15000; // Biaya per jam kerja
 
         // const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
-        const totalCost = (baseCost + selectedService + totalCostForParts + (hoursOfWork * hourlyRate));
-        // const totalCost = totalCostForParts;
+        const totalCost = (baseCost + hargaService + totalCostForParts + (hoursOfWork * hourlyRate));
 
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
     });
