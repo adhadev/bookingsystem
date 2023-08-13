@@ -37,30 +37,30 @@ class ServiceController extends Controller
     public function detailTASK($no_wo)
     {
         $dataWO = WorkingOrderModel::where('no_wo', $no_wo)->first();
-        
-        $dataPelanggan = PelangganModel::where('no_polisi', $dataWO->no_polisi)->first();
+    
+            $dataPelanggan = PelangganModel::where('no_polisi', $dataWO->no_polisi)->first();
+    
+            $booking = BookingModel::where('no_polisi', $dataWO->no_polisi)->where('status', 'pending')->first();
 
-        $booking = BookingModel::where('no_polisi', $dataWO->no_polisi)->where('status', 'pending')->first();
+    
+            $waktuArray = explode(':', $dataWO->waktu_estimasi_selesai);
+            $jam = (int)$waktuArray[0];
+            $menit = (int)$waktuArray[1];
+            $totalMenitEstimasi = ($jam * 60) + $menit;
 
-        
-        $waktuArray = explode(':', $dataWO->waktu_estimasi_selesai);
-        $jam = (int)$waktuArray[0];
-        $menit = (int)$waktuArray[1];
-        $totalMenitEstimasi = ($jam * 60) + $menit;
-
-         
-        $detail = [
-            'NoWO' => $dataWO->no_wo,
-            'NoRangka' => $dataPelanggan->no_rangka, 
-            'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
-            'JenisLayanan' => 'service rutin',  
-            'SparePart' => json_decode($dataWO->sparepart), 
-            'EstimasiWaktu' => $totalMenitEstimasi 
-        ];
-
+    
+            $detail = [
+                'NoWO' => $dataWO->no_wo,
+                'NoRangka' => $dataPelanggan->no_rangka, 
+                'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
+                'JenisLayanan' => 'service rutin',  
+                'SparePart' => json_decode($dataWO->sparepart), 
+                'EstimasiWaktu' => $totalMenitEstimasi 
+            ];
+    
          return response()->json($detail);
     }
-
+    
     public function onService()
     {
         $title = 'Service';
@@ -214,6 +214,25 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $title = 'BMW OFFICE';
 
+        return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title'));
+    }
+
+    public function updateWO(Request $request)
+    {
+        $workingOrder = WorkingOrderModel::find($request->no_wo);
+
+        if ($workingOrder) {
+            $workingOrder->id_teknisi = $request->teknisiId;
+            $workingOrder->status = 'On Progress';
+            $workingOrder->save();
+        }
+
+        $teknisi = TeknisiModel::find($request->teknisiId);
+
+        if ($teknisi) {
+            $teknisi->status = 'On Progress';
+            $teknisi->save();
+        }
         return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title'));
     }
 

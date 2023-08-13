@@ -37,6 +37,7 @@ Route::get('/wo/table', [ServiceController::class, 'woTable'])->name('woTable');
 Route::get('/dashboard/table', [ServiceController::class, 'dashboardTable'])->name('dashboardTable');
 Route::get('/input/wo', [ServiceController::class, 'inputWO'])->name('inputWO');
 Route::post('/submit/wo/baru', [ServiceController::class, 'submitWO'])->name('submitWO');
+Route::post('/update/woTeknisi/{id}', [ServiceController::class, 'updateWO'])->name('updateWO');
 Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('detailWO');
 Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name('detailTASK');
 
