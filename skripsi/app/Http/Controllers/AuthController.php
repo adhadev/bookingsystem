@@ -69,7 +69,7 @@ class AuthController extends Controller
             auth()->login($user);
 
             // Redirect the user to the desired location after login
-            return redirect()->route('dashboardTable');
+        return redirect()->route('dashboardTable', ['id' => $user->id]);
         } else {
             // Authentication failed, redirect back to the login page with an error message.
             return redirect()->route('login_admin')->with('error', 'Invalid username or password.');
