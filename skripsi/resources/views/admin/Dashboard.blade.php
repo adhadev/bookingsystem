@@ -13,11 +13,10 @@
             background-color: #f4f4f4;
         }
         .order-list {
-            border: 2px dashed black;
+            border: 2px black;
+            border-radius: 20px;
             padding: 20px;
             background-color: #f4f4f4;
-            cursor: pointer;
-            margin-top: 20px;
         }
         header {
             background-color: black;
@@ -145,8 +144,6 @@
         h3 {
             font-family: 'Montserrat', sans-serif;
             font-size: 16px;
-            text-decoration: underline;
-            margin-top: 20px;
             color: #000000;
         }
         .status-icon {
@@ -176,42 +173,52 @@
         <h2>List Working Order</h2>
     
         <div class="row">
-          <div class="col">
-            <h3>Orders to be Processed :</h3>
-            <!-- Order #1 akan muncul di sini -->
-            <div id="ordersToProcess" class="order-list">
-                <div id="order1" class="order" draggable="true" ondragstart="drag(event)"><ul>Order #1</ul></div>
-                <div id="order2" class="order" draggable="true" ondragstart="drag(event)"><ul>Order #2</ul></div>
+            <div class="col">
+                <div id="ordersToProcess" class="order-list">
+                    <h3>Orders to be Processed :</h3>
+                    <ul id="orderList"></ul>
+                </div>
             </div>
-          </div>
+            <div class="col">
+                <div id="onProgressList" class="order-list">
+                    <h3>On Progress:</h3>
+                    <ul></ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        function allowDrop(event) {
-            event.preventDefault();
-        }
+    
+        <!-- Informasi dari database dapat diambil dan dimasukkan ke dalam ul li seperti contoh di bawah -->
+        <script>
+            // Contoh data dari database
+            const ordersToProcessData = [
+                "Order #1",
+                // ... data lainnya
+            ];
 
-        function drag(event) {
-            event.dataTransfer.setData("text", event.target.id);
-        }
+            // Memasukkan data dari database ke dalam Orders to be Processed
+            const ordersToProcessContainer = document.getElementById("orderList");
+            ordersToProcessData.forEach(order => {
+                const li = document.createElement("li");
+                li.innerText = order;
+                ordersToProcessContainer.appendChild(li);
+            });
 
-        function drop(event) {
-            event.preventDefault();
-            const orderId = event.dataTransfer.getData("text");
-            const orderElement = document.getElementById(orderId);
+            // Contoh data on progress dari database
+            const onProgressData = [
+                "Order #3",
+                // ... data lainnya
+            ];
 
-            if (event.target.classList.contains("order-list")) {
-                event.target.appendChild(orderElement);
-                updateOrderStatus(orderId, "In Progress");
-            }
-        }
-
-        function updateOrderStatus(orderId, status) {
-            const orderElement = document.getElementById(orderId);
-            orderElement.innerText = `${orderId} - ${status}`;
-        }
-    </script>
+            // Memasukkan data dari database ke dalam On Progress
+            const onProgressContainer = document.getElementById("onProgressList");
+            onProgressData.forEach(order => {
+                const li = document.createElement("li");
+                li.innerText = order;
+                onProgressContainer.appendChild(li);
+            });
+        </script>
 </body>
 </html>
     <div class="container"style="padding-right: 6px;">
@@ -222,7 +229,13 @@
                 <p>Status: <span class="status-icon off"></span> <br>on working</p>
                 
                 <!-- Pindahkan area drop ke sini -->
-                <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
+                <div class="mb-1">
+                    <label for="listWo" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo" name="listWo">
+                        <option value="1">000001</option>
+                        <option value="2">000002</option>
+                        <option value="3">000003</option> 
+                    </select>
                 </div>
                 
                 <div class="vehicle">
@@ -236,7 +249,13 @@
                 <p>Status: <span class="status-icon off"></span> <br>on working</p>
                 
                 <!-- Pindahkan area drop ke sini -->
-                <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
+                <div class="mb-1">
+                    <label for="listWo" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo" name="listWo">
+                        <option value="1">000001</option>
+                        <option value="2">000002</option>
+                        <option value="3">000003</option> 
+                    </select>
                 </div>
                 
                 <div class="vehicle">
@@ -249,7 +268,13 @@
                 <p>Status: <span class="status-icon off"></span> <br>on working</p>
                 
                 <!-- Pindahkan area drop ke sini -->
-                <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
+                <div class="mb-1">
+                    <label for="listWo" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo" name="listWo">
+                        <option value="1">000001</option>
+                        <option value="2">000002</option>
+                        <option value="3">000003</option> 
+                    </select>
                 </div>
                 
                 <div class="vehicle">
@@ -262,7 +287,13 @@
                 <p>Status: <span class="status-icon off"></span> <br>on working</p>
                 
                 <!-- Pindahkan area drop ke sini -->
-                <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
+                <div class="mb-1">
+                    <label for="listWo" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo" name="listWo">
+                        <option value="1">000001</option>
+                        <option value="2">000002</option>
+                        <option value="3">000003</option> 
+                    </select>
                 </div>
                 
                 <div class="vehicle">
@@ -275,7 +306,13 @@
                 <p>Status: <span class="status-icon off"></span> <br>on working</p>
                 
                 <!-- Pindahkan area drop ke sini -->
-                <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
+                <div class="mb-1">
+                    <label for="listWo" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo" name="listWo">
+                        <option value="1">000001</option>
+                        <option value="2">000002</option>
+                        <option value="3">000003</option> 
+                    </select>
                 </div>
                 
                 <div class="vehicle">
