@@ -188,6 +188,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     
         <!-- Informasi dari database dapat diambil dan dimasukkan ke dalam ul li seperti contoh di bawah -->
         <script>
@@ -221,6 +222,8 @@
                 onProgressContainer.appendChild(li);
             });
         </script>
+=======
+>>>>>>> 8d49ac06f7c119b38e43921656363977a23e46e5
 </body>
 </html>
     <div class="container"style="padding-right: 6px;">
