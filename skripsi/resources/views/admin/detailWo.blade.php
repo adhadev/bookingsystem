@@ -1,5 +1,11 @@
 @extends('main')
 @section('content')
+    <head>
+
+
+    </head>
+
+    <body>
     <div class="container-fluid" style="background-image: url(/bgwelcome.jpg); width: 100%;">
         <div class="container-xl px-4 px-lg-5 d-flex  align-items-top justify-content-center ">
             <div class="col-12 d-flex justify-content-center">
@@ -143,38 +149,35 @@
         <form>
             <div class="mb-1">
                 <label for="service" class="form-label">Jenis Layanan</label>
-                <select class="form-select" id="service" name="service">
+                <select class="form-select" id="service" name="service" disabled>
                     <option value="1">Service Rutin</option>
-                    {{-- @foreach ($layananOptions as $layanan)
+                    <!-- {{-- @foreach ($layananOptions as $layanan)
                         <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
-                    @endforeach --}}
+                    @endforeach --}} -->
                     <!-- Tambahkan opsi lainnya di sini -->
                 </select>
             </div>
             <div class="mb-3">
                 <label for="parts" class="form-label">Sparepart</label>
-                @foreach ($spareparts as $sparepart)
-                    <div class="form-check">
-                        <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
-                        <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
-                        <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
-                    </div>
-                @endforeach
+                <div class="form-check">
+                    <label class="form-check-label" for="">{{ $sparepartString }}</label>
+                </div>
                 <!-- Tambahkan checkbox sparepart lainnya di sini -->
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 {{-- <label for="hours" class="form-label">Jam Kerja</label> --}}
                 <input type="hidden" class="form-control" id="hours" name="hours" step="0.5">
             </div>
-            <button type="submit" class="btn btn-primary">Hitung Estimasi</button>
+            <button type="submit" class="btn btn-primary">Hitung Estimasi</button> -->
         </form>
     
         <!-- Tampilkan hasil estimasi biaya di sini -->
         <div class="mt-4">
-            <h3>Estimasi Biaya: Rp.<span id="estimatedCost">0</span></h3>
+            <h3>Estimasi Biaya: Rp.<span id="estimatedCost">{{ $dataWo->biaya }}</span></h3>
         </div>
+     
         <div class="mt-4">
-            <h3>Estimasi Waktu: <span id="estimatedTime">0</span> Menit</h3>
+            <h3>Estimasi Waktu: <span id="estimatedTime">{{ $totalMenit }}</span> Menit</h3>
         </div>
         <input type="hidden" name="estimatedCost" id="estimatedCosts">
         <input type="hidden" name="estimatedTime" id="estimatedTimes">
@@ -193,7 +196,11 @@
         </div>
     </div>
 
+    
+
+    
     <script>
+            
         function openDetailModal() {
             var modal = document.getElementById("detailModal");
             modal.style.display = "block";
@@ -209,4 +216,6 @@
             }
         };
     </script>
+    </body>
+
 @endsection

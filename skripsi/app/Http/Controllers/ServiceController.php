@@ -37,12 +37,28 @@ class ServiceController extends Controller
     public function detailTASK($no_wo)
     {
         $dataWO = WorkingOrderModel::where('no_wo', $no_wo)->first();
+        
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWO->no_polisi)->first();
 
+        $booking = BookingModel::where('no_polisi', $dataWO->no_polisi)->where('status', 'pending')->first();
 
-        $booking = BookingModel::where('no_polisi', $no_wo)->where('status', 'pending')->first();
+        
+        $waktuArray = explode(':', $dataWO->waktu_estimasi_selesai);
+        $jam = (int)$waktuArray[0];
+        $menit = (int)$waktuArray[1];
+        $totalMenitEstimasi = ($jam * 60) + $menit;
 
-        return json_decode($pelanggan);
+         
+        $detail = [
+            'NoWO' => $dataWO->no_wo,
+            'NoRangka' => $dataPelanggan->no_rangka, 
+            'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
+            'JenisLayanan' => 'service rutin',  
+            'SparePart' => json_decode($dataWO->sparepart), 
+            'EstimasiWaktu' => $totalMenitEstimasi 
+        ];
+
+         return response()->json($detail);
     }
 
     public function onService()
@@ -151,6 +167,15 @@ class ServiceController extends Controller
         $jam_estimasi_selesai = floor($estimasi_waktu / 60); 
         $menit_estimasi_selesai = $estimasi_waktu % 60;
         $waktu_estimasi_selesai = sprintf('%02d:%02d:00', $jam_estimasi_selesai, $menit_estimasi_selesai);
+        $namaSpareparts = $request->input('parts'); // Array berisi nama-nama sparepart
+
+    // Ambil hanya field 'nama' dari setiap elemen array
+    $namaSparepartsNames = [];
+    foreach ($namaSpareparts as $sparepart) {
+        $sparepartData = json_decode($sparepart);
+        $namaSparepartsNames[] = $sparepartData->nama;
+    }
+    $namaSparepartsJson = json_encode($namaSparepartsNames); // Mengonversi array menjadi string JSON
 
         WorkingOrderModel::create([
             'no_wo' => $request->no_wo,
@@ -161,7 +186,7 @@ class ServiceController extends Controller
             'status' => 'prepare',
             'waktu_estimasi_selesai' => $waktu_estimasi_selesai,
             'biaya' => $request->estimatedCost,
-            'sparepart' => $sparepartJSON,
+            'sparepart' => $namaSparepartsJson,
             'tgl_booking' => $booking->tgl_booking,
             'tanggal_estimasi_selesai' => today(),
 
@@ -195,9 +220,20 @@ class ServiceController extends Controller
     public function detailWO($id)
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+        $sparepartArray = json_decode($dataWo->sparepart); 
+        $sparepartString = implode(', ', $sparepartArray);
+
+        $waktuArray = explode(':', $dataWo->waktu_estimasi_selesai	); // Memisahkan jam, menit, dan detik menjadi array
+        $jam = (int)$waktuArray[0];
+        $menit = (int)$waktuArray[1];
+        $detik = (int)$waktuArray[2];
+
+        $totalMenit = ($jam * 60) + $menit + ($detik / 60);
+
+
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan'));
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan' , 'sparepartString','totalMenit'));
     }
 
     public function dataWO(Request $request)

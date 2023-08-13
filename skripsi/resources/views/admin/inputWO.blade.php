@@ -160,7 +160,7 @@
             @foreach ($spareparts as $sparepart)
                 <div class="form-check">
                     <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
-                    <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
+                    <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}", "nama": "{{ $sparepart->nama }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
                     <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
                 </div>
             @endforeach
