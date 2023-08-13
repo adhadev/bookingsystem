@@ -33,6 +33,17 @@ class ServiceController extends Controller
         return view('customer.onBooking', compact('title', 'pelanggan', 'booking'));
     }
 
+    public function detailTASK($no_wo)
+    {
+        $dataWO = WorkingOrderModel::where('no_wo', $no_wo)->first();
+        $dataPelanggan = PelangganModel::where('no_polisi', $dataWO->no_polisi)->first();
+
+
+        $booking = BookingModel::where('no_polisi', $no_wo)->where('status', 'pending')->first();
+
+        return json_decode($pelanggan);
+    }
+
     public function onService()
     {
         $title = 'Service';
@@ -103,12 +114,16 @@ class ServiceController extends Controller
         $userId = intval($request->input('id'));
 
         $user = User::where('id', $userId)->first();
+        $dataWo = WorkingOrderModel::where('status', 'prepare')->get();
+        $dataWOOnProgress = WorkingOrderModel::where('status', 'On Progress')->get();
+
+
         // dd($user->username);
 
         $teknisi = TeknisiModel::where('foreman_id', $userId)->get();
                 // dd($teknisi);
 
-        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi]);
+        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi, 'dataWO' => $dataWo, 'dataWOOnProgress' => $dataWOOnProgress]);
     }
     public function inputWO()
     {
@@ -165,9 +180,7 @@ class ServiceController extends Controller
          $booking = BookingModel::where('no_polisi', $request->no_polisi)->first();
 
          $booking->update([
-             'no_rangka' => $request->no_kerangka,
-             'kilometer' => $request->kilometer1,
-             'tanggal_registrasi' => now(),
+             'status' => 'prepare',
          ]);
 
         $wo = WorkingOrderModel::all();
@@ -186,9 +199,8 @@ class ServiceController extends Controller
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
-        $dataWip = WIPModel::where('no_wip', $id)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataWip','dataPelanggan'));
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan'));
     }
 
     public function dataWO(Request $request)
