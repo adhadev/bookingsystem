@@ -38,6 +38,8 @@ Route::get('/dashboard/table', [ServiceController::class, 'dashboardTable'])->na
 Route::get('/input/wo', [ServiceController::class, 'inputWO'])->name('inputWO');
 Route::post('/submit/wo/baru', [ServiceController::class, 'submitWO'])->name('submitWO');
 Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('detailWO');
+Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name('detailTASK');
+
 
 //AuthController
 Route::get('/login/admin', [AuthController::class, 'tampilanLoginAdmin'])->name('login_admin');

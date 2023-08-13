@@ -193,8 +193,9 @@
         <script>
             // Contoh data dari database
             const ordersToProcessData = [
-                "Order #1",
-                // ... data lainnya
+                @foreach ($dataWO as $wo)
+                    "{{ $wo->no_wo }}",
+                @endforeach
             ];
 
             // Memasukkan data dari database ke dalam Orders to be Processed
@@ -207,8 +208,9 @@
 
             // Contoh data on progress dari database
             const onProgressData = [
-                "Order #3",
-                // ... data lainnya
+                @foreach ($dataWOOnProgress as $wo)
+                    "{{ $wo->no_wo }}",
+                @endforeach
             ];
 
             // Memasukkan data dari database ke dalam On Progress
@@ -232,9 +234,12 @@
                 <div class="mb-1">
                     <label for="listWo" class="form-label">List Wo</label>
                     <select class="form-select" id="listWo" name="listWo">
-                        <option value="1">000001</option>
+                        <!-- <option value="1">000001</option>
                         <option value="2">000002</option>
-                        <option value="3">000003</option> 
+                        <option value="3">000003</option>  -->
+                        @foreach ($dataWO as $wo)
+                            <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
+                        @endforeach
                     </select>
                 </div>
                 
@@ -252,10 +257,14 @@
                 <div class="mb-1">
                     <label for="listWo" class="form-label">List Wo</label>
                     <select class="form-select" id="listWo" name="listWo">
-                        <option value="1">000001</option>
+                        <!-- <option value="1">000001</option>
                         <option value="2">000002</option>
-                        <option value="3">000003</option> 
+                        <option value="3">000003</option>  -->
+                    @foreach ($dataWO as $wo)
+                        <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
+                    @endforeach
                     </select>
+
                 </div>
                 
                 <div class="vehicle">
@@ -271,9 +280,12 @@
                 <div class="mb-1">
                     <label for="listWo" class="form-label">List Wo</label>
                     <select class="form-select" id="listWo" name="listWo">
-                        <option value="1">000001</option>
+                        <!-- <option value="1">000001</option>
                         <option value="2">000002</option>
-                        <option value="3">000003</option> 
+                        <option value="3">000003</option>  -->
+                        @foreach ($dataWO as $wo)
+                            <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
+                        @endforeach
                     </select>
                 </div>
                 
@@ -290,9 +302,12 @@
                 <div class="mb-1">
                     <label for="listWo" class="form-label">List Wo</label>
                     <select class="form-select" id="listWo" name="listWo">
-                        <option value="1">000001</option>
+                        <!-- <option value="1">000001</option>
                         <option value="2">000002</option>
-                        <option value="3">000003</option> 
+                        <option value="3">000003</option>  -->
+                        @foreach ($dataWO as $wo)
+                            <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
+                        @endforeach
                     </select>
                 </div>
                 
@@ -307,16 +322,21 @@
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div class="mb-1">
-                    <label for="listWo" class="form-label">List Wo</label>
-                    <select class="form-select" id="listWo" name="listWo">
-                        <option value="1">000001</option>
+                    <label for="listWo1" class="form-label">List Wo</label>
+                    <select class="form-select" id="listWo1" name="listWo1" >
+                        <!-- <option value="1">000001</option>
                         <option value="2">000002</option>
-                        <option value="3">000003</option> 
+                        <option value="3">000003</option>  -->
+                        @foreach ($dataWO as $wo)
+                            <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
+                        @endforeach
                     </select>
                 </div>
                 
                 <div class="vehicle">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#taskModal">Lihat Detail</button>
+                     <!-- <button onclick="updateModal()">Update Modal</button> -->
+
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#taskModal" id="openTaskModal" onclick="updateModal()">Lihat Detail</button>
                 </div>
             </div>
         </div>
@@ -331,7 +351,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>No Wo :</p>
+                <p id="modalNoWo">No Wo : </p>
                     <p>No Rangka :</p>
                     <p>Jenis Kendaraan:</p>
                     <p>Jenis Layanan :</p>
@@ -349,7 +369,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Fungsi-fungsi JavaScript Anda di sini
-    </script>
+function updateModal() {
+    var selectElement = document.getElementById("listWo1");
+    var selectedValue = selectElement.value;
+    
+    var modalNoWoElement = document.getElementById("modalNoWo");
+    modalNoWoElement.textContent = "No Wo : " + selectedValue;
+}
+</script>
+
+
+
 </body>
 </html>
