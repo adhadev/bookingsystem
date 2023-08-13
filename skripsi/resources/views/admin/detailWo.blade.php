@@ -36,7 +36,7 @@
                                             <label for="tgl_mulai" class="form-label">Start Date</label>
                                             <input required type="date" class="form-control" id="tgl_mulai"
                                                 name="tgl_mulai"
-                                                value="{{ $dataWo->tanggal_mulai }}">
+                                                value="{{ $dataWo->tanggal_mulai }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -44,7 +44,7 @@
                                             <label for="waktu_mulai" class="form-label">Start Time</label>
                                             <input required type="time" class="form-control" id="waktu_mulai"
                                                 name="waktu_mulai"
-                                                value="{{ $dataWo->waktu_mulai }}">
+                                                value="{{ $dataWo->waktu_mulai }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -53,7 +53,7 @@
                                                 <div class="mb-3">
                                                     <label for="pic_service" class="form-label">Service Advisor</label>
                                                     <input required type="text" class="form-control" id="pic_service"
-                                                        name="pic_Service" value="{{ ucwords(Auth::user()->nama) }}">
+                                                        name="pic_Service" value="{{ ucwords(Auth::user()->nama) }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-6">
@@ -71,7 +71,7 @@
                                             <label for="kilometer" class="form-label">Mileage</label>
                                             <input type="number" class="form-control" id="kilometer"
                                                 value="{{ $dataWo->pelanggan->kilometer }}" name="kilometer"
-                                                value="{{ $dataPelanggan->kilometer }}">
+                                                value="{{ $dataPelanggan->kilometer }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                                     <label for="no_polisi" class="form-label">Police Number</label>
                                                     <input required type="text" class="form-control" id="no_polisi"
                                                         name="no_polisi" onchange="pelanggan()"
-                                                        value="{{ $dataPelanggan->no_polisi }}">
+                                                        value="{{ $dataPelanggan->no_polisi }}" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-6">
@@ -119,18 +119,69 @@
                                             <label for="no_kerangka" class="form-label">Chassis Number</label>
                                             <input required type="text" class="form-control" id="no_kerangka"
                                                 name="no_kerangka"
-                                                value="{{ $dataPelanggan->no_rangka }}">
+                                                value="{{ $dataPelanggan->no_rangka }}" readonly>
 
                                         </div>
                                     </div>
                                     
-                                    <div class="col-12 d-flex justify-content-center mt-4">
-                                        <div class="col-6"><button class="btn fs-4  " type="button"
-                                                style="background-color: #241468;color: white;"
-                                                onclick="modalDetail()">Detail
-                                                Service</button>
-                                        </div>
+                                    <div class="col-12">
+                                            <div class="row">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                                                    Detail Service
+                                                  </button>
+
                                     </div>
+                                    <div class="modal fade" id="myModal">
+                                        <div class="modal-dialog">
+                                        <!-- Bagian Konten Modal -->
+<div class="modal-content" style="width: 800px; margin: 0 auto;">
+    <div class="modal-header">
+        <h4 class="modal-title">Detail Service</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="container mt-3">
+        <form>
+            <div class="mb-1">
+                <label for="service" class="form-label">Jenis Layanan</label>
+                <select class="form-select" id="service" name="service">
+                    <option value="1">Service Rutin</option>
+                    {{-- @foreach ($layananOptions as $layanan)
+                        <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
+                    @endforeach --}}
+                    <!-- Tambahkan opsi lainnya di sini -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="parts" class="form-label">Sparepart</label>
+                @foreach ($spareparts as $sparepart)
+                    <div class="form-check">
+                        <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
+                        <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
+                        <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
+                    </div>
+                @endforeach
+                <!-- Tambahkan checkbox sparepart lainnya di sini -->
+            </div>
+            <div class="mb-3">
+                {{-- <label for="hours" class="form-label">Jam Kerja</label> --}}
+                <input type="hidden" class="form-control" id="hours" name="hours" step="0.5">
+            </div>
+            <button type="submit" class="btn btn-primary">Hitung Estimasi</button>
+        </form>
+    
+        <!-- Tampilkan hasil estimasi biaya di sini -->
+        <div class="mt-4">
+            <h3>Estimasi Biaya: Rp.<span id="estimatedCost">0</span></h3>
+        </div>
+        <div class="mt-4">
+            <h3>Estimasi Waktu: <span id="estimatedTime">0</span> Menit</h3>
+        </div>
+        <input type="hidden" name="estimatedCost" id="estimatedCosts">
+        <input type="hidden" name="estimatedTime" id="estimatedTimes">
+    </div>
+        <!-- Bagian Footer Modal -->
+      
+    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,5 +193,20 @@
         </div>
     </div>
 
-    <script></script>
+    <script>
+        function openDetailModal() {
+            var modal = document.getElementById("detailModal");
+            modal.style.display = "block";
+            document.querySelector(".modal-content").innerHTML = "<p>Detail service content</p>";
+            
+        }
+    
+        // Fungsi untuk menutup modul saat di klik di luar area modul
+        window.onclick = function(event) {
+            var modal = document.getElementById("detailModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
 @endsection

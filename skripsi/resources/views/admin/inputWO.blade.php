@@ -127,9 +127,6 @@
                                         </div>
                                         <div class="col-12">
                                             <div class="row">
-                                                
-                                               
-                                        
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                                                     Detail Service
                                                   </button>
@@ -160,14 +157,6 @@
         </div>
         <div class="mb-3">
             <label for="parts" class="form-label">Sparepart</label>
-            <!-- <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="oli" id="checkOli" name="parts[]">
-                <label class="form-check-label" for="checkOli">Oli</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="filter_udara" id="checkFilterUdara" name="parts[]">
-                <label class="form-check-label" for="checkFilterUdara">Filter Udara</label>
-            </div> -->
             @foreach ($spareparts as $sparepart)
                 <div class="form-check">
                     <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
@@ -178,15 +167,15 @@
             <!-- Tambahkan checkbox sparepart lainnya di sini -->
         </div>
         <div class="mb-3">
-            <label for="hours" class="form-label">Jam Kerja</label>
-            <input type="number" class="form-control" id="hours" name="hours" step="0.5">
+            {{-- <label for="hours" class="form-label">Jam Kerja</label> --}}
+            <input type="hidden" class="form-control" id="hours" name="hours" step="0.5">
         </div>
         <button type="submit" class="btn btn-primary">Hitung Estimasi</button>
     </form>
 
     <!-- Tampilkan hasil estimasi biaya di sini -->
     <div class="mt-4">
-        <h3>Estimasi Biaya: <span id="estimatedCost">0</span> Rp.</h3>
+        <h3>Estimasi Biaya: Rp.<span id="estimatedCost">0</span></h3>
     </div>
     <div class="mt-4">
         <h3>Estimasi Waktu: <span id="estimatedTime">0</span> Menit</h3>
@@ -195,10 +184,7 @@
     <input type="hidden" name="estimatedTime" id="estimatedTimes">
 </div>
     <!-- Bagian Footer Modal -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-primary">Simpan</button>
-    </div>
+  
 </div>
 
                                         </div>
