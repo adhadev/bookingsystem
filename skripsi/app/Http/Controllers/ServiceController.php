@@ -6,7 +6,6 @@ use App\Models\BookingModel;
 use App\Models\PelangganModel;
 use App\Models\WorkingOrderModel;
 use App\Models\User;
-use App\Models\WIPModel;
 use DbPelanggan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -29,8 +28,10 @@ class ServiceController extends Controller
         $title = 'Service';
         $pelanggan = PelangganModel::where('no_polisi', $no_pol)->first();
         $booking = BookingModel::where('no_polisi', $no_pol)->where('status', 'pending')->first();
+        $wo =  $user = WorkingOrderModel::where('no_polisi', $no_pol)->first();
 
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking'));
+
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo'));
     }
 
     public function onService()
@@ -148,7 +149,6 @@ class ServiceController extends Controller
             'sparepart' => $sparepartJSON,
             'tgl_booking' => $booking->tgl_booking,
             'tanggal_estimasi_selesai' => today(),
-            // 'no_wip' =>$request->no_wo,
 
         ]);
 
@@ -165,9 +165,7 @@ class ServiceController extends Controller
          $booking = BookingModel::where('no_polisi', $request->no_polisi)->first();
 
          $booking->update([
-             'no_rangka' => $request->no_kerangka,
-             'kilometer' => $request->kilometer1,
-             'tanggal_registrasi' => now(),
+             'status' => 'prepared',
          ]);
 
         $wo = WorkingOrderModel::all();
@@ -176,9 +174,6 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $title = 'BMW OFFICE';
 
-        // Debug output
-        // dd($id, $dataWo, $dataWip); // Add this line to see the values
-
         return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title'));
     }
 
@@ -186,9 +181,8 @@ class ServiceController extends Controller
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
-        $dataWip = WIPModel::where('no_wip', $id)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataWip','dataPelanggan'));
+        return view('admin.detailWO', compact('title', 'dataWo','dataPelanggan'));
     }
 
     public function dataWO(Request $request)
@@ -218,7 +212,6 @@ class ServiceController extends Controller
     {
         // $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
         // return json_decode($pelanggan);
-        // return view('admin.inputWO', compact('title', 'dataWo', 'dataWip'));
         $pelanggan = WorkingOrderModel::where('no_polisi', $id)->first();
     
         if ($pelanggan) {

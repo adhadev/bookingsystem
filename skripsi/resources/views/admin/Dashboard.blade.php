@@ -188,37 +188,6 @@
         </div>
     </div>
 
-    
-        <!-- Informasi dari database dapat diambil dan dimasukkan ke dalam ul li seperti contoh di bawah -->
-        <script>
-            // Contoh data dari database
-            const ordersToProcessData = [
-                "Order #1",
-                // ... data lainnya
-            ];
-
-            // Memasukkan data dari database ke dalam Orders to be Processed
-            const ordersToProcessContainer = document.getElementById("orderList");
-            ordersToProcessData.forEach(order => {
-                const li = document.createElement("li");
-                li.innerText = order;
-                ordersToProcessContainer.appendChild(li);
-            });
-
-            // Contoh data on progress dari database
-            const onProgressData = [
-                "Order #3",
-                // ... data lainnya
-            ];
-
-            // Memasukkan data dari database ke dalam On Progress
-            const onProgressContainer = document.getElementById("onProgressList");
-            onProgressData.forEach(order => {
-                const li = document.createElement("li");
-                li.innerText = order;
-                onProgressContainer.appendChild(li);
-            });
-        </script>
 </body>
 </html>
     <div class="container"style="padding-right: 6px;">
