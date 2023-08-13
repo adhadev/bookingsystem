@@ -109,7 +109,7 @@ class ServiceController extends Controller
         $title = 'BMW OFFICE';
         $layananOptions = LayananModel::where('kode', 2)->get();
         $spareparts = LayananModel::where('kode', 1)->get();
-
+        
 
 
         return view('admin.inputWO', compact('title', 'dataWo', 'dataWip', 'layananOptions','spareparts'));
@@ -125,6 +125,12 @@ class ServiceController extends Controller
         $biaya = $sparepartCount * 5000; 
         $estimasi_waktu = $sparepartCount * 5; 
 
+        $booking = BookingModel::where('no_polisi', $request->no_polisi)->where('status', 'pending')->first();
+        $estimasi_waktu = $request->estimatedTime;
+        $jam_estimasi_selesai = floor($estimasi_waktu / 60); 
+        $menit_estimasi_selesai = $estimasi_waktu % 60;
+        $waktu_estimasi_selesai = sprintf('%02d:%02d:00', $jam_estimasi_selesai, $menit_estimasi_selesai);
+
         WorkingOrderModel::create([
             'no_wo' => $request->no_wo,
             'tanggal_mulai' => $request->tgl_mulai,
@@ -132,13 +138,17 @@ class ServiceController extends Controller
             'no_polisi' => $request->no_polisi,
             'service_advisor' =>  $user->id,
             'status' => 'prepare',
-            'waktu_estimasi_selesai' => $estimasi_waktu,
-            'biaya' => $biaya,
+            'waktu_estimasi_selesai' => $waktu_estimasi_selesai,
+            'biaya' => $request->estimatedCost,
             'sparepart' => $sparepartJSON,
+            'tgl_booking' => $booking->tgl_booking,
+            'tanggal_estimasi_selesai' => today(),
+            // 'no_wip' =>$request->no_wo,
+
         ]);
 
         WIPModel::create([
-            'no_wip' => $request->no_wip,
+            'no_wip' =>$request->no_wo,
             'no_wo' => $request->no_wo
         ]);
 
@@ -147,8 +157,8 @@ class ServiceController extends Controller
 
         $pelanggan->update([
             'no_rangka' => $request->no_kerangka,
-            'kilometer' => $request->kilometer,
-            'tanggal_registrasi' => $request->tanggal_registrasi
+            'kilometer' => $request->kilometer1,
+            'tanggal_registrasi' => now(),
         ]);
 
         $wo = WorkingOrderModel::all();
