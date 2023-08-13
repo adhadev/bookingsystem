@@ -228,6 +228,7 @@
         // Contoh perhitungan estimasi biaya (hanya simulasi)
         const selectedService = JSON.parse(document.getElementById('service').value);
         const hargaService = parseFloat(selectedService.harga);
+        const waktuService =  parseInt(selectedService.waktu.split(':')[0]) * 60 + parseInt(selectedService.waktu.split(':')[1]);
 
         // const selectedServiceData = JSON.parse(selectedService); 
         // const hargaService = parseFloat(selectedServiceData.harga); 
@@ -238,10 +239,17 @@
         const hoursOfWork = parseFloat(document.getElementById('hours').value);
 
         let totalCostForParts = 0;
+        let totalWaktuForParts = 0;
         selectedParts.forEach(checkbox => {
             const data = JSON.parse(checkbox.value);
             totalCostForParts +=  parseFloat(data.harga);
+            totalWaktuForParts += parseInt(data.waktu.split(':')[0]) * 60 + parseInt(data.waktu.split(':')[1]);
         });
+        totalAllwaktu = totalWaktuForParts + waktuService
+        const totalWaktuInJam = totalAllwaktu / 60;
+
+
+
 
         const baseCost = 50000; // Biaya dasar
         const costPerService = {
@@ -254,8 +262,8 @@
         const hourlyRate = 15000; // Biaya per jam kerja
 
         // const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
-        const totalCost = (baseCost + hargaService + totalCostForParts + (hoursOfWork * hourlyRate));
-
+        const totalCost = (baseCost + hargaService + totalCostForParts + (totalWaktuInJam * hourlyRate));
+        // const totalCost = totalWaktuInJam;
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
     });
 </script>
