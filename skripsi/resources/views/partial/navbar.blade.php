@@ -1,12 +1,21 @@
 <header class="site-navbar" role="banner">
+    <style>
+        .col-4 {
+            width: 25%;
+        }
+    
+        .site-logo {
+            white-space: nowrap; /* Menambahkan atribut nowrap */
+        }
+    </style>
 
     <div class="container">
         <div class="row align-items-center">
 
-            <div class="col-4 col-xl-4">
+            <div class="col-auto">
                 <div class="row"> <span class=""><img src="/logobmw.png" alt="" srcset=""
                             style="width: 50px;" class="ms-5"></span>
-                    <h1 class="mb-0 site-logo mt-2 " style="margin-left: 10px;"><a href="/"
+                    <h1 class="mb-0 site-logo mt-2 " style="margin-left: 10px;tex"><a href="/"
                             class="text-white mb-0"> BMW TEBET</a></h1>
                 </div>
 

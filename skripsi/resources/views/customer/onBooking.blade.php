@@ -1,6 +1,39 @@
 @extends('main')
 @section('content')
+
 <head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+    
+        .col-auto {
+            display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 10px; 
+            margin-right: 20px;
+        }
+    
+        .fw-bold {
+            font-weight:inherit;
+        }
+        .icon {
+        margin-right: 10px;
+    }
+    
+        .font-size-24 {
+            font-size: 24px;
+            text-align: left;
+        }
+        .detail-heading {
+        font-weight: bold;
+        font-size: 28px;
+        text-align: center;
+    }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 </head>
 
@@ -10,54 +43,63 @@
             <div class="text-center">
                 @if ($booking != null)
                 <div class="card border-0 rounded-5" style="border-radius: 10px; ">
-                    <div class="card-header " style="background-color: #241468;color: white;">
-                        <div class="row">
+                    <div class="card-header " style="background-color: #181818;color: rgb(211, 235, 245); border-radius:2rem;">
+                        <div class="col-auto">
                             <div class="col-10 d-flex justify-content-start">
-                                <h4>Detail Booking</h4>
+                                <h4 class="detail-heading">Detail Booking</h4>
                             </div>
                         </div>
-                    </div>
-                   <div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bx-car"></i> Vehicle Type: {{ $pelanggan->jenis_mobil }}</div>
-</div>
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bxs-credit-card-front"></i> License Number:  {{ $pelanggan->no_polisi }}</div>
-</div>
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bx-calendar"></i> Arrival Date: {{ $booking->tgl_booking }}</div>
-</div>
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bx-money"></i> Estimated Cost: 
-        @if ($wo && $wo->biaya !== null)
-        Rp.{{ $wo->biaya }}
-    @else
-        0
-    @endif
-        {{-- Rp.{{ $wo->biaya }}</div> --}}
-</div>
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;">
-        <i class="bx bx-time-five"></i> Estimated Times: 
-        <span id="countdown"></span>
-    </div>
-</div>
-
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bxl-dropbox"></i> Sparepart:
-        @if ($wo && $wo->sparepart !== null)
-         {{ $wo->sparepart }}</div>
-        @else
-        test
-    @endif
-</div>
-<div class="col-auto">
-    <div class="fw-bold" style="font-size: 24px;text-align: left;"><i class="bx bx-stats"></i> Status: 
-        @if ($wo && $wo->status !== null)
-        {{ $wo->status }}</div>
-       @else
-       0
-   @endif
-</div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bx-car icon"></i> Vehicle Type: {{ $pelanggan->jenis_mobil }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bxs-credit-card-front icon"></i> License Number:  {{ $pelanggan->no_polisi }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bx-calendar icon"></i> Arrival Date: {{ $booking->tgl_booking }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bx-money icon"></i> Estimated Cost: 
+                                @if ($wo && $wo->biaya !== null)
+                                Rp.{{ $wo->biaya }}
+                                @else
+                                0
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bx-time-five icon"></i> Estimated Times: 
+                                <span id="countdown"></span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bxl-dropbox icon"></i> Sparepart:
+                                @if ($wo && $wo->sparepart !== null)
+                                {{ $wo->sparepart }}
+                                @else
+                                -
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i class="bx bx-stats icon"></i> Status: 
+                                @if ($wo && $wo->status !== null)
+                                {{ $wo->status }}
+                                @else
+                                0
+                                @endif
+                            </div>
+                        </div>
 
   </div>
                 <script src="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/boxicons.min.js"></script>
