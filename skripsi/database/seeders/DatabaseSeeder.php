@@ -29,8 +29,13 @@ class DatabaseSeeder extends Seeder
             ['nama' => 'service ringan', 'kode' => '02', 'harga' => 80000, 'waktu' => '00:15:00'],
             ['nama' => 'service berat', 'kode' => '02', 'harga' => 80000, 'waktu' => '00:15:00'],
         ];
+
+        $user = [
+            ['username' => 'admin', 'nama' => 'admin', 'role' => 'admin','password' => 'admin'],
+        ];
         
 
         DB::table('db_layanan')->insert($layanan);
+        DB::table('db_users')->insert($user);
     }
 }

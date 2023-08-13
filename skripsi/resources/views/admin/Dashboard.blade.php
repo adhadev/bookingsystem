@@ -218,8 +218,8 @@
         <div col-auto class="mechanic">
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
-                <h2 class="teknisi">Teknisi B</h2>
-                <p>Status: <span class="status-icon off"></span> <br>on working</p>
+                <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(0)->nama_teknisi }}</h2>
+                <p>Status: <span class="status-icon {{ $teknisi->get(0)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(0)->status}}</p>
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
@@ -232,8 +232,8 @@
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
-                <h2 class="teknisi">Teknisi B</h2>
-                <p>Status: <span class="status-icon off"></span> <br>on working</p>
+                <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</h2>
+                <p>Status: <span class="status-icon {{ $teknisi->get(1)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(1)->status}}</p>
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
@@ -245,8 +245,8 @@
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
-                <h2 class="teknisi">Teknisi B</h2>
-                <p>Status: <span class="status-icon off"></span> <br>on working</p>
+                <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(2)->nama_teknisi }}</h2>
+                <p>Status: <span class="status-icon {{ $teknisi->get(2)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(2)->status}}</p>
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
@@ -258,8 +258,8 @@
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
-                <h2 class="teknisi">Teknisi B</h2>
-                <p>Status: <span class="status-icon off"></span> <br>on working</p>
+                <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(3)->nama_teknisi }}</h2>
+                <p>Status: <span class="status-icon {{ $teknisi->get(3)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(3)->status}}</p>
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">
@@ -271,8 +271,8 @@
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
-                <h2 class="teknisi">Teknisi B</h2>
-                <p>Status: <span class="status-icon off"></span> <br>on working</p>
+                <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(4)->nama_teknisi }}</h2>
+                <p>Status: <span class="status-icon {{ $teknisi->get(4)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(4)->status}}</p>
                 
                 <!-- Pindahkan area drop ke sini -->
                 <div id="ordersInProgressB" class="order-list drop-area" ondrop="drop(event, 'Teknisi B')" ondragover="allowDrop(event)">

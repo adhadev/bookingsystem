@@ -97,22 +97,27 @@ class ServiceController extends Controller
         $title = 'BMW OFFICE';
         return view('admin.WO', ['title' => $title]);
     }
-    public function dashboardTable()
+    public function dashboardTable(Request $request)
     {
         $title = 'BMW OFFICE';
-        return view('admin.Dashboard', ['title' => $title]);
+        $userId = intval($request->input('id'));
+
+        $user = User::where('id', $userId)->first();
+        // dd($user->username);
+
+        $teknisi = TeknisiModel::where('foreman_id', $userId)->get();
+                // dd($teknisi);
+
+        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi]);
     }
     public function inputWO()
     {
         $dataWo = WorkingOrderModel::all();
-        $dataWip = WIPModel::all();
         $title = 'BMW OFFICE';
         $layananOptions = LayananModel::where('kode', 2)->get();
         $spareparts = LayananModel::where('kode', 1)->get();
-        
 
-
-        return view('admin.inputWO', compact('title', 'dataWo', 'dataWip', 'layananOptions','spareparts'));
+        return view('admin.inputWO', compact('title', 'dataWo', 'layananOptions','spareparts'));
     }
 
     public function submitWO(Request $request)
@@ -147,11 +152,6 @@ class ServiceController extends Controller
 
         ]);
 
-        WIPModel::create([
-            'no_wip' =>$request->no_wo,
-            'no_wo' => $request->no_wo
-        ]);
-
         //Update Pelanggan
         $pelanggan = PelangganModel::where('no_polisi', $request->no_polisi)->first();
 
@@ -161,17 +161,25 @@ class ServiceController extends Controller
             'tanggal_registrasi' => now(),
         ]);
 
+         //Update Status Booking
+         $booking = BookingModel::where('no_polisi', $request->no_polisi)->first();
+
+         $booking->update([
+             'no_rangka' => $request->no_kerangka,
+             'kilometer' => $request->kilometer1,
+             'tanggal_registrasi' => now(),
+         ]);
+
         $wo = WorkingOrderModel::all();
         $last = $wo->last();
         $id = $last->no_wo;
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
-        $dataWip = WIPModel::where('no_wo', $id)->first();
         $title = 'BMW OFFICE';
 
         // Debug output
         // dd($id, $dataWo, $dataWip); // Add this line to see the values
 
-        return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title', 'dataWip'));
+        return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title'));
     }
 
     public function detailWO($id)

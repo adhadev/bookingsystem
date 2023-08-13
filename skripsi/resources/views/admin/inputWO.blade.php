@@ -215,7 +215,7 @@
     </div>
     @php
         $last_wo = $dataWo->last();
-        $last_wip = $dataWip->last();
+        $last_wip = $dataWo->last();
         // dd($last_pr);
     @endphp
 
@@ -280,9 +280,6 @@
         document.getElementById('estimatedTimes').value = totalAllwaktu;
     });
 </script>
-
-
-
 <script>
     document.getElementById("no_tlp_pic").addEventListener("input", function() {
         let input = this.value;
@@ -297,7 +294,6 @@
         this.value = input;
     });
 </script>
-
 <script>
     function openDetailModal() {
         var modal = document.getElementById("detailModal");
