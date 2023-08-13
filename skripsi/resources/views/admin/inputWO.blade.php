@@ -18,7 +18,7 @@
             <div class="col-12 d-flex justify-content-center">
                 {{-- <div class="text-center"> --}}
                 <div class="card w-100 border-0 rounded-3">
-                    <form action="/submit/wo/baru" method="post">
+                    <form id ="woForm" action="/submit/wo/baru" method="post">
                         @csrf
                         <div class="card-header " style="background-color: #241468;color: white;">
                             <div class="row">
@@ -188,6 +188,11 @@
     <div class="mt-4">
         <h3>Estimasi Biaya: <span id="estimatedCost">0</span> Rp.</h3>
     </div>
+    <div class="mt-4">
+        <h3>Estimasi Waktu: <span id="estimatedTime">0</span> Menit</h3>
+    </div>
+    <input type="hidden" name="estimatedCost" id="estimatedCosts">
+    <input type="hidden" name="estimatedTime" id="estimatedTimes">
 </div>
     <!-- Bagian Footer Modal -->
     <div class="modal-footer">
@@ -221,7 +226,12 @@
     // Simulasi perhitungan estimasi biaya
     const form = document.querySelector('form');
     const estimatedCostSpan = document.getElementById('estimatedCost');
-
+    const estimatedTimeSpan = document.getElementById('estimatedTime');
+    function edit() {
+        // Ambil formulir dengan ID "woForm" dan submitkan
+        const woForm = document.getElementById('woForm');
+        woForm.submit();
+    }
     form.addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -265,6 +275,9 @@
         const totalCost = (baseCost + hargaService + totalCostForParts + (totalWaktuInJam * hourlyRate));
         // const totalCost = totalWaktuInJam;
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
+        estimatedTimeSpan.textContent = totalAllwaktu;
+        document.getElementById('estimatedCosts').value = totalCost;
+        document.getElementById('estimatedTimes').value = totalAllwaktu;
     });
 </script>
 
@@ -331,25 +344,25 @@
         if (urutan == 0) {
             angka = '00000' + (urutan + 1);
         } else if (urutan < 10) {
-            angka = '00000' + (urutan + 1);
-        } else if (urutan < 100) {
             angka = '0000' + (urutan + 1);
-        } else if (urutan < 1000) {
+        } else if (urutan < 100) {
             angka = '000' + (urutan + 1);
-        } else if (urutan < 10000) {
+        } else if (urutan < 1000) {
             angka = '00' + (urutan + 1);
+        } else if (urutan < 10000) {
+            angka = '0' + (urutan + 1);
         }
 
         if (sort == 0) {
             number = '00000' + (sort + 1);
         } else if (sort < 10) {
-            number = '00000' + (sort + 1);
-        } else if (sort < 100) {
             number = '0000' + (sort + 1);
-        } else if (sort < 1000) {
+        } else if (sort < 100) {
             number = '000' + (sort + 1);
-        } else if (sort < 10000) {
+        } else if (sort < 1000) {
             number = '00' + (sort + 1);
+        } else if (sort < 10000) {
+            number = '0' + (sort + 1);
         }
         let nomor = angka;
         // document.getElementById("judulWO").innerHTML = wo;
