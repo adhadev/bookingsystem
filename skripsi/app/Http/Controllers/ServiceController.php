@@ -13,6 +13,8 @@ use App\Models\ForemanModel;
 use App\Models\TeknisiModel;
 use App\Models\LayananModel;
 use Carbon\Carbon; 
+use Illuminate\Support\Facades\Validator;
+
 
 
 class ServiceController extends Controller
@@ -98,6 +100,45 @@ class ServiceController extends Controller
             'sparepart' => $sparepartsFormatted,
             'layanan' => 'Service Rutin',
         ]);
+}
+
+public function kerjakanAPI(Request $request, $id )
+{
+    // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
+
+    // dd($layanan);
+    $workingOrder = WorkingOrderModel::find($id);
+    $workingOrder->status = 'On Progress';
+    $workingOrder->save();
+
+    $booking = BookingModel::where('no_wo', $id)->first();
+    $booking->status = 'On Progress';
+    $booking->save();
+
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Data berhasil diproses',
+        // Dan informasi lain yang ingin Anda kembalikan
+    ]);
+    // $pelanggan = PelangganModel::find($workingOrder->no_polisi);
+    // $formattedPrice = 'Rp ' . number_format($workingOrder->biaya, 2, ',', '.');
+         
+
+    // $sparepartsArray = json_decode($workingOrder->sparepart); // Ubah JSON string menjadi array
+
+    // $sparepartsFormatted = implode(', ', $sparepartsArray);
+
+    // return response()->json([
+    //     'kebutuhan' => $workingOrder->no_wo, 
+    //     'invoice_police' => $workingOrder->no_polisi,
+    //     'phone_number' => $pelanggan->no_telp,
+    //     'address' => $pelanggan->alamat,
+    //     'price' => $formattedPrice,
+    //     'sparepart' => $sparepartsFormatted,
+    //     'layanan' => 'Service Rutin',
+    // ]);
+
 }
     
     public function onService()
@@ -218,9 +259,12 @@ class ServiceController extends Controller
         // dd($user->username);
 
         $teknisi = TeknisiModel::where('foreman_id', $userId)->get();
+        $teknisiAvailable = TeknisiModel::where('foreman_id', $userId)
+        ->where('status', 'Available')
+        ->get();
                 // dd($teknisi);
 
-        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi, 'dataWO' => $dataWo, 'dataWOOnProgress' => $dataWOOnProgress]);
+        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi, 'dataWO' => $dataWo, 'dataWOOnProgress' => $dataWOOnProgress , 'teknisiAvailable' => $teknisiAvailable]);
     }
     public function inputWO()
     {

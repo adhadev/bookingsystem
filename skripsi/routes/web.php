@@ -50,6 +50,7 @@ Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('det
 Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name('detailTASK');
 Route::get('/teknisi/available', [ServiceController::class, 'teknisiAvailable'])->name('teknisiAvailable');
 Route::get('/invoice/{id}', [ServiceController::class, 'invoiceAPI'])->name('Invoice');
+Route::post('/kerjakan/{id}', [ServiceController::class, 'kerjakanAPI'])->name('kerjakanAPI');
 
 
 //AuthController
