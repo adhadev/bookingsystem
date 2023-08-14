@@ -150,7 +150,7 @@
                 <option value="2">Ganti Oli</option>
                 <option value="3">Perbaikan Mesin</option> -->
                 @foreach ($layananOptions as $layanan)
-                    <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
+                    <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}","nama": "{{ $layanan->nama }}" }'>{{ $layanan->nama }}</option>
                 @endforeach
                 <!-- Tambahkan opsi lainnya di sini -->
             </select>
@@ -365,6 +365,7 @@
                     document.getElementById("jenis_mobil").value = data.jenis_mobil;
                     document.getElementById("nama_customer").value = data.nama;
                     document.getElementById("alamat").value = data.alamat;
+                    document.getElementById("no_tlp_pic").value = data.no_telp;
                 }
             });
         }
