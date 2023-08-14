@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        .alert {
+            position: absolute;
+    z-index: 1000; /* Atur z-index sesuai kebutuhan */
+    top: 200px; /* Sesuaikan posisi vertikal sesuai kebutuhan */
+    left: 50%; /* Pusatkan horizontal dengan transfrom */
+    transform: translateX(-50%);
+    background-color: #f44336; /* Warna latar belakang */
+    color: white; /* Warna teks */
+    padding: 5px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.5; /* Atur tinggi baris */
+            
+        }
+    </style>
 
 <head>
     <meta charset="utf-8" />
@@ -46,8 +62,13 @@
     </nav>
     <!-- Masthead-->
     <header class="masthead" style="font-family: 'Montserrat', sans-serif;">
+        @if(session('error'))
+    <div class="alert alert-danger">
+        {!! session('error') !!}
+    </div>
+@endif
+
         <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-            <div class="d-flex justify-content-center">
                 <div class="text-center">
                     <h1 class="mx-auto my-0 text-uppercase" style="color: white;">Let's repair</h1>
                     <h2 class="text-white-50 mx-auto mt-2 mb-5" style="font-size: 24px; color: white;text-align: center;">Enchanting Transformations for a Brand-New Feel</h2>
@@ -56,7 +77,9 @@
             </div>
         </div>
     </header>
-    
+    <div>
+        TEST 
+    </div>
     
     <!-- About-->
     <section class="about-section text-center" id="about">
@@ -82,7 +105,7 @@
                         src="/startbootstrap-grayscale-master/dist/assets/img/bg-masthead.jpg" alt="..." /></div>
                 <div class="col-xl-6 col-lg-6">
                     <div class="featured-text text-center text-lg-left">
-                        <h4>- Formulir -</h4>
+                        <h4>- Formulir Booking Service -</h4>
                         <form action="/input/customer/booking" method="post">
                             @csrf
                             <div class="input-group input-group-lg flex-nowrap mb-2 mt-2">
@@ -119,6 +142,7 @@
                                 <option value="X6">X6</option>
                                 <option value="X7">X7</option>
                             </select>
+                
                             <div class="input-group input-group-lg flex-nowrap mb-2">
                                 <input type="date" class="form-control" placeholder="tanggal Booking"
                                     aria-label="tanggal_booking" aria-describedby="addon-wrapping"

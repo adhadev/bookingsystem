@@ -34,6 +34,7 @@
         text-align: center;
     }
     </style>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 </head>
 
@@ -77,7 +78,11 @@
                         <div class="col-auto">
                             <div class="fw-bold font-size-24">
                                 <i class="bx bx-time-five icon"></i> Estimated Times: 
-                                <span id="countdown"></span>
+                                @if ($wo && $wo->waktu_estimasi_selesai !== null)
+                                Rp.{{ $wo->waktu_estimasi_selesai }}
+                                @else
+                                0
+                                @endif
                             </div>
                         </div>
                         <div class="col-auto">
@@ -86,7 +91,7 @@
                                 @if ($wo && $wo->sparepart !== null)
                                 {{ $wo->sparepart }}
                                 @else
-                                -
+                                tidak ada penambahan sparepart
                                 @endif
                             </div>
                         </div>
@@ -100,47 +105,42 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="container mt-5">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>------------------------------------------</h2>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <button id="startButton" class="btn btn-primary mt-3">Start Progress</button>
+                                </div>
+                            </div>
+                        </div>
 
   </div>
                 <script src="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/boxicons.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
-                function startCountdown(targetTimeInMinutes) {
-                    var countdown = setInterval(function() {
-                        // Mengurangi waktu estimasi selesai dengan 1 menit
-                        targetTimeInMinutes--;
-                
-                        // Hitung jam, menit, dan detik dari waktu yang tersisa
-                        var hours = Math.floor(targetTimeInMinutes / 60);
-                        var minutes = targetTimeInMinutes % 60;
-                        var seconds = 0; // Hitungan mundur dalam format menit tidak memperhitungkan detik
-                
-                        // Tampilkan hitungan mundur dalam elemen dengan id "countdown"
-                        document.getElementById("countdown").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
-                
-                        // Jika hitungan mundur berakhir, tampilkan pesan
-                        if (targetTimeInMinutes <= 0) {
-                            clearInterval(countdown);
-                            document.getElementById("countdown").innerHTML = "Expired";
-                        }
-                    }, 60000); // Perbarui setiap 1 menit (60.000 milidetik)
-                }
-                // Waktu estimasi selesai dari database (dalam format menit)
-                var estimatedTimeInMinutes = {{ $wo ? $wo->waktu_estimasi_selesai : 0 }};
-                // Mulai hitungan mundur
-                startCountdown(estimatedTimeInMinutes);
-            </script>
+                    $(document).ready(function() {
+                        $("#startButton").click(function() {
+                            // Simulate progress
+                            var progress = 0;
+                            var interval = setInterval(function() {
+                                progress += 5; // Increase the progress by 5% per interval
+                                $(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress);
+                                if (progress >= 100) {
+                                    clearInterval(interval);
+                                    alert("Progress is complete!");
+                                }
+                            }, 1000); // Update every 500 milliseconds (0.5 seconds)
+                        });
+                    });
+                </script>
                 
                 @else
                 <div class="card" style="opacity: 0.5">
                     <div class="card-body">
-                        <div class="row text-center d-flex justify-content-center">
-                            <img src="/empty.gif" alt="" srcset="" class="w-50">
-                            <div class="text-center" style="font-size: 30px;">Tidak Ada Booking Dalam Waktu Dekat</div>
-                        </div>
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-2 m-3"><a href="/"><button class="btn-secondary"
-                                        style="opacity: 100%">Buat Booking</button></a></div>
-                        </div>
+                        
                     </div>
                 </div>
                 @endif
