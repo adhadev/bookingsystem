@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Foreman Control Panel</title>
     <style>
@@ -289,31 +292,15 @@
                     <p id="modalJL">Jenis Layanan :</p>
                     <p id="modalNoPS">Pergantian Sparepart :</p>
                     <p id="modalEsW">Estimasi Waktu :</p>
+                    <div class="mb-1">
+                        <div class="mb-1">
+                            <label for="listTechnicians" class="form-label">Pilih Teknisi:</label>
+                            <input type="text" id="technicianInput" name="technician">
+                        </div>
+                        
+                    </div>
                 </div>
                 <div class="mb-1">
-                    <label for="listTechnicians" class="form-label">Pilih Teknisi:</label>
-                    <!-- Ganti dengan loop untuk menampilkan daftar teknisi -->
-                    <div>
-                        <input type="checkbox" id="teknisi1" name="technician" value="teknisi1">
-                        <label for="teknisi1">Teknisi 1</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="teknisi2" name="technician" value="teknisi2">
-                        <label for="teknisi2">Teknisi 2</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="teknisi2" name="technician" value="teknisi2">
-                        <label for="teknisi3">Teknisi 3</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="teknisi2" name="technician" value="teknisi2">
-                        <label for="teknisi4">Teknisi 4</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="teknisi2" name="technician" value="teknisi2">
-                        <label for="teknisi5">Teknisi 5</label>
-                    </div>
-                    <!-- ... Lanjutkan untuk setiap teknisi -->
                 </div>
                 
                 <!-- Isi konten modal di sini -->
@@ -427,6 +414,27 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+<script>
+    $(function() {
+        $("#technicianInput").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "URL_API_TEKNISI", // Ganti dengan URL API endpoint Anda
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data) {
+                        response(data); // Menyediakan data kepada autocomplete
+                    }
+                });
+            },
+            minLength: 2 // Jumlah karakter minimal sebelum mulai pencarian
+        });
+    });
+</script>
+
+
 <script>
 
     
