@@ -148,7 +148,7 @@
             <div class="mb-1">
                 <label for="service" class="form-label">Jenis Layanan</label>
                 <select class="form-select" id="service" name="service" disabled>
-                    <option value="1">Service Rutin</option>
+                    <option value="testing">testing{{ $dataWo->layanan }}</option>
                     <!-- {{-- @foreach ($layananOptions as $layanan)
                         <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
                     @endforeach --}} -->

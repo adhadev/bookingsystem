@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\BookingModel;
 use App\Models\PelangganModel;
@@ -13,6 +14,8 @@ use App\Models\ForemanModel;
 use App\Models\TeknisiModel;
 use App\Models\LayananModel;
 use Carbon\Carbon; 
+use App\Mail\BookingConfirmationMail; // Replace with your Mailable class
+
 
 
 class ServiceController extends Controller
@@ -61,6 +64,21 @@ class ServiceController extends Controller
             ];
     
          return response()->json($detail);
+    }
+    
+    public function teknisiAvailable()
+    {
+        $teknisiList = TeknisiModel::where('foreman_id', 2)
+        ->where('status','Available')
+        ->get();
+       
+        $teknisiChain = $teknisiList->map(function ($teknisi) {
+            return [
+                'Nama' => $teknisi->nama_teknisi
+            ];
+        });
+    
+         return response()->json($teknisiChain);
     }
     
     public function onService()
@@ -113,8 +131,51 @@ class ServiceController extends Controller
                 'tgl_booking' => $request->tgl_booking,
             ]);
         }
-    
+        
         $nopol = $noPolisi;
+
+        $bookingCount = BookingModel::where('status', 'prepare')
+        ->whereDate('tgl_booking', $request->tgl_booking)
+        ->count(); 
+        
+        
+
+        // $tglBooking = Carbon::parse($request->tgl_booking); // Mengubah tanggal booking menjadi objek Carbon
+        // $hariIni = Carbon::now(); // Tanggal dan waktu hari ini
+    
+        // $selisihHari = $hariIni->diffInDays($tglBooking); // Menghitung selisih dalam hari
+        // $selisihJam = $hariIni->diffInHours($tglBooking); 
+
+        // $jumlahPesanan = $bookingCount; // Ganti dengan jumlah pesanan yang sesuai
+        // $waktuDikerjakan = 0;
+
+        // if ($jumlahPesanan >= 5 && $jumlahPesanan <= 10) {
+        //     $waktuDikerjakan = 2; // 2 jam
+        // } elseif ($jumlahPesanan > 10 && $jumlahPesanan <= 15) {
+        //     $waktuDikerjakan = 3; // 3 jam
+        // } elseif ($jumlahPesanan > 15 && $jumlahPesanan <= 20) {
+        //     $waktuDikerjakan = 4; // 4 jam
+        // }
+    
+        // if ($selisihHari > 0) {
+        //     // Jika masih ada beberapa hari menuju tanggal booking
+        //     $pesan = "Tersisa " . $selisihHari . " hari (" . $selisihJam . " jam) menuju tanggal booking. Waktu dikerjakan: " . $waktuDikerjakan . " jam";
+        // } else {
+        //     // Jika tanggal booking adalah hari ini
+        //     $pesan = "Tanggal booking hari ini. Waktu dikerjakan: ";
+        // }
+        $pesanan = BookingModel::where('status', 'prepare')
+        ->whereDate('tgl_booking', $request->tgl_booking)
+        ->orderBy('created_at') // Urutkan berdasarkan waktu pemesanan
+        ->get();
+    
+    foreach ($pesanan as $index => $pes) {
+        $nomorAntrian = $index + 1; // Nomor antrian dimulai dari 1
+        $jamPemesanan = $pes->created_at->format('H:i'); // Format waktu pemesanan menjadi jam:menit
+    }
+        dd($nomorAntrian,$jamPemesanan); 
+
+    
         return redirect()->route('indexOnBooking', compact('nopol'));
     }
     
@@ -134,7 +195,13 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('status', 'prepare')->get();
         $dataWOOnProgress = WorkingOrderModel::where('status', 'On Progress')->get();
 
-
+        // $workingOrder = WorkingOrderModel::find('00001');
+        // $layanan = LayananModel::where('kode', 1)->get();
+        // if (!$workingOrder->layanan()->whereIn('id', $layanan->pluck('id'))->exists()) {
+        //     $workingOrder->layanan()->attach($layanan);
+        // }
+        // $workingOrder->layanan()->attach($layanan); 
+        // dd($workingOrder);
         // dd($user->username);
 
         $teknisi = TeknisiModel::where('foreman_id', $userId)->get();
@@ -157,6 +224,7 @@ class ServiceController extends Controller
         $user = User::where('nama', $request->pic_Service)->first();
         $sparepart = $request->input('sparepart', []);
         $sparepartJSON = json_encode($sparepart);
+       
         $sparepartCount = count($sparepart);
 
         $biaya = $sparepartCount * 5000; 
@@ -168,6 +236,7 @@ class ServiceController extends Controller
         $menit_estimasi_selesai = $estimasi_waktu % 60;
         $waktu_estimasi_selesai = sprintf('%02d:%02d:00', $jam_estimasi_selesai, $menit_estimasi_selesai);
         $namaSpareparts = $request->input('parts'); // Array berisi nama-nama sparepart
+        $namaLayanans = $request->input('service'); // Array berisi nama-nama sparepart
 
     // Ambil hanya field 'nama' dari setiap elemen array
     $namaSparepartsNames = [];
@@ -176,6 +245,10 @@ class ServiceController extends Controller
         $namaSparepartsNames[] = $sparepartData->nama;
     }
     $namaSparepartsJson = json_encode($namaSparepartsNames); // Mengonversi array menjadi string JSON
+
+
+    $namaLayanansJson = json_encode($namaLayanans); // Mengonversi array menjadi string JSON
+
 
         WorkingOrderModel::create([
             'no_wo' => $request->no_wo,
@@ -187,6 +260,7 @@ class ServiceController extends Controller
             'waktu_estimasi_selesai' => $waktu_estimasi_selesai,
             'biaya' => $request->estimatedCost,
             'sparepart' => $namaSparepartsJson,
+            'layanan' => $namaLayanansJson,
             'tgl_booking' => $booking->tgl_booking,
             'tanggal_estimasi_selesai' => today(),
 
@@ -213,6 +287,8 @@ class ServiceController extends Controller
         $id = $last->no_wo;
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $title = 'BMW OFFICE';
+
+       
 
         return redirect()->route('detailWO', ['id' => $id])->with(compact('dataWo', 'title'));
     }
@@ -241,6 +317,12 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $sparepartArray = json_decode($dataWo->sparepart); 
         $sparepartString = implode(', ', $sparepartArray);
+        // dd($$dataWo->layanan);
+        $cleanedJsonString = trim($dataWo->layanan, '"');
+
+        // $jsonString = stripslashes($dataWo->layanan);
+        // $layananData = json_decode($jsonString);
+        // dd($jsonString);
 
         $waktuArray = explode(':', $dataWo->waktu_estimasi_selesai	); // Memisahkan jam, menit, dan detik menjadi array
         $jam = (int)$waktuArray[0];

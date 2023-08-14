@@ -47,6 +47,7 @@ Route::post('/submit/wo/baru', [ServiceController::class, 'submitWO'])->name('su
 Route::post('/update/woTeknisi/{id}', [ServiceController::class, 'updateWO'])->name('updateWO');
 Route::get('/detail/wo/{id}', [ServiceController::class, 'detailWO'])->name('detailWO');
 Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name('detailTASK');
+Route::get('/teknisi/available', [ServiceController::class, 'teknisiAvailable'])->name('teknisiAvailable');
 
 
 //AuthController

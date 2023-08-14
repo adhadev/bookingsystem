@@ -23,6 +23,7 @@ class DbWo extends Migration
             $table->date('tanggal_selesai')->nullable();
             $table->string('no_polisi');
             $table->json('sparepart')->nullable();
+            $table->json('layanan')->nullable();
             $table->unsignedBigInteger('biaya')->nullable();
             $table->unsignedBigInteger('id_teknisi')->nullable();
             $table->foreign('no_polisi')->references('no_polisi')->on('db_pelanggan')->onDelete('cascade');

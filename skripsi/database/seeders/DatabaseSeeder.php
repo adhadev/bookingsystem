@@ -32,10 +32,26 @@ class DatabaseSeeder extends Seeder
 
         $user = [
             ['username' => 'admin', 'nama' => 'admin', 'role' => 'admin','password' => 'admin'],
+            ['username' => 'roleman1', 'nama' => 'roleman1', 'role' => 'roleman','password' => 'roleman1'],
+            ['username' => 'roleman2', 'nama' => 'roleman2', 'role' => 'roleman','password' => 'roleman2'],
+        ];
+
+        $teknisi = [
+            ['nama_teknisi' => 'Teknisi A1', 'status' => 'available', 'foreman_id' => '2'],
+            ['nama_teknisi' => 'Teknisi A2', 'status' => 'available', 'foreman_id' => '2'],
+            ['nama_teknisi' => 'Teknisi A3', 'status' => 'On Working', 'foreman_id' => '2'],
+            ['nama_teknisi' => 'Teknisi A4', 'status' => 'available', 'foreman_id' => '2'],
+            ['nama_teknisi' => 'Teknisi A5', 'status' => 'On Working', 'foreman_id' => '2'],
+            ['nama_teknisi' => 'Teknisi B1', 'status' => 'available', 'foreman_id' => '3'],
+            ['nama_teknisi' => 'Teknisi B2', 'status' => 'On Working', 'foreman_id' => '3'],
+            ['nama_teknisi' => 'Teknisi B3', 'status' => 'On Working', 'foreman_id' => '3'],
+            ['nama_teknisi' => 'Teknisi B4', 'status' => 'On Working', 'foreman_id' => '3'],
+            ['nama_teknisi' => 'Teknisi B5', 'status' => 'available', 'foreman_id' => '3'],
         ];
         
 
         DB::table('db_layanan')->insert($layanan);
         DB::table('db_users')->insert($user);
+        DB::table('db_teknisi')->insert($teknisi);
     }
 }
