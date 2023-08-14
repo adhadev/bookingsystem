@@ -30,6 +30,8 @@ class ServiceController extends Controller
         $booking = BookingModel::where('no_polisi', $no_pol)->where('status', 'pending')->first();
         $wo =  $user = WorkingOrderModel::where('no_polisi', $no_pol)->first();
 
+      
+
 
         return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo'));
     }
@@ -75,18 +77,16 @@ class ServiceController extends Controller
     
         $jumlahBookingHariIni = BookingModel::whereDate('tgl_booking', $tglBooking)->count();
     
-        $batasBookingPerHari = 20;
+        $batasBookingPerHari = 2;
     
         if ($jumlahBookingHariIni >= $batasBookingPerHari) {
-            $antrianPenuh = BookingModel::whereDate('tgl_booking', Carbon::today())
-                ->orderBy('created_at', 'asc')
-                ->first();
-                $tanggalPenuh = Carbon::parse($antrianPenuh->tgl_booking)->format('d F Y');
-            return redirect()->back()->with('error', "Maaf, antrian tanggal $tanggalPenuh sudah penuh.");
+            $errorMessage = "Daily Service Limit Reached<br>Please Try a Different Date !!";
+            return redirect()->back()->with('error', $errorMessage);
         }
-
+        
+    
         $checkNo = PelangganModel::where('no_polisi',  $noPolisi)->first();
-        // dd($checkNo);
+    
         if ($checkNo != null) {
             BookingModel::create([
                 'no_polisi' =>   $noPolisi,
@@ -101,23 +101,23 @@ class ServiceController extends Controller
                 'no_telp' => $request->no_telp,
                 'jenis_mobil' => $request->jenis_mobil,
             ]);
-
+    
             User::create([
                 'no_polisi' =>  $noPolisi,
                 'nama' => $request->nama,
                 'username' => $request->nama
             ]);
-
+    
             BookingModel::create([
                 'no_polisi' =>   $noPolisi,
                 'tgl_booking' => $request->tgl_booking,
-
             ]);
         }
-
+    
         $nopol = $noPolisi;
         return redirect()->route('indexOnBooking', compact('nopol'));
     }
+    
 
     ////
     public function woTable()

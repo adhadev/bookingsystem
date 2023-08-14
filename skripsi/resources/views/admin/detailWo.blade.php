@@ -19,8 +19,6 @@
                                 <h4>Detail WO</h4>
                             </div>
                             <div class="col-4 align-bottom d-flex justify-content-end" onclick="edit()">
-                                <button type="submit" class="btn" style="color: aliceblue"><i class="bx bx-save bx-md "
-                                        style="width: 10px; margin-right: 10%;"></i></button>
                             </div>
                         </div>
 
@@ -66,7 +64,7 @@
                                                 <div class="mb-3">
                                                     <label for="no_tlp_pic" class="form-label">Phone Number</label>
                                                     <input required type="tel" class="form-control" id="no_tlp_pic" placeholder="+62" name="no_tlp_pic"
-                                                        value="{{ Auth::user()->no_telp }}">
+                                                        value="{{ $dataPelanggan->no_telp }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,7 +105,7 @@
                                             <label for="nama_customer" class="form-label">Customer Name</label>
                                             <input required type="text" class="form-control" id="nama_customer"
                                                 name="nama_pelanggan"
-                                                value="{{ $dataPelanggan->nama }}">
+                                                value="{{ $dataPelanggan->nama }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -115,7 +113,7 @@
                                             <label for="alamat" class="form-label">Address</label>
                                             <input required type="text" class="form-control" id="alamat"
                                                 name="alamat"
-                                                value="{{ $dataPelanggan->alamat }}">
+                                                value="{{ $dataPelanggan->alamat }}" readonly>
 
                                         </div>
                                     </div>
