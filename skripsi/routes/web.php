@@ -54,6 +54,7 @@ Route::get('/logout/customer', [AuthController::class, 'logoutCustomer'])->name(
 Route::post('/login/masuk/customer', [AuthController::class, 'LoginCustomer'])->name('proses_login_customer');
 
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+Route::get('/kasir', [AuthController::class, 'kasir'])->name('kasir');
 
 
 
