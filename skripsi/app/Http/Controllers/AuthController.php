@@ -23,6 +23,11 @@ class AuthController extends Controller
     return view('auth.dashboard'); // 'dashboard' adalah nama view (blade) halaman kosong
 }
 
+public function kasir()
+{
+    return view('admin.kasir'); // 'kasir' adalah nama view (blade) halaman kosong
+}
+
     public function tampilanLoginAdmin()
     {
         return view('auth.login');
@@ -74,6 +79,33 @@ class AuthController extends Controller
             // Authentication failed, redirect back to the login page with an error message.
             return redirect()->route('login_admin')->with('error', 'Invalid username or password.');
         }
+    }
+
+    public function loginkasir(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        // Retrieve the user by the provided username
+        $user = User::where('username', $credentials['username'])->first();
+
+        // Check if the user exists and the provided password matches
+        if ($user && $user->password === $credentials['password']) {
+            // User is authenticated, log them in
+            // Note: This is NOT secure in production. Use proper password encryption like bcrypt.
+            auth()->login($user);
+
+            // Redirect the user to the desired location after login
+        return redirect()->route('kasirTable', ['id' => $user->id]);
+        } else {
+            // Authentication failed, redirect back to the login page with an error message.
+            return redirect()->route('login_admin')->with('error', 'Invalid username or password.');
+        }
+    }
+
+    public function logoutkasir(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 
     public function logoutForeman(Request $request)
