@@ -299,7 +299,7 @@
                         </div>
                         
                     </div>
-                </div>
+                </div>  
                 <div class="mb-1">
                 </div>
                 
@@ -416,16 +416,22 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 <script>
     $(function() {
+        console.log("Autocomplete script executed");
         $("#technicianInput").autocomplete({
             source: function(request, response) {
+                console.log("Autocomplete script executed");
+
                 $.ajax({
-                    url: "URL_API_TEKNISI", // Ganti dengan URL API endpoint Anda
+                    url: "/teknisi/available", // Ganti dengan URL API endpoint Anda
                     dataType: "json",
                     data: {
                         term: request.term
                     },
                     success: function(data) {
-                        response(data); // Menyediakan data kepada autocomplete
+                        var namaTeknisi = data.map(function(teknisi) {
+                            return teknisi.Nama;
+                        });
+                        response(namaTeknisi);
                     }
                 });
             },
@@ -436,24 +442,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    $("#technicianInput").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "/teknisi/available", // Ganti dengan URL API endpoint Anda
+                dataType: "json",
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 0 // Mengubah minLength menjadi 0 agar tampilan semua hasil saat mengetik
+    });
+});
+</script>
 
-    
-    // Ambil data dari API JSON menggunakan fetch atau metode lainnya
-        fetch('/detail/task')
-            .then(response => response.json())
-            .then(data => {
-                // Isi data ke dalam elemen-elemen HTML
-                document.getElementById('modalNoWo').textContent = `No Wo : ${data.NoWO}`;
-                document.getElementById('modalNoRangka').textContent = `No Rangkas : ${data.NoRangka}`;
-                document.getElementById('modalJenisKendaraan').textContent = `Jenis Kendaraan : ${data.JenisKendaraan}`;
-                document.getElementById('modalJL').textContent = `Jenis Layanan : ${data.JenisLayanan}`;
-                
-                const spareparts = data.SparePart.join(', '); // Menggabungkan array SparePart menjadi string
-                document.getElementById('modalNoPS').textContent = `Pergantian Sparepart : ${spareparts}`;
-                
-                document.getElementById('modalEsW').textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
-            })
-            .catch(error => console.error('Terjadi kesalahan:', error));
-    </script>
 </body>
 </html>
