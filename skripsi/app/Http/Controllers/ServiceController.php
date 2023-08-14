@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Mail;
 
 use App\Models\BookingModel;
 use App\Models\PelangganModel;
@@ -14,8 +13,6 @@ use App\Models\ForemanModel;
 use App\Models\TeknisiModel;
 use App\Models\LayananModel;
 use Carbon\Carbon; 
-use App\Mail\BookingConfirmationMail; // Replace with your Mailable class
-
 
 
 class ServiceController extends Controller
@@ -80,6 +77,28 @@ class ServiceController extends Controller
     
          return response()->json($teknisiChain);
     }
+    
+    public function invoiceAPI($id)
+    {
+        $workingOrder = WorkingOrderModel::find($id);
+        $pelanggan = PelangganModel::find($workingOrder->no_polisi);
+        $formattedPrice = 'Rp ' . number_format($workingOrder->biaya, 2, ',', '.');
+             
+
+        $sparepartsArray = json_decode($workingOrder->sparepart); // Ubah JSON string menjadi array
+
+        $sparepartsFormatted = implode(', ', $sparepartsArray);
+
+        return response()->json([
+            'kebutuhan' => $workingOrder->no_wo, 
+            'invoice_police' => $workingOrder->no_polisi,
+            'phone_number' => $pelanggan->no_telp,
+            'address' => $pelanggan->alamat,
+            'price' => $formattedPrice,
+            'sparepart' => $sparepartsFormatted,
+            'layanan' => 'Service Rutin',
+        ]);
+}
     
     public function onService()
     {
@@ -195,13 +214,7 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('status', 'prepare')->get();
         $dataWOOnProgress = WorkingOrderModel::where('status', 'On Progress')->get();
 
-        // $workingOrder = WorkingOrderModel::find('00001');
-        // $layanan = LayananModel::where('kode', 1)->get();
-        // if (!$workingOrder->layanan()->whereIn('id', $layanan->pluck('id'))->exists()) {
-        //     $workingOrder->layanan()->attach($layanan);
-        // }
-        // $workingOrder->layanan()->attach($layanan); 
-        // dd($workingOrder);
+
         // dd($user->username);
 
         $teknisi = TeknisiModel::where('foreman_id', $userId)->get();
