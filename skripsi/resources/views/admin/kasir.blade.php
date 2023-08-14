@@ -346,12 +346,12 @@ body {
           <h1><strong>INVOICE PAYMENT BMW TEBET <strong> </h1>
           <p><strong>WO Number:</strong> <span id="modal-kebutuhan"></span></p>
           <p><strong>Police Number:</strong> <span id="modal-invoice"></span></p>
-          <p><strong>Phone Number:</strong> <span id="modal-invoice"></span></p>
-          <p><strong>Address:</strong> <span id="modal-invoice"></span></p>
+          <p><strong>Phone Number:</strong> <span id="modal-phone"></span></p>
+          <p><strong>Address:</strong> <span id="modal-address"></span></p>
             <hr class="horizontal-line">
-            <p><strong>Jasa Layanan:</strong> <span id="modal-biaya"></span></p>
-            <p><strong>Additional Sparepart:</strong> <span id="modal-biaya"></span></p>
-          <p><strong>Total Estimated:</strong> <span id="modal-biaya"></span></p>
+            <p><strong>Jasa Layanan:</strong> <span id="modal-service"></span></p>
+            <p><strong>Additional Sparepart:</strong> <span id="modal-sparepart"></span></p>
+          <p><strong>Total Price:</strong> <span id="modal-price"></span></p>
           <button id="printButton">Print Invoice</button>
           <div class="invoice-container" id="invoiceContainer">
             <!-- Isi invoice akan ditampilkan di sini -->
@@ -372,8 +372,8 @@ body {
                 </thead>
                 <tbody>
                     @foreach($dataWO as $wo)
-                    <tr>
-                        <td class="wo-cell" data-kebutuhan="Kebutuhan Kasir 1" data-invoice="Invoice 123" data-biaya="1000">
+                    <tr onclick="openModal('{{ $wo->no_wo }}')" style="cursor: pointer"> 
+                        <td  >
                             {{ $wo->no_wo }}
                           </td>
                         <td>{{ $wo->no_polisi }}</td>
@@ -412,15 +412,20 @@ const woCells = document.querySelectorAll('.wo-cell');
 // Ambil elemen modal dan elemen-elemen di dalamnya
 const modal = document.getElementById('woModal');
 const modalKebutuhan = document.getElementById('modal-kebutuhan');
+const modalAddress = document.getElementById('modal-address');
+const modalPhone = document.getElementById('modal-phone');
 const modalInvoice = document.getElementById('modal-invoice');
-const modalBiaya = document.getElementById('modal-biaya');
+const modalBiaya = document.getElementById('modal-price');
 const selesaiButton = document.getElementById('selesaiButton');
 const closeButton = document.querySelector('.close');
+
 
 // Tambahkan event listener pada setiap 'wo-cell'
 woCells.forEach((woCell) => {
   woCell.addEventListener('click', () => {
     modalKebutuhan.textContent = woCell.dataset.kebutuhan;
+    modalAddress.textContent = woCell.dataset.address;
+    modalPhone.textContent = woCell.dataset.phone;
     modalInvoice.textContent = woCell.dataset.invoice;
     modalBiaya.textContent = woCell.dataset.biaya;
     modal.style.display = 'block';
@@ -494,6 +499,22 @@ selesaiButton.addEventListener('click', () => {
 });
 
 </script>
+<script>
+    function openModal(noWo) {
+        console.log("testing")
+        $.get(`/invoice/${noWo}`, function(data) {
+            $('#modal-kebutuhan').text(data.kebutuhan);
+            $('#modal-invoice').text(data.invoice_police);
+            $('#modal-phone').text(data.phone_number);
+            $('#modal-address').text(data.address);
+            $('#modal-price').text(data.price);
+            $('#modal-service').text(data.layanan);
+            $('#modal-sparepart').text(data.sparepart);
+            modal.style.display = 'block';
+        });
+    }
+</script>
+
 
 </body>
 </html>
