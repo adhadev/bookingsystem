@@ -287,10 +287,31 @@ body {
 
 /* Gaya khusus untuk tombol cetak */
 #printButton {
-    display: absolute;
-    margin: 20px auto;
-    z-index: 3px;
-}
+    position: fixed;
+            top: 5%;
+            left: 80%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            border-radius: 10px;
+            background-color: #4da9d7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+        }
+        #submitButton {
+    position: fixed;
+            top: 5%;
+            border-radius: 10px;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            background-color: #4da9d7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+        }
 
 
 .modal {
@@ -359,26 +380,49 @@ body {
         <script src="script.js"></script>
         </div>
       </div>
+      <!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <p>WO Number :</p>
+      <input type="text" id="woNumberInput">
+      <button id="modalSubmitButton">Submit</button>
+    </div>
+  </div>
    
     <div class="container">
         <h1><i class="bx bx-user-circle"></i> Kasir Service Center</h1>
         <h2>Transaction History :</h2>
+        <p style="font-size: 14px;">Click on List table to see details invoice!</p>
         <div class="table-responsive p-1">
             <table id="table1" class="table table-bordered m-3 data-table">
                 <thead>
                     <th>NO WO</th>
                     <th>NO Polisi</th>
                     <th>Status</th>
+                    <th>Proccess Payment</th>
                 </thead>
                 <tbody>
                     @foreach($dataWO as $wo)
                     <tr onclick="openModal('{{ $wo->no_wo }}')" style="cursor: pointer"> 
-                        <td  >
-                            {{ $wo->no_wo }}
-                          </td>
+                        <td>{{ $wo->no_wo }}</td>
                         <td>{{ $wo->no_polisi }}</td>
                         <td>{{ $wo->status }}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="submitWO('{{ $wo->no_wo }}')">Submit</button>
+                        </td>
                     </tr>
+                    
+                    <!-- Modal -->
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <!-- Place your modal content here -->
+                            <h2>Modal Header</h2>
+                            <p>Modal content goes here.</p>
+                            <!-- Add the Submit button inside the modal -->
+                            <button class="btn btn-primary" onclick="submitModal()">Submit</button>
+                        </div>
+                    </div>
                     @endforeach
                 </tbody>
             </table>
@@ -405,6 +449,34 @@ body {
         populateTable(table1, "{{ route('data.wo') }}");
     });
             </script>
+            <script>
+                // Ambil elemen-elemen yang diperlukan
+                const modalSubmitButton = document.getElementById("modalSubmitButton");
+                const woNumberInput = document.getElementById("woNumberInput");
+                const submitButton = document.getElementById("submitButton");
+            
+                // Tambahkan event listener pada tombol "Submit" di dalam modal
+                modalSubmitButton.addEventListener("click", function() {
+                    // Ambil nilai dari input WO Number
+                    const woNumberValue = woNumberInput.value;
+                    
+                    // Masukkan nilai WO Number ke dalam tombol "Submit"
+                    submitButton.dataset.woNumber = woNumberValue;
+            
+                    // Tutup modal setelah tombol "Submit" di dalam modal ditekan
+                    modal.style.display = "none";
+                });
+            
+                // Event listener untuk tombol "Submit" di luar modal
+                submitButton.addEventListener("click", function() {
+                    // Ambil nilai WO Number yang telah dimasukkan sebelumnya
+                    const woNumberValue = submitButton.dataset.woNumber;
+                    
+                    // Lakukan sesuatu dengan nilai WO Number, misalnya mengirimnya ke server
+                    console.log("WO Number submitted: " + woNumberValue);
+                });
+            </script>
+
 <script>
 // Ambil semua elemen dengan kelas 'wo-cell'
 const woCells = document.querySelectorAll('.wo-cell');
