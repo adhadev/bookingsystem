@@ -295,9 +295,9 @@
                     <div class="mb-1">
                         <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;">Pilih Teknisi:</label>
                         <div class="d-flex">
-                            <div class="mr-3">
+                            <!-- <div class="mr-3">
                                 <input type="radio" id="technicianInput1" name="technician" value="teknisi1">
-                                <label for="technicianInput1">Teknisi A1</label>
+                                <label for="technicianInput1">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</label>
                             </div>
                             <div class="mr-3">
                                 <input type="radio" id="technicianInput2" name="technician" value="teknisi2">
@@ -314,13 +314,19 @@
                             <div>
                                 <input type="radio" id="technicianInput5" name="technician" value="teknisi5">
                                 <label for="technicianInput5">Teknisi A5</label>
+                            </div> -->
+                            @foreach($teknisiAvailable as $teknisiList)
+                            <div class="mr-3">
+                                <input type="radio" id="technicianInput{{ $teknisiList->id_teknisi }}" name="technician" value="{{ $teknisiList->id_teknisi }}">
+                                <label for="technicianInput{{ $teknisiList->id_teknisi }}">{{ $teknisiList->nama_teknisi }}</label>
                             </div>
+                            @endforeach
                         </div>
                     </div>
                 
                     <div class="mb-1">
                         <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label>
-                        <form>
+                        <form id="maintenanceForm">
                             <label><input type="radio" name="maintenance" value="oli"> Oli</label>
                             <label style="margin-left: 133px;"><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
                             <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
@@ -337,7 +343,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-primary">Kerjakan</button>
+                <form method="POST" id="kerjakanForm" action="">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Kerjakan</button>
+                </form>
             </div>
         </div>
     </div>
@@ -390,7 +399,27 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const dropdowns = document.querySelectorAll(".form-select"); // Mengambil semua dropdown
+            const kerjakanForm = document.getElementById('kerjakanForm');
             const modalNoWoElement = document.getElementById("modalNoWo");
+            kerjakanForm.addEventListener('submit', function(event) {
+                const noWoText = modalNoWo.textContent;
+                const colonIndex = noWoText.indexOf(':');
+                // Jika ditemukan, ambil bagian teks setelah tanda titik dua sebagai nomor WO
+                const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
+
+                // Hapus spasi dan karakter non-angka dari nomor WO
+                const cleanNoWo = noWo.replace(/\D/g, '');
+                const selectedMaintenance = document.querySelector('input[name="maintenance"]:checked');
+
+                if (selectedMaintenance) {
+                    const selectedValue = selectedMaintenance.value;
+                    // alert('Anda memilih: ' + selectedValue);
+                } else {
+                    alert('Pilih salah satu opsi sparepart terlebih dahulu.');
+                }
+
+                kerjakanForm.action = `/kerjakan/${noWo}`;
+            });
             const modalNoRangkaElement = document.getElementById("modalNoRangka");
             const modalJenisKendaraanElement = document.getElementById("modalJenisKendaraan");
             const modalJLElement = document.getElementById("modalJL");
