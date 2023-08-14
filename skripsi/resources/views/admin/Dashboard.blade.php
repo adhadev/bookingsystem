@@ -293,16 +293,45 @@
                     <p id="modalNoPS">Pergantian Sparepart :</p>
                     <p id="modalEsW">Estimasi Waktu :</p>
                     <div class="mb-1">
-                        <div class="mb-1">
-                            <label for="listTechnicians" class="form-label">Pilih Teknisi:</label>
-                            <input type="text" id="technicianInput" name="technician">
+                        <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;">Pilih Teknisi:</label>
+                        <div class="d-flex">
+                            <div class="mr-3">
+                                <input type="radio" id="technicianInput1" name="technician" value="teknisi1">
+                                <label for="technicianInput1">Teknisi A1</label>
+                            </div>
+                            <div class="mr-3">
+                                <input type="radio" id="technicianInput2" name="technician" value="teknisi2">
+                                <label for="technicianInput2">Teknisi A2</label>
+                            </div>
+                            <div class="mr-3">
+                                <input type="radio" id="technicianInput3" name="technician" value="teknisi3">
+                                <label for="technicianInput3">Teknisi A3</label>
+                            </div>
+                            <div class="mr-3">
+                                <input type="radio" id="technicianInput4" name="technician" value="teknisi4">
+                                <label for="technicianInput4">Teknisi A4</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="technicianInput5" name="technician" value="teknisi5">
+                                <label for="technicianInput5">Teknisi A5</label>
+                            </div>
                         </div>
-                        
-                        
+                    </div>
+                
+                    <div class="mb-1">
+                        <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label>
+                        <form>
+                            <label><input type="radio" name="maintenance" value="oli"> Oli</label>
+                            <label style="margin-left: 133px;"><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
+                            <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
+                            <label style="margin-left: 48px;"><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
+                            <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
+                            <label style="margin-left: 20px;"><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
+                            <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label>
+                        </form>
                     </div>
                 </div>  
-                <div class="mb-1">
-                </div>
+            
                 
                 <!-- Isi konten modal di sini -->
             </div>

@@ -134,9 +134,9 @@ class ServiceController extends Controller
         
         $nopol = $noPolisi;
 
-        $bookingCount = BookingModel::where('status', 'prepare')
-        ->whereDate('tgl_booking', $request->tgl_booking)
-        ->count(); 
+        // $bookingCount = BookingModel::where('status', 'prepare')
+        // ->whereDate('tgl_booking', $request->tgl_booking)
+        // ->count(); 
         
         
 
@@ -164,16 +164,16 @@ class ServiceController extends Controller
         //     // Jika tanggal booking adalah hari ini
         //     $pesan = "Tanggal booking hari ini. Waktu dikerjakan: ";
         // }
-        $pesanan = BookingModel::where('status', 'prepare')
-        ->whereDate('tgl_booking', $request->tgl_booking)
-        ->orderBy('created_at') // Urutkan berdasarkan waktu pemesanan
-        ->get();
+    //     $pesanan = BookingModel::where('status', 'prepare')
+    //     ->whereDate('tgl_booking', $request->tgl_booking)
+    //     ->orderBy('created_at') // Urutkan berdasarkan waktu pemesanan
+    //     ->get();
     
-    foreach ($pesanan as $index => $pes) {
-        $nomorAntrian = $index + 1; // Nomor antrian dimulai dari 1
-        $jamPemesanan = $pes->created_at->format('H:i'); // Format waktu pemesanan menjadi jam:menit
-    }
-        dd($nomorAntrian,$jamPemesanan); 
+    // foreach ($pesanan as $index => $pes) {
+    //     $nomorAntrian = $index + 1; // Nomor antrian dimulai dari 1
+    //     $jamPemesanan = $pes->created_at->format('H:i'); // Format waktu pemesanan menjadi jam:menit
+    // }
+    //     dd($nomorAntrian,$jamPemesanan); 
 
     
         return redirect()->route('indexOnBooking', compact('nopol'));

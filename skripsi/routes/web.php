@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ProgressController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
