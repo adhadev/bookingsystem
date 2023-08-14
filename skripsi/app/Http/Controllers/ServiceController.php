@@ -157,6 +157,7 @@ class ServiceController extends Controller
         $user = User::where('nama', $request->pic_Service)->first();
         $sparepart = $request->input('sparepart', []);
         $sparepartJSON = json_encode($sparepart);
+       
         $sparepartCount = count($sparepart);
 
         $biaya = $sparepartCount * 5000; 
@@ -168,6 +169,7 @@ class ServiceController extends Controller
         $menit_estimasi_selesai = $estimasi_waktu % 60;
         $waktu_estimasi_selesai = sprintf('%02d:%02d:00', $jam_estimasi_selesai, $menit_estimasi_selesai);
         $namaSpareparts = $request->input('parts'); // Array berisi nama-nama sparepart
+        $namaLayanans = $request->input('service'); // Array berisi nama-nama sparepart
 
     // Ambil hanya field 'nama' dari setiap elemen array
     $namaSparepartsNames = [];
@@ -176,6 +178,10 @@ class ServiceController extends Controller
         $namaSparepartsNames[] = $sparepartData->nama;
     }
     $namaSparepartsJson = json_encode($namaSparepartsNames); // Mengonversi array menjadi string JSON
+
+
+    $namaLayanansJson = json_encode($namaLayanans); // Mengonversi array menjadi string JSON
+
 
         WorkingOrderModel::create([
             'no_wo' => $request->no_wo,
@@ -187,6 +193,7 @@ class ServiceController extends Controller
             'waktu_estimasi_selesai' => $waktu_estimasi_selesai,
             'biaya' => $request->estimatedCost,
             'sparepart' => $namaSparepartsJson,
+            'layanan' => $namaLayanansJson,
             'tgl_booking' => $booking->tgl_booking,
             'tanggal_estimasi_selesai' => today(),
 
@@ -241,6 +248,12 @@ class ServiceController extends Controller
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
         $sparepartArray = json_decode($dataWo->sparepart); 
         $sparepartString = implode(', ', $sparepartArray);
+        // dd($$dataWo->layanan);
+        $cleanedJsonString = trim($dataWo->layanan, '"');
+
+        // $jsonString = stripslashes($dataWo->layanan);
+        // $layananData = json_decode($jsonString);
+        // dd($jsonString);
 
         $waktuArray = explode(':', $dataWo->waktu_estimasi_selesai	); // Memisahkan jam, menit, dan detik menjadi array
         $jam = (int)$waktuArray[0];
