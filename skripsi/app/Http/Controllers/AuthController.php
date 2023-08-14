@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
+use App\Models\WorkingOrderModel;
+
 
 class AuthController extends Controller
 {
@@ -25,7 +27,9 @@ class AuthController extends Controller
 
 public function kasir()
 {
-    return view('admin.kasir'); // 'kasir' adalah nama view (blade) halaman kosong
+    $dataWO = WorkingOrderModel::where('status', 'On Progress' )->get();
+
+    return view('admin.kasir')->with('dataWO', $dataWO); // 'kasir' adalah nama view (blade) halaman kosong
 }
 
     public function tampilanLoginAdmin()

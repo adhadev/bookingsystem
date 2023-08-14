@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,12 @@ use App\Http\Controllers\ServiceController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/data/wo', function () {
+    $data = DB::table('db_wo')->select('no_wo')->get();
+    return response()->json($data);
+});
+
 
 
 

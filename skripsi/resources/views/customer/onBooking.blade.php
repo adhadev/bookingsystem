@@ -24,6 +24,23 @@
         margin-right: 10px;
     }
     
+    .progress-container {
+  width: 100%;
+  background-color: #f0f0f0;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background-color: #3498db;
+  transition: width 0.3s;
+}
+
+/* Sisanya sama seperti sebelumnya */
+
         .font-size-24 {
             font-size: 24px;
             text-align: left;
@@ -34,7 +51,6 @@
         text-align: center;
     }
     </style>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 </head>
 
@@ -91,7 +107,7 @@
                                 @if ($wo && $wo->sparepart !== null)
                                 {{ $wo->sparepart }}
                                 @else
-                                tidak ada penambahan sparepart
+                                Tidak ada penambahan sparepart
                                 @endif
                             </div>
                         </div>
@@ -101,41 +117,15 @@
                                 @if ($wo && $wo->status !== null)
                                 {{ $wo->status }}
                                 @else
-                                0
+                                Belum Diproses
                                 @endif
                             </div>
+                            
                         </div>
-                        <div class="container mt-5">
-                            <div class="row">
-                                <div class="col">
-                                    <h2>------------------------------------------</h2>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <button id="startButton" class="btn btn-primary mt-3">Start Progress</button>
-                                </div>
-                            </div>
-                        </div>
+                          
 
   </div>
                 <script src="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/boxicons.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script>
-                    $(document).ready(function() {
-                        $("#startButton").click(function() {
-                            // Simulate progress
-                            var progress = 0;
-                            var interval = setInterval(function() {
-                                progress += 5; // Increase the progress by 5% per interval
-                                $(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress);
-                                if (progress >= 100) {
-                                    clearInterval(interval);
-                                    alert("Progress is complete!");
-                                }
-                            }, 1000); // Update every 500 milliseconds (0.5 seconds)
-                        });
-                    });
-                </script>
                 
                 @else
                 <div class="card" style="opacity: 0.5">

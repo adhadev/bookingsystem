@@ -1,13 +1,136 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Kasir Control Panel</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/dist/boxicons.min.css">
-<style>
-    body {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Foreman Control Panel</title>
+    <style>
+
+    .sidebar {
+        text-align: center;
+        width: 250px;
+        padding: 1rem;
+        background-color: #0046A8;
+        color: white;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 1rem;
+    }
+
+    /* Tambahkan CSS tambahan untuk opsi dropdown di sidebar jika diperlukan */
+    .sidebar select {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .order-list {
+            border: 2px black;
+            border-radius: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 3rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #35424a;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+        .working-order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.working-order-info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+        .mechanic {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1rem 0;
+        }
+        .mechanic img {
+            max-width: 80px;
+            margin-right: 1rem;
+        }
+        .mechanic-info {
+            flex: 1;
+        }
+        .vehicle {
+            margin-top: 0.5rem;
+        }
+        .sidebar {
+            text-align: center;
+            width: 250px;
+            padding: 1rem;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar h2 {
+            margin-bottom: 1rem;
+        }
+        .working-order {
+            margin-top: 1rem;
+        }
+        .working-order-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .drop-area {
+            border: 2px dashed black;
+            width: 150px;
+            height: 80px;
+            margin: 10px 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            cursor: pointer;
+}
+
+body {
         background-color: #f8f9fa;
         margin: 0;
     }
@@ -55,8 +178,18 @@
     }
 
     .btn-logout {
-        margin: 0;
-        z-index: -3;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #fffff;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 20px;
+        z-index: -1;
+        
     }
 
     .container {
@@ -70,119 +203,297 @@
     .btn-print {
         margin-top: 10px;
     }
-</style>
+        .working-order-item .status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .status-green {
+            background-color: green;
+        }
+        .status-gray {
+            background-color: gray;
+        }
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #fffff;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            z-index: 3;
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #000000;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #000000;
+        }
+        .teknisi {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            margin-top: 20px;
+            color: #000000;
+            font-weight: bold;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            color: #000000;
+        }
+        .status-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+/* Gaya untuk elemen 'wo-cell' yang terlihat seperti tautan */
+.wo-cell {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
+
+.off {
+    background-color: red; /* Merah untuk status off */
+}
+
+.on {
+    background-color: green; /* Hijau untuk status on */
+}
+
+/* Gaya dasar untuk invoice */
+.invoice {
+    border: 1px solid #000;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+/* Gaya khusus untuk tombol cetak */
+#printButton {
+    display: absolute;
+    margin: 20px auto;
+    z-index: 3px;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.horizontal-line {
+    border-bottom: 2px solid #000; /* Ubah nilai lebar garis menjadi 2px */
+    margin: 20px 0;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+    </style>
 </head>
 <body>
-<header>
-    <!-- Tombol Logout -->
-    <a href="logout.php" class="btn btn-danger btn-logout">Logout</a>
-</header>
-<div class="container">
-    <h2><i class="bx bx-user-circle"></i> Kasir Service Center</h2>
-
-    <!-- Konten Kasir -->
-    <div class="kasir-info">
-        <div class="sidebar">
-            <h4>Daftar Nomor WO</h4>
-            <ul id="wo-list">
-                <li onclick="loadWoDetail('WO123')">WO123</li>
-                <li onclick="loadWoDetail('WO456')">WO456</li>
-                <li onclick="loadWoDetail('WO789')">WO789</li>
-                <!-- Tambahkan daftar nomor WO lain di sini -->
-            </ul>
-        </div>
-        <p>WO Number: <span id="wo-number">12345</span></p>
-        <p>Vehicle Type: <span id="vehicle-type">Sedan</span></p>
-        <p>License Number: <span id="license-number">AB 1234 CD</span></p>
-        <p>Arrival Date: <span id="arrival-date">2023-08-14</span></p>
-    </div>
-    <hr class="divider">
-    <h4>Detail Harga</h4>
-    <div col-auto>
-        <p>Jenis Jasa: <span id="jenis jasa">dr database beserta harganya</span></p>
-        <p>Sparepart : <span id="spare part">dr database beserta harganya</span></p>
-        <p>Total Biaya : <span id="total biaya">total harga</span></p>
-    </div>
-    <button class="btn btn-primary btn-print" onclick="printInvoice()">Print Invoice</button>
-    <button class="btn btn-primary btn-open-modal">Selesai</button>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <header>
+        <button class="logout-button">Logout</button>
+    </header>
+                
+                
+    <div id="woModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Konfirmasi Transaksi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda ingin menyelesaikan transaksi?</p>
-                <p>Jenis WO: <span id="modal-wo-type">Sedan</span></p>
-                <p>Total Biaya: <span id="modal-total-cost">$100</span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                <button type="button" class="btn btn-primary">Selesai</button>
-            </div>
+          <span class="close">&times;</span>
+          <h1><strong>INVOICE PAYMENT BMW TEBET <strong> </h1>
+          <p><strong>WO Number:</strong> <span id="modal-kebutuhan"></span></p>
+          <p><strong>Police Number:</strong> <span id="modal-invoice"></span></p>
+          <p><strong>Phone Number:</strong> <span id="modal-invoice"></span></p>
+          <p><strong>Address:</strong> <span id="modal-invoice"></span></p>
+            <hr class="horizontal-line">
+            <p><strong>Jasa Layanan:</strong> <span id="modal-biaya"></span></p>
+            <p><strong>Additional Sparepart:</strong> <span id="modal-biaya"></span></p>
+          <p><strong>Total Estimated:</strong> <span id="modal-biaya"></span></p>
+          <button id="printButton">Print Invoice</button>
+          <div class="invoice-container" id="invoiceContainer">
+            <!-- Isi invoice akan ditampilkan di sini -->
+        </div>
+        <script src="script.js"></script>
+        </div>
+      </div>
+   
+    <div class="container">
+        <h1><i class="bx bx-user-circle"></i> Kasir Service Center</h1>
+        <h2>Transaction History :</h2>
+        <div class="table-responsive p-1">
+            <table id="table1" class="table table-bordered m-3 data-table">
+                <thead>
+                    <th>NO WO</th>
+                    <th>NO Polisi</th>
+                    <th>Status</th>
+                </thead>
+                <tbody>
+                    @foreach($dataWO as $wo)
+                    <tr>
+                        <td class="wo-cell" data-kebutuhan="Kebutuhan Kasir 1" data-invoice="Invoice 123" data-biaya="1000">
+                            {{ $wo->no_wo }}
+                          </td>
+                        <td>{{ $wo->no_polisi }}</td>
+                        <td>{{ $wo->status }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
-<script>
-    function loadWoDetail(woNumber) {
-        // Ganti detail sesuai dengan nomor WO yang dipilih
-        document.getElementById('wo-number').textContent = woNumber;
-        // Tambahkan logika lain untuk mengganti detail yang lain
-    }
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('get_wo_list.php')
-        .then(response => response.json())
-        .then(data => {
-            const woList = document.getElementById('wo-list');
-            data.forEach(woNumber => {
-                const listItem = document.createElement('li');
-                listItem.textContent = woNumber;
-                listItem.addEventListener('click', () => loadWoDetail(woNumber));
-                woList.appendChild(listItem);
+            </div>
+            <script>
+              $(function() {
+        var table1 = $('#table1').DataTable({
+            // Configuration options
+            columns: [
+                { data: 'no_wo', name: 'no_wo' },
+                // ... Other columns ...
+            ]
+        });
+
+        function populateTable(table, route) {
+            table.clear().draw();
+            $.getJSON(route, function(data) {
+                table.rows.add(data).draw();
             });
-        });
+        }
+
+        populateTable(table1, "{{ route('data.wo') }}");
     });
+            </script>
+<script>
+// Ambil semua elemen dengan kelas 'wo-cell'
+const woCells = document.querySelectorAll('.wo-cell');
+
+// Ambil elemen modal dan elemen-elemen di dalamnya
+const modal = document.getElementById('woModal');
+const modalKebutuhan = document.getElementById('modal-kebutuhan');
+const modalInvoice = document.getElementById('modal-invoice');
+const modalBiaya = document.getElementById('modal-biaya');
+const selesaiButton = document.getElementById('selesaiButton');
+const closeButton = document.querySelector('.close');
+
+// Tambahkan event listener pada setiap 'wo-cell'
+woCells.forEach((woCell) => {
+  woCell.addEventListener('click', () => {
+    modalKebutuhan.textContent = woCell.dataset.kebutuhan;
+    modalInvoice.textContent = woCell.dataset.invoice;
+    modalBiaya.textContent = woCell.dataset.biaya;
+    modal.style.display = 'block';
+  });
+});
+
+// Tutup modal saat tombol 'Tutup' atau area di sekitar modal diklik
+closeButton.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+// Event listener untuk tombol 'Selesai Pembayaran'
+selesaiButton.addEventListener('click', () => {
+  // Tambahkan logika untuk tindakan setelah tombol di klik
+  // Misalnya, tampilkan pesan sukses atau lakukan aksi lain
+});
 </script>
 <script>
-    function loadWoDetail(woNumber) {
-        fetch(`get_wo_detail.php?wo=${woNumber}`)
-        .then(response => response.json())
-        .then(data => {
-            // Mengganti nilai detail sesuai dengan data dari database
-            document.getElementById('vehicle-type').textContent = data.vehicleType;
-            document.getElementById('license-number').textContent = data.licenseNumber;
-            document.getElementById('arrival-date').textContent = data.arrivalDate;
-            // Tambahkan logika untuk mengganti detail harga
-        });
-    }
+    document.getElementById("printButton").addEventListener("click", function() {
+    // Mengganti isi dari invoiceContainer dengan isi invoice yang diinginkan
+    const invoiceContent = `
+    <div align="center">
+		<table width="100%" border="0" cellpadding="1" cellspacing="0">
+			<tr align="center">
+				<th>BMW TEBET <br>
+					Jl Rokan Kiri, Jakarta, 60822</th>
+			</tr>
+			<tr align="center"><td><hr></td></tr>
+			<tr align="center">
+				
+			</tr>
+			<tr><td><hr></td></tr>
+		</table>
+		<table width="100%" border="0" cellpadding="3" cellspacing="0">
+			
+			<tr>
+				<td colspan="4"><hr></td>
+			</tr>
+			
+		</table>
+		<table width="100%" border="0" cellpadding="1" cellspacing="0">
+			<tr><td><hr></td></tr>
+			<tr align="center">
+				<th>Terimkasih, Silahkan Datang Kembali</th>
+			</tr>
+			<tr align="center">
+				<th>===== Layanan Konsumen ====</th>
+			</tr>
+			<tr align="center">
+				<th>SMS/CALL 085895986529 </th>
+			</tr>
+		</table>
+	</div>
+    `;
+    document.getElementById("invoiceContainer").innerHTML = invoiceContent;
+
+    // Mengambil elemen invoiceContainer
+    const container = document.getElementById("invoiceContainer");
+
+    // Menggunakan window.print() untuk mencetak halaman
+    window.print();
+
+    // Mengembalikan isi invoiceContainer ke tampilan awal setelah pencetakan
+    container.innerHTML = "";
+});
+
 </script>
-<script>
-    document.querySelector('.btn-open-modal').addEventListener('click', function() {
-        // Set nilai di dalam modal
-        document.getElementById('modal-wo-type').textContent = document.getElementById('vehicle-type').textContent;
-        document.getElementById('modal-total-cost').textContent = "$100"; // Ubah dengan total biaya yang sesuai
-        // Tampilkan modal
-        $('#confirmationModal').modal('show');
-    });
-</script>
-<script>
-    function printInvoice() {
-        // Logika untuk mencetak invoice
-        window.print();
-    }
-</script>
-<script>
-    document.getElementById("wo-number").textContent = "12345";
-    document.getElementById("vehicle-type").textContent = "Sedan";
-    document.getElementById("license-number").textContent = "AB 1234 CD";
-    document.getElementById("arrival-date").textContent = "2023-08-14";
-</script>
+
 </body>
 </html>
