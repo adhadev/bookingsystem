@@ -143,29 +143,32 @@
     
 <div class="container mt-3">
     <form>
-        <div class="mb-1">
-            <label for="service" class="form-label">Jenis Layanan</label>
-            <select class="form-select" id="service" name="service">
-                <!-- <option value="1">Service Rutin</option>
-                <option value="2">Ganti Oli</option>
-                <option value="3">Perbaikan Mesin</option> -->
-                @foreach ($layananOptions as $layanan)
-                    <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}","nama": "{{ $layanan->nama }}" }'>{{ $layanan->nama }}</option>
-                @endforeach
-                <!-- Tambahkan opsi lainnya di sini -->
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="parts" class="form-label">Sparepart</label>
-            @foreach ($spareparts as $sparepart)
-                <div class="form-check">
-                    <!-- <input class="form-check-input" type="checkbox" value="{{ $sparepart->harga }}" id="check{{ $sparepart->kode }}" name="parts[]"> -->
-                    <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}", "nama": "{{ $sparepart->nama }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
-                    <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-1">
+                    <label for="service" class="form-label">Jenis Layanan</label>
+                    @foreach ($layananOptions as $layanan)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}", "nama": "{{ $layanan->nama }}" }' id="check{{ $layanan->kode }}" name="service[]">
+                            <label class="form-check-label" for="check{{ $layanan->kode }}">{{ $layanan->nama }}</label>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-            <!-- Tambahkan checkbox sparepart lainnya di sini -->
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="parts" class="form-label">Sparepart</label>
+                    @foreach ($spareparts as $sparepart)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value='{"harga": "{{ $sparepart->harga }}", "waktu": "{{ $sparepart->waktu }}", "nama": "{{ $sparepart->nama }}" }' id="check{{ $sparepart->kode }}" name="parts[]">
+                            <label class="form-check-label" for="check{{ $sparepart->kode }}">{{ $sparepart->nama }}</label>
+                        </div>
+                    @endforeach
+                    <!-- Tambahkan checkbox sparepart lainnya di sini -->
+                </div>
+            </div>
         </div>
+        
         <div class="mb-3">
             {{-- <label for="hours" class="form-label">Jam Kerja</label> --}}
             <input type="hidden" class="form-control" id="hours" name="hours" step="0.5">
@@ -222,9 +225,9 @@
         event.preventDefault();
 
         // Contoh perhitungan estimasi biaya (hanya simulasi)
-        const selectedService = JSON.parse(document.getElementById('service').value);
-        const hargaService = parseFloat(selectedService.harga);
-        const waktuService =  parseInt(selectedService.waktu.split(':')[0]) * 60 + parseInt(selectedService.waktu.split(':')[1]);
+        // const selectedService = JSON.parse(document.getElementById('service').value);
+        // const hargaService = parseFloat(selectedService.harga);
+        // const waktuService =  parseInt(selectedService.waktu.split(':')[0]) * 60 + parseInt(selectedService.waktu.split(':')[1]);
 
         // const selectedServiceData = JSON.parse(selectedService); 
         // const hargaService = parseFloat(selectedServiceData.harga); 
@@ -232,8 +235,16 @@
         // $hargaService = floatval($selectedService->harga);
         
         const selectedParts = document.querySelectorAll('input[name="parts[]"]:checked');
-        const hoursOfWork = parseFloat(document.getElementById('hours').value);
+        const selectedServices = document.querySelectorAll('input[name="service[]"]:checked');
+        // const hoursOfWork = parseFloat(document.getElementById('hours').value);
 
+        let totalCostForServices = 0;
+        let totalWaktuForServices = 0;
+        selectedServices.forEach(checkbox => {
+            const data = JSON.parse(checkbox.value);
+            totalCostForServices +=  parseFloat(data.harga);
+            totalWaktuForServices += parseInt(data.waktu.split(':')[0]) * 60 + parseInt(data.waktu.split(':')[1]);
+        });
         let totalCostForParts = 0;
         let totalWaktuForParts = 0;
         selectedParts.forEach(checkbox => {
@@ -241,7 +252,7 @@
             totalCostForParts +=  parseFloat(data.harga);
             totalWaktuForParts += parseInt(data.waktu.split(':')[0]) * 60 + parseInt(data.waktu.split(':')[1]);
         });
-        totalAllwaktu = totalWaktuForParts + waktuService
+        totalAllwaktu = totalWaktuForParts + totalWaktuForServices
         const totalWaktuInJam = totalAllwaktu / 60;
 
 
@@ -258,7 +269,7 @@
         const hourlyRate = 15000; // Biaya per jam kerja
 
         // const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
-        const totalCost = (baseCost + hargaService + totalCostForParts + (totalWaktuInJam * hourlyRate));
+        const totalCost = (baseCost + totalCostForServices + totalCostForParts + (totalWaktuInJam * hourlyRate));
         // const totalCost = totalWaktuInJam;
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
         estimatedTimeSpan.textContent = totalAllwaktu;

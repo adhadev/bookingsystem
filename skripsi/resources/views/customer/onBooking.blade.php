@@ -156,7 +156,7 @@
                             <div class="fw-bold font-size-24">
                                 <i class="bx bx-time-five icon"></i> Estimated Times: 
                                 @if ($wo && $wo->waktu_estimasi_selesai !== null)
-                                Rp.{{ $wo->waktu_estimasi_selesai }}
+                                {{ $wo->waktu_estimasi_selesai }}
                                 @else
                                 0
                                 @endif
@@ -166,7 +166,7 @@
                             <div class="fw-bold font-size-24">
                                 <i class="bx bxl-dropbox icon"></i> Sparepart:
                                 @if ($wo && $wo->sparepart !== null)
-                                {{ $wo->sparepart }}
+                                {{ $sparepart }}
                                 @else
                                 Tidak ada penambahan sparepart
                                 @endif
@@ -190,21 +190,25 @@
                             <div class="modal-content">
                                 <body>
                                     <h1>Status Progress</h1>
-                                    <p class="status-text">Status: on working - oli</p>
+                                    <p class="status-text">Status Pengerjaan: @if ($booking && $booking->pengerjaan !== null)
+                                        {{ $booking->pengerjaan }}
+                                        @else
+                                        
+                                        @endif</p>
                                     <p id="stopwatch">Waktu Pengerjaan: 00:00</p>
                                 </body>
                                 <div id="progress-container">
                                     <div id="progress"></div>
                                 </div>
                                 
-                                <?php
-                                $status = $_SESSION['status'] ?? 'Ready';
+                                {{-- <?php
+                                $status = $_SESSION[''] ?? '';
                                 echo "<p>Status: $status</p>";
-                                ?>
+                                ?> --}}
                                 
-                                <form action="" method="post">
+                                {{-- <form action="" method="post">
                                     <button type="submit" name="reset">Reset</button>
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
                         

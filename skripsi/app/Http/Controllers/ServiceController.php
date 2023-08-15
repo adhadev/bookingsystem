@@ -29,13 +29,23 @@ class ServiceController extends Controller
     {
         $title = 'Service';
         $pelanggan = PelangganModel::where('no_polisi', $no_pol)->first();
-        $booking = BookingModel::where('no_polisi', $no_pol)->where('status', 'pending')->first();
+        $booking = BookingModel::where('no_polisi', $no_pol)->first();
         $wo =  $user = WorkingOrderModel::where('no_polisi', $no_pol)->first();
+        if ($wo !== null) {
+            $sparepartsArray = json_decode($wo->sparepart);
+            if (!empty($sparepartsArray)) {
+                $sparepart = implode(', ', $sparepartsArray);
+            } else {
+                $sparepart = "";
+            }
+        } else {
+            $sparepart = "";
+        }
 
       
 
 
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo'));
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'));
     }
 
     public function detailTASK($no_wo)
@@ -116,28 +126,31 @@ public function kerjakanAPI(Request $request, $id )
     $booking->save();
 
 
-    return response()->json([
+     response()->json([
         'status' => 'success',
         'message' => 'Data berhasil diproses',
-        // Dan informasi lain yang ingin Anda kembalikan
     ]);
-    // $pelanggan = PelangganModel::find($workingOrder->no_polisi);
-    // $formattedPrice = 'Rp ' . number_format($workingOrder->biaya, 2, ',', '.');
-         
+    
+    return redirect()->back();
 
-    // $sparepartsArray = json_decode($workingOrder->sparepart); // Ubah JSON string menjadi array
+}
+public function updateDone(Request $request, $id )
+{
+    // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
 
-    // $sparepartsFormatted = implode(', ', $sparepartsArray);
+    // dd($layanan);
+    $workingOrder = WorkingOrderModel::find($id);
+    $workingOrder->status = 'Done';
+    $workingOrder->save();
 
-    // return response()->json([
-    //     'kebutuhan' => $workingOrder->no_wo, 
-    //     'invoice_police' => $workingOrder->no_polisi,
-    //     'phone_number' => $pelanggan->no_telp,
-    //     'address' => $pelanggan->alamat,
-    //     'price' => $formattedPrice,
-    //     'sparepart' => $sparepartsFormatted,
-    //     'layanan' => 'Service Rutin',
-    // ]);
+
+
+     response()->json([
+        'status' => 'success',
+        'message' => 'Data berhasil diproses',
+    ]);
+    
+    return redirect()->back();
 
 }
     
@@ -337,6 +350,7 @@ public function kerjakanAPI(Request $request, $id )
 
          $booking->update([
              'status' => 'prepare',
+             'no_wo' => $request->no_wo,
          ]);
 
         $wo = WorkingOrderModel::all();

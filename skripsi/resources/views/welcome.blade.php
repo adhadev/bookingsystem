@@ -77,10 +77,6 @@
             </div>
         </div>
     </header>
-    <div>
-        TEST 
-    </div>
-    
     <!-- About-->
     <section class="about-section text-center" id="about">
         <div class="container px-4 px-lg-5">

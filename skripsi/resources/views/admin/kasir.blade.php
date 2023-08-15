@@ -288,8 +288,8 @@ body {
 /* Gaya khusus untuk tombol cetak */
 #printButton {
     position: fixed;
-            top: 5%;
-            left: 80%;
+            top: 6%;
+            left: 85%;
             transform: translate(-50%, -50%);
             z-index: 0;
             border-radius: 10px;
@@ -403,10 +403,10 @@ body {
                 </thead>
                 <tbody>
                     @foreach($dataWO as $wo)
-                    <tr onclick="openModal('{{ $wo->no_wo }}')" style="cursor: pointer"> 
-                        <td>{{ $wo->no_wo }}</td>
-                        <td>{{ $wo->no_polisi }}</td>
-                        <td>{{ $wo->status }}</td>
+                    <tr  style="cursor: pointer"> 
+                        <td onclick="openModal('{{ $wo->no_wo }}')">{{ $wo->no_wo }}</td>
+                        <td onclick="openModal('{{ $wo->no_wo }}')">{{ $wo->no_polisi }}</td>
+                        <td onclick="openModal('{{ $wo->no_wo }}')">{{ $wo->status }}</td>
                         <td>
                             <button class="btn btn-primary" onclick="submitWO('{{ $wo->no_wo }}')">Submit</button>
                         </td>
@@ -584,6 +584,25 @@ selesaiButton.addEventListener('click', () => {
             $('#modal-sparepart').text(data.sparepart);
             modal.style.display = 'block';
         });
+    }
+</script>
+<script>
+    function submitWO(noWo) {
+       
+        $.get(`/updateDone/${noWo}`,  function(data) {
+            // $('#modal-kebutuhan').text(data.kebutuhan);
+            // $('#modal-invoice').text(data.invoice_police);
+            // $('#modal-phone').text(data.phone_number);
+            // $('#modal-address').text(data.address);
+            // $('#modal-price').text(data.price);
+            // $('#modal-service').text(data.layanan);
+            // $('#modal-sparepart').text(data.sparepart);
+            // modal.style.display = 'block';
+            location.reload();
+
+        });
+
+
     }
 </script>
 

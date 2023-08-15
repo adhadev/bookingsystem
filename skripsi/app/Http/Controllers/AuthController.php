@@ -27,7 +27,7 @@ class AuthController extends Controller
 
 public function kasir()
 {
-    $dataWO = WorkingOrderModel::where('status', 'On Progress' )->get();
+    $dataWO = WorkingOrderModel::whereIn('status', ['On Progress', 'Done'])->get();
 
     return view('admin.kasir')->with('dataWO', $dataWO); // 'kasir' adalah nama view (blade) halaman kosong
 }
@@ -49,14 +49,22 @@ public function kasir()
             // User is authenticated, log them in
             // Note: This is NOT secure in production. Use proper password encryption like bcrypt.
             auth()->login($user);
-
+            if ($user->role === 'admin') {
+                return redirect()->route('woTable', ['title' => 'BMW OFFICE']);
+            } elseif ($user->role === 'foreman') {
+                return redirect()->route('dashboardTable', ['id' => $user->id]);
+            } elseif ($user->role === 'kasir') {
+                return redirect()->route('kasir', ['id' => $user->id]);
+            }
             // Redirect the user to the desired location after login
-            return redirect()->route('woTable', ['title' => 'BMW OFFICE']);
         } else {
             // Authentication failed, redirect back to the login page with an error message.
             return redirect()->route('login_admin')->with('error', 'Invalid username or password.');
         }
     }
+
+
+    
 
     public function logoutAdmin(Request $request)
     {

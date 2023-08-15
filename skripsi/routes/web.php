@@ -51,10 +51,11 @@ Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name(
 Route::get('/teknisi/available', [ServiceController::class, 'teknisiAvailable'])->name('teknisiAvailable');
 Route::get('/invoice/{id}', [ServiceController::class, 'invoiceAPI'])->name('Invoice');
 Route::post('/kerjakan/{id}', [ServiceController::class, 'kerjakanAPI'])->name('kerjakanAPI');
+Route::get('/updateDone/{id}', [ServiceController::class, 'updateDone'])->name('updateDone');
 
 
 //AuthController
-Route::get('/login/admin', [AuthController::class, 'tampilanLoginAdmin'])->name('login_admin');
+Route::get('/login', [AuthController::class, 'tampilanLoginAdmin'])->name('login_admin');
 Route::get('/logout/admin', [AuthController::class, 'logoutAdmin'])->name('logout_admin');
 Route::post('/login/masuk/admin', [AuthController::class, 'LoginAdmin'])->name('proses_login_admin');
 Route::get('/login/customer', [AuthController::class, 'masukCustomer'])->name('loginCustomer');
@@ -63,6 +64,8 @@ Route::get('/logout/foreman', [AuthController::class, 'logoutForeman'])->name('l
 Route::post('/login/masuk/Foreman', [AuthController::class, 'LoginForeman'])->name('proses_login_Foreman');
 Route::get('/logout/customer', [AuthController::class, 'logoutCustomer'])->name('logoutCustomer');
 Route::post('/login/masuk/customer', [AuthController::class, 'LoginCustomer'])->name('proses_login_customer');
+Route::post('/login/masuk/kasir', [AuthController::class, 'Loginkasir'])->name('proses_login_kasir');
+Route::get('/logout/kasir', [AuthController::class, 'logoutAdmin'])->name('logout_kasir');
 
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 Route::get('/kasir', [AuthController::class, 'kasir'])->name('kasir');
