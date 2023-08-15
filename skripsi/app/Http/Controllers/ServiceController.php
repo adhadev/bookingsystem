@@ -114,16 +114,22 @@ class ServiceController extends Controller
 
 public function kerjakanAPI(Request $request, $id )
 {
-    // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
+    $teknisiId = $request->input('technician_id'); // Mengambil nilai teknisi_id dari input tersembunyi
+    $selectedSparepart = $request->input('maintenance');
 
-    // dd($layanan);
     $workingOrder = WorkingOrderModel::find($id);
     $workingOrder->status = 'On Progress';
+    $workingOrder->id_teknisi = $teknisiId;
     $workingOrder->save();
 
     $booking = BookingModel::where('no_wo', $id)->first();
     $booking->status = 'On Progress';
+    $booking->pengerjaan = $selectedSparepart;
     $booking->save();
+
+    $teknisi = TeknisiModel::where('id_teknisi', $teknisiId)->first();
+    $teknisi->status = 'On Working';
+    $teknisi->save();
 
 
      response()->json([
@@ -386,6 +392,18 @@ public function updateDone(Request $request, $id )
     public function detailWO($id)
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+
+
+        $dataArray = json_decode($dataWo->layanan, true);
+        $names = [];
+        foreach ($dataArray as $item) {
+            $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+            $names[] = $itemArray['nama'];
+
+
+        }
+
+        $layananString = implode(', ', $names);
         $sparepartArray = json_decode($dataWo->sparepart); 
         $sparepartString = implode(', ', $sparepartArray);
         // dd($$dataWo->layanan);
@@ -405,7 +423,7 @@ public function updateDone(Request $request, $id )
 
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan' , 'sparepartString','totalMenit'));
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan' , 'sparepartString','totalMenit','layananString'));
     }
 
     public function dataWO(Request $request)

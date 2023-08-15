@@ -277,6 +277,8 @@
                 
                 <!-- Pindahkan area drop ke sini -->
                 <!-- Modal -->
+                <form method="POST" id="kerjakanForm" action="">
+                    @csrf
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -295,26 +297,6 @@
                     <div class="mb-1">
                         <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;">Pilih Teknisi:</label>
                         <div class="d-flex">
-                            <!-- <div class="mr-3">
-                                <input type="radio" id="technicianInput1" name="technician" value="teknisi1">
-                                <label for="technicianInput1">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</label>
-                            </div>
-                            <div class="mr-3">
-                                <input type="radio" id="technicianInput2" name="technician" value="teknisi2">
-                                <label for="technicianInput2">Teknisi A2</label>
-                            </div>
-                            <div class="mr-3">
-                                <input type="radio" id="technicianInput3" name="technician" value="teknisi3">
-                                <label for="technicianInput3">Teknisi A3</label>
-                            </div>
-                            <div class="mr-3">
-                                <input type="radio" id="technicianInput4" name="technician" value="teknisi4">
-                                <label for="technicianInput4">Teknisi A4</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="technicianInput5" name="technician" value="teknisi5">
-                                <label for="technicianInput5">Teknisi A5</label>
-                            </div> -->
                             @foreach($teknisiAvailable as $teknisiList)
                             <div class="mr-3">
                                 <input type="radio" id="technicianInput{{ $teknisiList->id_teknisi }}" name="technician" value="{{ $teknisiList->id_teknisi }}">
@@ -326,15 +308,12 @@
                 
                     <div class="mb-1">
                         <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label>
-                        <form id="maintenanceForm">
-                            <label><input type="radio" name="maintenance" value="oli"> Oli</label>
-                            <label style="margin-left: 133px;"><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
-                            <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
-                            <label style="margin-left: 48px;"><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
-                            <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
-                            <label style="margin-left: 20px;"><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
-                            <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label>
+                        <form >
+                            <div id="maintenanceForm">
+
+                            </div>
                         </form>
+                        <!-- <input type="hidden" name="selectedSparepart" id="selectedSparepart"> -->
                     </div>
                 </div>  
             
@@ -343,14 +322,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <form method="POST" id="kerjakanForm" action="">
-                    @csrf
+                
                     <button type="submit" class="btn btn-primary">Kerjakan</button>
-                </form>
             </div>
         </div>
     </div>
 </div>
+</form>
+
 
                 
             </div>
@@ -402,24 +381,34 @@
             const kerjakanForm = document.getElementById('kerjakanForm');
             const modalNoWoElement = document.getElementById("modalNoWo");
             kerjakanForm.addEventListener('submit', function(event) {
-                const noWoText = modalNoWo.textContent;
-                const colonIndex = noWoText.indexOf(':');
-                // Jika ditemukan, ambil bagian teks setelah tanda titik dua sebagai nomor WO
-                const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
+    event.preventDefault(); // Menghentikan pengiriman formulir sementara
+    
+    const selectedTechnician = document.querySelector('input[name="technician"]:checked');
+    
+    if (selectedTechnician) {
+        const selectedTechnicianId = selectedTechnician.value;
+        
+        // Buat elemen input tersembunyi untuk mengirim teknisi_id
+        const hiddenInput = document.createElement("input");
+        hiddenInput.setAttribute("type", "hidden");
+        hiddenInput.setAttribute("name", "technician_id");
+        hiddenInput.setAttribute("value", selectedTechnicianId);
+        
+        // Sisipkan input tersembunyi ke dalam formulir
+        kerjakanForm.appendChild(hiddenInput);
+        
+        // Lanjutkan dengan mengubah action dan mengirimkan formulir
+        const noWoText = document.getElementById('modalNoWo').textContent;
+        const colonIndex = noWoText.indexOf(':');
+        const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
+        const cleanNoWo = noWo.replace(/\D/g, '');
+        kerjakanForm.action = `/kerjakan/${cleanNoWo}`;
+        kerjakanForm.submit();
+    } else {
+        alert('Pilih salah satu teknisi terlebih dahulu.');
+    }
+});
 
-                // Hapus spasi dan karakter non-angka dari nomor WO
-                const cleanNoWo = noWo.replace(/\D/g, '');
-                const selectedMaintenance = document.querySelector('input[name="maintenance"]:checked');
-
-                if (selectedMaintenance) {
-                    const selectedValue = selectedMaintenance.value;
-                    // alert('Anda memilih: ' + selectedValue);
-                } else {
-                    alert('Pilih salah satu opsi sparepart terlebih dahulu.');
-                }
-
-                kerjakanForm.action = `/kerjakan/${noWo}`;
-            });
             const modalNoRangkaElement = document.getElementById("modalNoRangka");
             const modalJenisKendaraanElement = document.getElementById("modalJenisKendaraan");
             const modalJLElement = document.getElementById("modalJL");
@@ -441,8 +430,33 @@
                             const spareparts = data.SparePart.join(', ');
                             modalNoPSElement.textContent = `Pergantian Sparepart : ${spareparts}`;
                             modalEsWElement.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
-    
-                            // Show the modal
+                            
+                            const maintenanceForm = document.getElementById('maintenanceForm');
+                            data.SparePart.forEach(sparepart => {
+                            const label = document.createElement('label');
+                            const input = document.createElement('input');
+                            input.type = 'radio';
+                            input.name = 'maintenance';
+                            input.className = 'maintenance-option';
+                            input.value = sparepart;
+                            
+                            label.appendChild(input);
+                            label.appendChild(document.createTextNode(` ${sparepart}`));
+                            
+                            maintenanceForm.appendChild(label);
+                            maintenanceForm.appendChild(document.createElement('br'));
+                        });
+                        const radioButtons = maintenanceForm.querySelectorAll('.maintenance-option');
+
+                        radioButtons.forEach(radioButton => {
+                            radioButton.addEventListener('change', function() {
+                                const selectedValue = this.value;
+                                console.log(`Anda memilih: ${selectedValue}`);
+                                // const selectedSparepartElement = document.getElementById('selectedSparepart');
+                                // selectedSparepartElement.textContent = `${selectedValue}`;                          
+                              });
+                        });
+                        
                             $('#taskModal').modal('show');
                         })
                         .catch(error => console.error('Terjadi kesalahan:', error));
