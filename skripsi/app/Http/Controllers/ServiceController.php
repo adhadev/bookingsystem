@@ -160,15 +160,30 @@ public function updateDone(Request $request, $id )
 
 
     // dd($layanan);
+
+    // $workingOrders = WorkingOrderModel::find($id);
+    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->get();
+    // $teknisiId = $workingOrders->id_teknisi;
+    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->first(); 
+    // $teknisi->status = 'available';
+    // $teknisi->save();
+
+
     $workingOrder = WorkingOrderModel::find($id);
-    $teknisiId = $workingOrder->id_teknisi;
     $workingOrder->status = 'Done';
     $workingOrder->id_teknisi = null;
     $workingOrder->save();
 
-    // $teknisi = TeknisiModel::find($teknisiId);
-    // $teknisi->status = 'available';
-    // $teknisi->save();
+    $workingOrder = WorkingOrderModel::find($id);
+    $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
+    if ($booking !== null) {
+        $booking->status =  'Done';
+        $booking->save();
+    } else {
+    }
+
+
+  
 
 
 
