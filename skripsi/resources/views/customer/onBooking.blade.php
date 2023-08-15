@@ -119,6 +119,13 @@
     border-radius: 10px;
     position: relative;
   }
+  #bar {
+    width:0px;
+    height:25px;
+    border:1px solid rgb(212, 212, 212);
+    background-color:yellow;
+    border-radius:3px;
+}
 
   .progress-bar {
     height: 100%;
@@ -127,15 +134,7 @@
     transition: width 0.3s ease-in-out;
   }
 
-  .car {
-    width: 50px;
-    height: 30px;
-    background-color: #e74c3c;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 5px;
-  }
+ 
     .card2 {
         width: 150px;
     height: 130px;
@@ -196,7 +195,12 @@
                         </div>
                         <div class="col-auto">
                             <div class="fw-bold font-size-24">
-                                <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: {{ $wo->waktu_mulai }}
+                                <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time:
+                                @if ($wo && $wo->waktu_mulai !== null)
+                                {{ $wo->waktu_mulai }}
+                                @else
+                                -
+                                @endif
                             </div>
                         </div>
                         <div class="col-auto">
@@ -245,10 +249,10 @@
                         <div class="card2">
                             <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
     <div class="number">
-      1/20
+        <?php echo $booking->id; ?>/20
     </div>
     <div class="text">
-      Nomor Antrian
+        Queue number
     </div>
                         
                         <div id="modal" class="modal">
@@ -260,10 +264,10 @@
                                         
                                         @endif</p>
                                 </body>
-                                <div class="progress-container">
-                                    <div class="progress-bar" style="width: 0;"></div>
-                                    <div class="car" id="car"></div>
-                                  </div>
+                                <button id="start">Start</button>
+<div id="bar"></div>
+<div id="log"></div>
+
                             </div>
                         </div>
                         
@@ -271,6 +275,49 @@
                           
 
   </div>
+  <script>
+$(document).ready(function() {
+    var maxWidth = 400;
+    var duration = 3000;
+    var $log = $('#log');
+    var $start = $('#start');
+    var timer;
+
+    $start.on('click', function() {
+        var $bar = $('#bar');
+        Horloge(maxWidth);
+        timer = setInterval('Horloge('+maxWidth+')', 100);
+
+        $bar.animate({
+            width: maxWidth
+        }, duration, function() {
+            $(this).css('background-color', 'green');
+            $start.attr('disabled', true);
+            $stop.attr('disabled', true);
+            $log.html('100 %');
+            clearInterval(timer);
+        });
+    });
+
+    $stop.on('click', function() {
+        var $bar = $('#bar');
+        $bar.stop();
+
+        clearInterval(timer);
+
+        var w = $bar.width();
+        var percent = parseInt((w * 100) / maxWidth);
+        $log.html(percent + ' %');
+    });
+
+});
+
+function Horloge(maxWidth) {
+    var w = $('#bar').width();
+    var percent = parseInt((w * 100) / maxWidth);
+    $('#log').html(percent + ' %');
+}
+</script>
   <script>
     const progressBar = document.querySelector('.progress-bar');
     const car = document.getElementById('car');
