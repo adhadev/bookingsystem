@@ -42,10 +42,24 @@ class ServiceController extends Controller
             $sparepart = "";
         }
 
+        if ($booking !== null) {
+            $createdDate = $booking->created_at->format('Y-m-d'); // Dapatkan tanggal pembuatan dalam format Y-m-d
+            $sameDayBookings = BookingModel::whereDate('tgl_booking', $wo->tgl_booking)
+            ->where('status', '!=', 'Done') // Filter status yang tidak 'Done'
+            ->orderBy('created_at')
+            ->get();  
+
+            $totalBooking = $sameDayBookings->count(); // Hitung total jumlah booking pada tanggal booking yang sama
+
+        
+            $antrian = $sameDayBookings->search(function ($item) use ($booking) {
+                return $item->id == $booking->id; 
+            }) + 1;        
+        } else {
+            $antrian = null;
+        }
       
-
-
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'));
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart' , 'totalBooking' ,'antrian' ));
     }
 
     public function detailTASK($no_wo)
@@ -144,10 +158,19 @@ public function updateDone(Request $request, $id )
 {
     // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
 
+
     // dd($layanan);
     $workingOrder = WorkingOrderModel::find($id);
+    $teknisiId = $workingOrder->id_teknisi;
     $workingOrder->status = 'Done';
+    $workingOrder->id_teknisi = null;
     $workingOrder->save();
+
+    // $teknisi = TeknisiModel::find($teknisiId);
+    // $teknisi->status = 'available';
+    // $teknisi->save();
+
+
 
 
 
