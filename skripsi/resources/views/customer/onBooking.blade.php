@@ -95,6 +95,7 @@
   height: 100%;
   background-color: #3498db;
   transition: width 0.3s;
+  
 }
 .status-text {
             color: rgb(252, 252, 255); /* Ubah warna font sesuai keinginan, misalnya biru */
@@ -111,6 +112,57 @@
         font-size: 28px;
         text-align: center;
     }
+    .progress-container {
+    width: 100%;
+    background-color: #f0f0f0;
+    height: 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background-color: #3498db;
+    border-radius: 10px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .car {
+    width: 50px;
+    height: 30px;
+    background-color: #e74c3c;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 5px;
+  }
+    .card2 {
+        width: 150px;
+    height: 130px;
+    background-color: #000000;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    position: absolute;
+    left: 130px; /* Ubah angka ini untuk mengatur posisi horizontal */
+    top: 450px; /* Ubah angka ini untuk mengatur posisi vertikal */
+  }
+  .loading-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .icon2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+  }
+  
     </style>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 </head>
@@ -140,6 +192,11 @@
                         <div class="col-auto">
                             <div class="fw-bold font-size-24">
                                 <i class="bx bx-calendar icon"></i> Arrival Date: {{ $booking->tgl_booking }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="fw-bold font-size-24">
+                                <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: {{ $wo->waktu_mulai }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -185,30 +242,28 @@
                                 
                             </div>
                         </div>
+                        <div class="card2">
+                            <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
+    <div class="number">
+      1/20
+    </div>
+    <div class="text">
+      Nomor Antrian
+    </div>
                         
                         <div id="modal" class="modal">
                             <div class="modal-content">
                                 <body>
-                                    <h1>Status Progress</h1>
                                     <p class="status-text">Status Pengerjaan: @if ($booking && $booking->pengerjaan !== null)
                                         {{ $booking->pengerjaan }}
                                         @else
                                         
                                         @endif</p>
-                                    <p id="stopwatch">Waktu Pengerjaan: 00:00</p>
                                 </body>
-                                <div id="progress-container">
-                                    <div id="progress"></div>
-                                </div>
-                                
-                                {{-- <?php
-                                $status = $_SESSION[''] ?? '';
-                                echo "<p>Status: $status</p>";
-                                ?> --}}
-                                
-                                {{-- <form action="" method="post">
-                                    <button type="submit" name="reset">Reset</button>
-                                </form> --}}
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 0;"></div>
+                                    <div class="car" id="car"></div>
+                                  </div>
                             </div>
                         </div>
                         
@@ -216,6 +271,32 @@
                           
 
   </div>
+  <script>
+    const progressBar = document.querySelector('.progress-bar');
+    const car = document.getElementById('car');
+    const status = {
+      pending: 20
+      prepared: 40
+      on progress: 60
+      on working: 80
+      done: 100
+
+    };
+
+    function moveCar(progress) {
+      const maxWidth = progressBar.parentElement.offsetWidth - car.offsetWidth;
+      const newPosition = (progress / 100) * maxWidth;
+      car.style.left = `${newPosition}px`;
+    }
+
+    function updateProgress(value) {
+      progressBar.style.width = `${value}%`;
+      moveCar(value);
+    }
+
+    // Set initial progress
+    updateProgress(status.pending);
+  </script>
   <script>
     function updateProgress(progress) {
         const progressBar = document.getElementById('progress');

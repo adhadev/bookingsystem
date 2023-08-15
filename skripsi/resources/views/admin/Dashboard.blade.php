@@ -206,6 +206,20 @@
                 @endforeach
             </select>
         </div>
+
+        <div style="margin-top: 10px">
+            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:</label>
+                    <form id="maintenanceForm">
+                        <label><input type="radio" name="maintenance" value="oli"> Oli</label>
+                        <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
+                        <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
+                        <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
+                        <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
+                        <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
+                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label>
+                    </form>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </div>
     <div class="container">
         <h1>Foreman Control Panel</h1>
