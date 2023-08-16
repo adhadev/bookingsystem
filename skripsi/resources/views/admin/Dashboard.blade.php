@@ -201,23 +201,26 @@
         <div class="mb-1">
             <select class="form-select" id="listWo3" name="listWo3">
                 <option value="" disabled selected>Pilih Nomor WO</option>
-                @foreach ($dataWO as $wo)
+                @foreach ($dataWOAll as $wo)
                     <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
                 @endforeach
             </select>
         </div>
 
         <div style="margin-top: 10px">
-            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:</label>
-                    <form id="maintenanceForm">
-                        <label><input type="radio" name="maintenance" value="oli"> Oli</label>
+            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:  </label>
+                    <!-- <form id="maintenanceForm"> -->
+                        <!-- <label><input type="radio" name="maintenance" value="oli"> Oli</label>
                         <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
                         <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
                         <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
                         <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
                         <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
-                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label>
-                    </form>
+                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label> -->
+                    <!-- </form> -->
+                    <div id="maintenanceForm">
+
+</div>
                     <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
@@ -321,7 +324,7 @@
                     </div>
                 
                     <div class="mb-1">
-                        <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label>
+                        <!-- <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label> -->
                         <form >
                             <div id="maintenanceForm">
 
@@ -446,6 +449,7 @@
                             modalEsWElement.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
                             
                             const maintenanceForm = document.getElementById('maintenanceForm');
+                            maintenanceForm.innerHTML = '';
                             data.SparePart.forEach(sparepart => {
                             const label = document.createElement('label');
                             const input = document.createElement('input');

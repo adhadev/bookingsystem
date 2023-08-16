@@ -44,7 +44,7 @@ class ServiceController extends Controller
 
         if ($booking !== null) {
             $createdDate = $booking->created_at->format('Y-m-d'); // Dapatkan tanggal pembuatan dalam format Y-m-d
-            $sameDayBookings = BookingModel::whereDate('tgl_booking', $wo->tgl_booking)
+            $sameDayBookings = BookingModel::whereDate('tgl_booking', $booking->tgl_booking)
             ->where('status', '!=', 'Done') // Filter status yang tidak 'Done'
             ->orderBy('created_at')
             ->get();  
@@ -310,6 +310,8 @@ public function updateDone(Request $request, $id )
 
         $user = User::where('id', $userId)->first();
         $dataWo = WorkingOrderModel::where('status', 'prepare')->get();
+        $dataWoAll = WorkingOrderModel::where('status', '!=', 'Done')->get();
+
         $dataWOOnProgress = WorkingOrderModel::where('status', 'On Progress')->get();
 
 
@@ -321,7 +323,7 @@ public function updateDone(Request $request, $id )
         ->get();
                 // dd($teknisi);
 
-        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi, 'dataWO' => $dataWo, 'dataWOOnProgress' => $dataWOOnProgress , 'teknisiAvailable' => $teknisiAvailable]);
+        return view('admin.Dashboard', ['title' => $title, 'user' => $user, 'teknisi' => $teknisi, 'dataWOAll' => $dataWoAll, 'dataWO' => $dataWo, 'dataWOOnProgress' => $dataWOOnProgress , 'teknisiAvailable' => $teknisiAvailable]);
     }
     public function inputWO()
     {
