@@ -206,6 +206,8 @@ public function updateDone(Request $request, $id )
         $teknisi->status = 'available';
         $teknisi->save();
     }
+
+    
     // response()->json([
     //     'status' => 'success',
     //     'message' => 'Data berhasil diproses',
@@ -221,6 +223,7 @@ public function updateDone(Request $request, $id )
     $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
     if ($booking !== null) {
         $booking->status =  'Done';
+        $booking->pengerjaan = null;
         $booking->save();
     } else {
     }
