@@ -210,12 +210,8 @@
                             </div>
                         </div>
                         <div class="col-auto">
-<<<<<<< HEAD
                         <div class="fw-bold font-size-24">
-=======
-                            //test
                             <div class="fw-bold font-size-24">
->>>>>>> a7254483908b1100f33cae1ef91142b517d768c4
                                 <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: 
                                 @if ($wo && $wo->waktu_mulai !== null)
                                 {{ $wo->waktu_mulai }}

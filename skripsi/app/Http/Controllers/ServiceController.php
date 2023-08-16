@@ -218,7 +218,7 @@ public function updateDone(Request $request, $id )
     $workingOrder->status = 'Done';
     $workingOrder->id_teknisi = null;
     $workingOrder->save();
-
+    //edited
     $workingOrder = WorkingOrderModel::find($id);
     $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
     if ($booking !== null) {
