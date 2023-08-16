@@ -211,12 +211,7 @@
                         </div>
                         <div class="col-auto">
                             <div class="fw-bold font-size-24">
-                                <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time:
-                                @if ($wo && $wo->waktu_mulai !== null)
-                                {{ $wo->waktu_mulai }}
-                                @else
-                                -
-                                @endif
+                                <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: {{ $wo->waktu_mulai }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -265,7 +260,7 @@
                         <div class="card2">
                             <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
     <div class="number">
-        <?php echo $booking->id; ?>/20
+      1/20
     </div>
     <div class="text">
         Queue number

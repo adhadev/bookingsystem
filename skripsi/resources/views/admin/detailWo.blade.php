@@ -146,14 +146,10 @@
     <div class="container mt-3">
         <form>
             <div class="mb-1">
-                <label for="service" class="form-label">Jenis Layanan</label>
-                <select class="form-select" id="service" name="service" disabled>
-                    <option value="testing">testing{{ $dataWo->layanan }}</option>
-                    <!-- {{-- @foreach ($layananOptions as $layanan)
-                        <option value='{"harga": "{{ $layanan->harga }}", "waktu": "{{ $layanan->waktu }}" }'>{{ $layanan->nama }}</option>
-                    @endforeach --}} -->
-                    <!-- Tambahkan opsi lainnya di sini -->
-                </select>
+            <label for="service" class="form-label">Jenis Layanan</label>
+                <div class="form-check">
+                    <label class="form-check-label" for="">{{ $layananString }}</label>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="parts" class="form-label">Sparepart</label>

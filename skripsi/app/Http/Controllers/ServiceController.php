@@ -42,10 +42,24 @@ class ServiceController extends Controller
             $sparepart = "";
         }
 
+        if ($booking !== null) {
+            $createdDate = $booking->created_at->format('Y-m-d'); // Dapatkan tanggal pembuatan dalam format Y-m-d
+            $sameDayBookings = BookingModel::whereDate('tgl_booking', $wo->tgl_booking)
+            ->where('status', '!=', 'Done') // Filter status yang tidak 'Done'
+            ->orderBy('created_at')
+            ->get();  
+
+            $totalBooking = $sameDayBookings->count(); // Hitung total jumlah booking pada tanggal booking yang sama
+
+        
+            $antrian = $sameDayBookings->search(function ($item) use ($booking) {
+                return $item->id == $booking->id; 
+            }) + 1;        
+        } else {
+            $antrian = null;
+        }
       
-
-
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'));
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart' , 'totalBooking' ,'antrian' ));
     }
 
     public function detailTASK($no_wo)
@@ -114,16 +128,22 @@ class ServiceController extends Controller
 
 public function kerjakanAPI(Request $request, $id )
 {
-    // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
+    $teknisiId = $request->input('technician_id'); // Mengambil nilai teknisi_id dari input tersembunyi
+    $selectedSparepart = $request->input('maintenance');
 
-    // dd($layanan);
     $workingOrder = WorkingOrderModel::find($id);
     $workingOrder->status = 'On Progress';
+    $workingOrder->id_teknisi = $teknisiId;
     $workingOrder->save();
 
     $booking = BookingModel::where('no_wo', $id)->first();
     $booking->status = 'On Progress';
+    $booking->pengerjaan = $selectedSparepart;
     $booking->save();
+
+    $teknisi = TeknisiModel::where('id_teknisi', $teknisiId)->first();
+    $teknisi->status = 'On Working';
+    $teknisi->save();
 
 
      response()->json([
@@ -138,10 +158,34 @@ public function updateDone(Request $request, $id )
 {
     // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
 
+
     // dd($layanan);
+
+    // $workingOrders = WorkingOrderModel::find($id);
+    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->get();
+    // $teknisiId = $workingOrders->id_teknisi;
+    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->first(); 
+    // $teknisi->status = 'available';
+    // $teknisi->save();
+
+
     $workingOrder = WorkingOrderModel::find($id);
     $workingOrder->status = 'Done';
+    $workingOrder->id_teknisi = null;
     $workingOrder->save();
+
+    $workingOrder = WorkingOrderModel::find($id);
+    $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
+    if ($booking !== null) {
+        $booking->status =  'Done';
+        $booking->save();
+    } else {
+    }
+
+
+  
+
+
 
 
 
@@ -386,6 +430,18 @@ public function updateDone(Request $request, $id )
     public function detailWO($id)
     {
         $dataWo = WorkingOrderModel::where('no_wo', $id)->first();
+
+
+        $dataArray = json_decode($dataWo->layanan, true);
+        $names = [];
+        foreach ($dataArray as $item) {
+            $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+            $names[] = $itemArray['nama'];
+
+
+        }
+
+        $layananString = implode(', ', $names);
         $sparepartArray = json_decode($dataWo->sparepart); 
         $sparepartString = implode(', ', $sparepartArray);
         // dd($$dataWo->layanan);
@@ -405,7 +461,7 @@ public function updateDone(Request $request, $id )
 
         $dataPelanggan = PelangganModel::where('no_polisi', $dataWo->no_polisi)->first();
         $title = 'BMW OFFICE';
-        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan' , 'sparepartString','totalMenit'));
+        return view('admin.detailWO', compact('title', 'dataWo', 'dataPelanggan' , 'sparepartString','totalMenit','layananString'));
     }
 
     public function dataWO(Request $request)
