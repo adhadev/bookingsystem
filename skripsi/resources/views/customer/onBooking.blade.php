@@ -255,12 +255,15 @@
                                 <i class="bx bx-stats icon"></i> Status: 
                                 @if ($wo && $wo->status !== null)
                                 {{ $wo->status }}
+
                                 @else
                                 
                                 @endif
-                        
+                                @if ($booking && ($booking->pengerjaan !== null && $booking->pengerjaan !== '') )
                                 <button id="openModalBtn" class="btn-modal">View Progress</button>
+                                @else
                                 
+                                @endif
                             </div>
                         </div>
                         <div class="card2">
