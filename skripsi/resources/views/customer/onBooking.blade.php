@@ -210,7 +210,12 @@
                             </div>
                         </div>
                         <div class="col-auto">
+<<<<<<< HEAD
                         <div class="fw-bold font-size-24">
+=======
+                            //test
+                            <div class="fw-bold font-size-24">
+>>>>>>> a7254483908b1100f33cae1ef91142b517d768c4
                                 <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: 
                                 @if ($wo && $wo->waktu_mulai !== null)
                                 {{ $wo->waktu_mulai }}
@@ -254,18 +259,21 @@
                                 <i class="bx bx-stats icon"></i> Status: 
                                 @if ($wo && $wo->status !== null)
                                 {{ $wo->status }}
+
                                 @else
                                 pending
                                 @endif
-                        
+                                @if ($booking && ($booking->pengerjaan !== null && $booking->pengerjaan !== '') )
                                 <button id="openModalBtn" class="btn-modal">View Progress</button>
+                                @else
                                 
+                                @endif
                             </div>
                         </div>
                         <div class="card2">
                             <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
     <div class="number">
-    {{$antrian}}/{{$totalBooking}}
+    {{$antrian}}/20
     </div>
     <div class="text">
         Queue number

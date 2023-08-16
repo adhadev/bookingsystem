@@ -200,8 +200,20 @@ public function updateDone(Request $request, $id )
     // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->first(); 
     // $teknisi->status = 'available';
     // $teknisi->save();
+    $workingOrders = WorkingOrderModel::find($id);
+    $teknisi = TeknisiModel::find($workingOrders->id_teknisi);
+    if ($teknisi) {
+        $teknisi->status = 'available';
+        $teknisi->save();
+    }
 
+    
+    // response()->json([
+    //     'status' => 'success',
+    //     'message' => 'Data berhasil diproses',
+    // ]);
 
+    // return response;
     $workingOrder = WorkingOrderModel::find($id);
     $workingOrder->status = 'Done';
     $workingOrder->id_teknisi = null;
@@ -211,6 +223,7 @@ public function updateDone(Request $request, $id )
     $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
     if ($booking !== null) {
         $booking->status =  'Done';
+        $booking->pengerjaan = null;
         $booking->save();
     } else {
     }
