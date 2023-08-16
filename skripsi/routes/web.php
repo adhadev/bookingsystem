@@ -51,6 +51,7 @@ Route::get('/detail/task/{id}', [ServiceController::class, 'detailTASK'])->name(
 Route::get('/teknisi/available', [ServiceController::class, 'teknisiAvailable'])->name('teknisiAvailable');
 Route::get('/invoice/{id}', [ServiceController::class, 'invoiceAPI'])->name('Invoice');
 Route::post('/kerjakan/{id}', [ServiceController::class, 'kerjakanAPI'])->name('kerjakanAPI');
+Route::post('/pengerjaan/{id}', [ServiceController::class, 'pengerjaanAPI'])->name('pengerjaanAPI');
 Route::get('/updateDone/{id}', [ServiceController::class, 'updateDone'])->name('updateDone');
 
 

@@ -154,6 +154,39 @@ public function kerjakanAPI(Request $request, $id )
     return redirect()->back();
 
 }
+
+public function pengerjaanAPI(Request $request, $id )
+{
+
+    $noWo = $request->input('listWo3'); 
+    $selectedSparepart = $request->input('maintenance');
+
+
+
+    // $workingOrder = WorkingOrderModel::find($noWo);
+    // $workingOrder->status = 'On Progress';
+    // $workingOrder->id_teknisi = $teknisiId;
+    // $workingOrder->save();
+
+    $booking = BookingModel::where('no_wo', $noWo)->first();
+    $booking->status = 'On Progress';
+    $booking->pengerjaan = $selectedSparepart;
+    $booking->save();
+
+    // $teknisi = TeknisiModel::where('id_teknisi', $teknisiId)->first();
+    // $teknisi->status = 'On Working';
+    // $teknisi->save();
+
+
+     response()->json([
+        'status' => 'success',
+        'message' => 'Data berhasil diproses',
+    ]);
+    
+    return redirect()->back();
+
+}
+
 public function updateDone(Request $request, $id )
 {
     // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'

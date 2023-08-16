@@ -197,6 +197,9 @@
     <header>
         <button class="logout-button">Logout</button>
     </header>
+    <form method="POST" id="pengerjaanForm" action="">
+    @csrf
+
     <div class="sidebar">
         <div class="mb-1">
             <select class="form-select" id="listWo3" name="listWo3">
@@ -207,7 +210,7 @@
             </select>
         </div>
 
-        <div style="margin-top: 10px">
+        <div style="margin-top: 10px">  
             <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:  </label>
                     <!-- <form id="maintenanceForm"> -->
                         <!-- <label><input type="radio" name="maintenance" value="oli"> Oli</label>
@@ -220,10 +223,12 @@
                     <!-- </form> -->
                     <div id="maintenanceForm">
 
-</div>
+
+                </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
+</form>
     <div class="container">
         <h1>Foreman Control Panel</h1>
         <h2>List Working Order</h2>
@@ -396,35 +401,56 @@
         document.addEventListener("DOMContentLoaded", function() {
             const dropdowns = document.querySelectorAll(".form-select"); // Mengambil semua dropdown
             const kerjakanForm = document.getElementById('kerjakanForm');
+            const pengerjaanForm = document.getElementById('pengerjaanForm');
+
             const modalNoWoElement = document.getElementById("modalNoWo");
             kerjakanForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Menghentikan pengiriman formulir sementara
-    
-    const selectedTechnician = document.querySelector('input[name="technician"]:checked');
-    
-    if (selectedTechnician) {
-        const selectedTechnicianId = selectedTechnician.value;
+            event.preventDefault(); // Menghentikan pengiriman formulir sementara
+            
+            const selectedTechnician = document.querySelector('input[name="technician"]:checked');
+            
+            if (selectedTechnician) {
+                const selectedTechnicianId = selectedTechnician.value;
+                
+                // Buat elemen input tersembunyi untuk mengirim teknisi_id
+                const hiddenInput = document.createElement("input");
+                hiddenInput.setAttribute("type", "hidden");
+                hiddenInput.setAttribute("name", "technician_id");
+                hiddenInput.setAttribute("value", selectedTechnicianId);
+                
+                // Sisipkan input tersembunyi ke dalam formulir
+                kerjakanForm.appendChild(hiddenInput);
+                
+                // Lanjutkan dengan mengubah action dan mengirimkan formulir
+                const noWoText = document.getElementById('modalNoWo').textContent;
+                const colonIndex = noWoText.indexOf(':');
+                const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
+                const cleanNoWo = noWo.replace(/\D/g, '');
+                kerjakanForm.action = `/kerjakan/${cleanNoWo}`;
+                kerjakanForm.submit();
+            } else {
+                alert('Pilih salah satu teknisi terlebih dahulu.');
+            }
+        });
+
+        const selectWo = document.getElementById('listWo3');
+
+        pengerjaanForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            
+
+            const noWoText = document.getElementById('modalNoWo').textContent;
+                const colonIndex = noWoText.indexOf(':');
+                const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
+                const cleanNoWo = noWo.replace(/\D/g, '');
+
+            console.log(cleanNoWo);
+
         
-        // Buat elemen input tersembunyi untuk mengirim teknisi_id
-        const hiddenInput = document.createElement("input");
-        hiddenInput.setAttribute("type", "hidden");
-        hiddenInput.setAttribute("name", "technician_id");
-        hiddenInput.setAttribute("value", selectedTechnicianId);
+            pengerjaanForm.action = `/pengerjaan/${cleanNoWo}`;
+            pengerjaanForm.submit();
         
-        // Sisipkan input tersembunyi ke dalam formulir
-        kerjakanForm.appendChild(hiddenInput);
-        
-        // Lanjutkan dengan mengubah action dan mengirimkan formulir
-        const noWoText = document.getElementById('modalNoWo').textContent;
-        const colonIndex = noWoText.indexOf(':');
-        const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
-        const cleanNoWo = noWo.replace(/\D/g, '');
-        kerjakanForm.action = `/kerjakan/${cleanNoWo}`;
-        kerjakanForm.submit();
-    } else {
-        alert('Pilih salah satu teknisi terlebih dahulu.');
-    }
-});
+        });
 
             const modalNoRangkaElement = document.getElementById("modalNoRangka");
             const modalJenisKendaraanElement = document.getElementById("modalJenisKendaraan");
