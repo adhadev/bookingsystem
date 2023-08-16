@@ -119,13 +119,6 @@
     border-radius: 10px;
     position: relative;
   }
-  #bar {
-    width:0px;
-    height:25px;
-    border:1px solid rgb(212, 212, 212);
-    background-color:yellow;
-    border-radius:3px;
-}
 
   .progress-bar {
     height: 100%;
@@ -156,6 +149,29 @@
     height: 50px;
     margin-bottom: 10px;
   }
+
+  .progress-container {
+    width: 300px;
+    height: 30px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.bar {
+    width: 0;
+    height: 100%;
+    background-color: green;
+    transition: width 0.1s linear;
+}
+
+.progress-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgb(0, 0, 0);
+}
+
   
   .icon2 {
     font-size: 48px;
@@ -264,9 +280,11 @@
                                         
                                         @endif</p>
                                 </body>
-                                <button id="start">Start</button>
-<div id="bar"></div>
-<div id="log"></div>
+                                <div class="progress-container">
+                                    <div id="progress-bar" class="bar"></div>
+                                    <div class="progress-text">0%</div>
+                                </div>
+                                <script src="script.js"></script>
 
                             </div>
                         </div>
@@ -344,6 +362,28 @@ function Horloge(maxWidth) {
     // Set initial progress
     updateProgress(status.pending);
   </script>
+<script>
+const progressBar = document.getElementById("progress-bar");
+const progressText = document.querySelector(".progress-text");
+
+const totalTime = 300; // 5 minutes in seconds
+let elapsedTime = 0;
+
+function updateProgressBar() {
+    elapsedTime++;
+    const progress = (elapsedTime / totalTime) * 100;
+    
+    progressBar.style.width = progress + "%";
+    progressText.textContent = progress.toFixed(2) + "%";
+
+    if (elapsedTime >= totalTime) {
+        clearInterval(interval);
+        progressText.textContent = "100%";
+    }
+}
+
+const interval = setInterval(updateProgressBar, 1000);
+</script>
   <script>
     function updateProgress(progress) {
         const progressBar = document.getElementById('progress');
