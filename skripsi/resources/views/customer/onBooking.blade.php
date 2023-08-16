@@ -212,8 +212,8 @@
                         <div class="col-auto">
                             <div class="fw-bold font-size-24">
                                 <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: 
-                                @if ($wo && waktu_mulai !== null)
-                                {{ waktu_mulai }}
+                                @if ($wo && $wo->waktu_mulai !== null)
+                                {{ $wo->waktu_mulai }}
                                 @else
                                 0
                                 @endif
