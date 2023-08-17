@@ -264,15 +264,18 @@
                                 
                                 @endif
                             </div>
-                        </div>
-                        <div class="card2">
+                        </div>                     
+                            @if ($booking->status == 'pending' || $booking->status == 'prepare')
+                            <div class="card2">
                             <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
-    <div class="number">
-    {{$antrian}}/20
-    </div>
-    <div class="text">
-        Queue number
-    </div>
+                                <div class="number">
+                                    {{$antrian}}/20
+                                </div>
+                                <div class="text">
+                                     Queue number
+                                </div>
+                            @else
+                            @endif     
                         
                         <div id="modal" class="modal">
                             <div class="modal-content">

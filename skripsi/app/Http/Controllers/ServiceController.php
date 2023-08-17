@@ -43,23 +43,25 @@ class ServiceController extends Controller
         }
 
         if ($booking !== null) {
-            $createdDate = $booking->created_at->format('Y-m-d'); // Dapatkan tanggal pembuatan dalam format Y-m-d
             $sameDayBookings = BookingModel::whereDate('tgl_booking', $booking->tgl_booking)
-            ->where('status', '!=', 'Done') // Filter status yang tidak 'Done'
+            ->where(function($query) {
+                $query->where('status', 'pending')
+                      ->orWhere('status', 'prepare');
+            })
             ->orderBy('created_at')
-            ->get();  
-
-            $totalBooking = $sameDayBookings->count(); // Hitung total jumlah booking pada tanggal booking yang sama
-
+            ->get();              
         
-            $antrian = $sameDayBookings->search(function ($item) use ($booking) {
+            $index = $sameDayBookings->search(function ($item) use ($booking) {
                 return $item->id == $booking->id; 
-            }) + 1;        
+            });
+            // Hitung nomor antrian berdasarkan index
+            $antrian = $index !== false ? $index + 1 : null; 
+      
         } else {
             $antrian = null;
         }
-      
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart' , 'totalBooking' ,'antrian' ));
+
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'  ,'antrian' ));
     }
 
     public function detailTASK($no_wo)
@@ -207,30 +209,14 @@ public function pengerjaanAPI(Request $request, $id )
 {
 
     $noWo = $request->input('noWO'); 
-    $noWO = preg_replace('/\D/', '', $noWo); // Ini akan menghapus semua karakter non-digit
+    $noWO = preg_replace('/\D/', '', $noWo); 
 
     $selectedSparepart = $request->input('maintenance');
-
-
-
-    // $workingOrder = WorkingOrderModel::find($noWo);
-    // $workingOrder->status = 'On Progress';
-    // $workingOrder->id_teknisi = $teknisiId;
-    // $workingOrder->save();
 
     $booking = BookingModel::where('no_wo', $noWO)->first();
     $booking->status = 'On Progress';
     $booking->pengerjaan = $selectedSparepart;
     $booking->save();
-
-
-
-
-
-    // $teknisi = TeknisiModel::where('id_teknisi', $teknisiId)->first();
-    // $teknisi->status = 'On Working';
-    // $teknisi->save();
-
 
      response()->json([
         'status' => 'success',
@@ -244,17 +230,7 @@ public function pengerjaanAPI(Request $request, $id )
 
 public function updateDone(Request $request, $id )
 {
-    // $selectedMaintenance = $request->query('selected'); // Mengambil nilai dari parameter 'selected'
-
-
-    // dd($layanan);
-
-    // $workingOrders = WorkingOrderModel::find($id);
-    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->get();
-    // $teknisiId = $workingOrders->id_teknisi;
-    // $teknisi = TeknisiModel::where('id_teknisi', $workingOrders->id_teknisi)->first(); 
-    // $teknisi->status = 'available';
-    // $teknisi->save();
+    
     $workingOrders = WorkingOrderModel::find($id);
     $teknisi = TeknisiModel::find($workingOrders->id_teknisi);
     if ($teknisi) {
@@ -263,17 +239,11 @@ public function updateDone(Request $request, $id )
     }
 
     
-    // response()->json([
-    //     'status' => 'success',
-    //     'message' => 'Data berhasil diproses',
-    // ]);
-
-    // return response;
+   
     $workingOrder = WorkingOrderModel::find($id);
     $workingOrder->status = 'Done';
     $workingOrder->id_teknisi = null;
     $workingOrder->save();
-    //edited
     $workingOrder = WorkingOrderModel::find($id);
     $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
     if ($booking !== null) {
@@ -282,13 +252,6 @@ public function updateDone(Request $request, $id )
         $booking->save();
     } else {
     }
-
-
-  
-
-
-
-
 
      response()->json([
         'status' => 'success',
@@ -311,9 +274,9 @@ public function updateDone(Request $request, $id )
         $noPolisi = $request->no_polisi;
         $tglBooking = $request->tgl_booking;
     
-        $jumlahBookingHariIni = BookingModel::whereDate('tgl_booking', $tglBooking)->count();
-    
-        $batasBookingPerHari = 2;
+        $jumlahBookingHariIni = BookingModel::whereDate('tgl_booking', $tglBooking)->count(); 
+
+        $batasBookingPerHari = 3;
     
         if ($jumlahBookingHariIni >= $batasBookingPerHari) {
             $errorMessage = "Daily Service Limit Reached<br>Please Try a Different Date !!";
@@ -352,49 +315,7 @@ public function updateDone(Request $request, $id )
         
         $nopol = $noPolisi;
 
-        // $bookingCount = BookingModel::where('status', 'prepare')
-        // ->whereDate('tgl_booking', $request->tgl_booking)
-        // ->count(); 
-        
-        
-
-        // $tglBooking = Carbon::parse($request->tgl_booking); // Mengubah tanggal booking menjadi objek Carbon
-        // $hariIni = Carbon::now(); // Tanggal dan waktu hari ini
-    
-        // $selisihHari = $hariIni->diffInDays($tglBooking); // Menghitung selisih dalam hari
-        // $selisihJam = $hariIni->diffInHours($tglBooking); 
-
-        // $jumlahPesanan = $bookingCount; // Ganti dengan jumlah pesanan yang sesuai
-        // $waktuDikerjakan = 0;
-
-        // if ($jumlahPesanan >= 5 && $jumlahPesanan <= 10) {
-        //     $waktuDikerjakan = 2; // 2 jam
-        // } elseif ($jumlahPesanan > 10 && $jumlahPesanan <= 15) {
-        //     $waktuDikerjakan = 3; // 3 jam
-        // } elseif ($jumlahPesanan > 15 && $jumlahPesanan <= 20) {
-        //     $waktuDikerjakan = 4; // 4 jam
-        // }
-    
-        // if ($selisihHari > 0) {
-        //     // Jika masih ada beberapa hari menuju tanggal booking
-        //     $pesan = "Tersisa " . $selisihHari . " hari (" . $selisihJam . " jam) menuju tanggal booking. Waktu dikerjakan: " . $waktuDikerjakan . " jam";
-        // } else {
-        //     // Jika tanggal booking adalah hari ini
-        //     $pesan = "Tanggal booking hari ini. Waktu dikerjakan: ";
-        // }
-    //     $pesanan = BookingModel::where('status', 'prepare')
-    //     ->whereDate('tgl_booking', $request->tgl_booking)
-    //     ->orderBy('created_at') // Urutkan berdasarkan waktu pemesanan
-    //     ->get();
-    
-    // foreach ($pesanan as $index => $pes) {
-    //     $nomorAntrian = $index + 1; // Nomor antrian dimulai dari 1
-    //     $jamPemesanan = $pes->created_at->format('H:i'); // Format waktu pemesanan menjadi jam:menit
-    // }
-    //     dd($nomorAntrian,$jamPemesanan); 
-
-    
-        return redirect()->route('indexOnBooking', compact('nopol'));
+                return redirect()->route('indexOnBooking', compact('nopol'));
     }
     
 
