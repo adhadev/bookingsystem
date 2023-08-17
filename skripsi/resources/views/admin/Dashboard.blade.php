@@ -5,11 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Foreman Control Panel</title>
     <style>
 
+.modalbody {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999; /* Menempatkan modal di atas konten lain */
+}
+
+.modal-content {
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 0 auto; /* Mengatur margin horizontal untuk mengubah posisi modal menjadi tengah */
+    margin-top: 10%; /* Mengatur jarak vertikal dari atas */
+    padding: 20px;
+    position: relative;
+}
+
+.modal-content1 {
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    max-width: 400px;
+    margin: 0 auto; /* Mengatur margin horizontal untuk mengubah posisi modal menjadi tengah */
+    margin-top: 10%; /* Mengatur jarak vertikal dari atas */
+    padding: 20px;
+    position: relative;
+}
     .sidebar {
         text-align: center;
         width: 250px;
@@ -24,6 +55,16 @@
         flex-direction: column;
         justify-content: space-between;
     }
+    #closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgb(0, 0, 0); /* Mengubah warna ikon menjadi putih */
+    font-size: 20px;
+  }
 
     .sidebar h2 {
         margin-bottom: 1rem;
@@ -90,6 +131,17 @@
         .vehicle {
             margin-top: 0.5rem;
         }
+
+        #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Warna latar belakang transparan */
+    display: none;
+}
+
         .sidebar {
             text-align: center;
             width: 250px;
@@ -149,6 +201,27 @@
             border-radius: 5px;
             z-index: 3;
         }
+
+        .detail-button {
+    background-color: rgb(29, 162, 240);
+    color: white;
+    padding: 5px 10px; /* Sesuaikan padding sesuai kebutuhan */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 30px;
+    font-size: 12px;
+  }
+
+  .fontteknisi {
+    font-weight: bold;
+    color: white;
+  }
+
+  .detail-button:hover {
+    background-color: rgb(28, 126, 172);
+    color: white;
+  }
         h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 24px;
@@ -182,6 +255,41 @@
     border-radius: 50%;
     margin-right: 5px;
 }
+.maintenance-label {
+    color: rgb(0, 0, 0); 
+    font-size: 16px; 
+    
+}
+
+#noWO {
+    font-weight: bold; /* Membuat teks menjadi tebal */
+    color: rgb(0, 0, 0); /* Mengubah warna teks menjadi putih */
+  }
+
+
+  #maintenanceText {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+  }
+
+  #noRangka,
+  .mb-1 label {
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+
+
+  #modalNoPS1,
+  .mb-1 label {
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+
+  #modalEsW1,
+  .mb-1 label {
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
 
 .off {
     background-color: red; /* Merah untuk status off */
@@ -209,23 +317,7 @@
             </select>
         </div>
 
-        <!-- <div style="margin-top: 10px">  
-            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:  </label>
-                    <form id="maintenanceForm">
-                         <label><input type="radio" name="maintenance" value="oli"> Oli</label>
-                        <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
-                        <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
-                        <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
-                        <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
-                        <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
-                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label> -->
-                    <!-- </form> -->
-                    <!-- <div id="maintenanceForm"> -->
-
-
-                <!-- </div> -->
-                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-        <!-- </div> --> 
+        
     </div>
 
     <div class="container">
@@ -289,34 +381,26 @@
         <div class="modal-content">
               <form method="POST" id="pengerjaanForm" action="/pengerjaan/000001">
     @csrf
-            <h2 id="namaTeknisi"></h2>
-            <p>Sedang Mengerjakan</p>
+            <h2 style="color: rgb(0, 0, 0); font-weight: bold;" id="namaTeknisi"></h2>
+            <p style="color: rgb(0, 0, 0); font-weight: bold;  text-align: center;">--Sedang Mengerjakan--</p>
             <p id="teknisiId"></p>
             <p id="noWO"></p>
             <input type="hidden" name="noWO" id="dataToSubmit" value="">
             <p id="noRangka"></p>
-            <p id="modalNoPS">Pergantian Sparepart :</p>
-            <p id="modalEsW">Estimasi Waktu :</p>
+            <p id="modalNoPS1">Pergantian Sparepart :</p>
+            <p id="modalEsW1">Estimasi Waktu :</p>
             <div style="margin-top: 10px">  
-            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Sparepart Pengerjaan:  </label>
-                    <!-- <form id="maintenanceForm"> -->
-                        <!-- <label><input type="radio" name="maintenance" value="oli"> Oli</label>
-                        <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
-                        <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
-                        <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
-                        <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
-                        <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
-                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label> -->
-                    <!-- </form> -->
+            <label for="listTechnicians" class="form-label" style="color: rgb(0, 0, 0); font-weight: bold;" >Sparepart Pengerjaan:  </label>
                     <div id="maintenanceForm">
-
-
                 </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" style="font-weight: bold;border-radius: 10px;" class="btn btn-primary">Submit</button>
         </div>
         </form>
 
-            <button id="closeModal">Tutup</button>
+            <button id="closeModal">
+                <i class="fas fa-times"></i>
+              </button>
+              
         </div>
     </div>
         <div col-auto class="mechanic">
@@ -325,8 +409,8 @@
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(0)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(0)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(0)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(0)->status == 'On Working')
-                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
-                    @if(session($teknisi->get(0)->nama_teknisi))
+                <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">See Detail</button>
+                @if(session($teknisi->get(0)->nama_teknisi))
                         <p>Sedang Mengerjakan : {{ session($teknisi->get(0)->nama_teknisi) }}</p>
                     @endif 
                 @endif             
@@ -337,7 +421,7 @@
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(1)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(1)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(1)->status == 'On Working')
-                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(1)->id_teknisi }}">See Detail</button>
                 @endif
                 <!-- Modal Detail WO dan Pilih Teknisi-->
                 <form method="POST" id="kerjakanForm" action="">
@@ -399,7 +483,7 @@
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(2)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(2)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(2)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(2)->status == 'On Working')
-                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(2)->id_teknisi }}">See Detail</button>
                 @endif
                 
                 <!-- Pindahkan area drop ke sini -->
@@ -409,7 +493,7 @@
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(3)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(3)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(3)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(3)->status == 'On Working')
-                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(3)->id_teknisi }}">See Detail</button>
                 @endif
                 
             </div>
@@ -418,7 +502,7 @@
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(4)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(4)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(4)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(4)->status == 'On Working')
-                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(4)->id_teknisi }}">See Detail</button>
                 @endif
                 
                 <!-- Pindahkan area drop ke sini -->
@@ -520,6 +604,7 @@
                             label.appendChild(document.createTextNode(` ${sparepart}`));
                             
                             maintenanceForm.appendChild(label);
+                            label.classList.add("white-text"); 
                             maintenanceForm.appendChild(document.createElement('br'));
                         });
                         const radioButtons = maintenanceForm.querySelectorAll('.maintenance-option');
@@ -592,6 +677,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <script> //script buat detail teknisi mengerjakan apa
  const detailButtons = document.querySelectorAll('.detail-button');
+ 
         const modal = document.getElementById('modalDetail');
         const closeModalButton = document.getElementById('closeModal');
 
@@ -643,6 +729,8 @@ document.addEventListener("DOMContentLoaded", function() {
             label.appendChild(input);
             label.appendChild(document.createTextNode(` ${sparepart}`));
                             
+            label.className = 'maintenance-label';
+
             maintenanceForm.appendChild(label);
             maintenanceForm.appendChild(document.createElement('br'));
             });
@@ -678,8 +766,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         function closeModal() {
+            var closeModalButton = document.getElementById("closeModal");
+  closeModalButton.addEventListener("click", function() {
+    modal.style.display = 'none';
+  });
             // Tutup modal
-            modal.style.display = 'none';
+            
         }
 
 
