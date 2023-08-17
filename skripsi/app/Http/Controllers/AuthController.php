@@ -27,7 +27,7 @@ class AuthController extends Controller
 
 public function kasir()
 {
-    $dataWO = WorkingOrderModel::whereIn('status', ['On Progress', 'Done'])->get();
+    $dataWO = WorkingOrderModel::whereIn('status', ['Menunggu Pembayaran', 'Done'])->get();
 
     return view('admin.kasir')->with('dataWO', $dataWO); // 'kasir' adalah nama view (blade) halaman kosong
 }

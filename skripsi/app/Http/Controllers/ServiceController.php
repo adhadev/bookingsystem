@@ -41,8 +41,15 @@ class ServiceController extends Controller
         } else {
             $sparepart = "";
         }
-        $teknisi = TeknisiModel::find($wo->id_teknisi); // Mengambil data teknisi berdasarkan id_teknisi
-        $namaTeknisi = $teknisi ? $teknisi->nama_teknisi : "";
+        $namaTeknisi = "";
+
+        if ($wo !== null){
+            $teknisi = TeknisiModel::find($wo->id_teknisi); 
+            if ($teknisi !== null){
+                $namaTeknisi = $teknisi ? $teknisi->nama_teknisi : "";
+            }
+        }
+       
 
         if ($booking !== null) {
             $sameDayBookings = BookingModel::whereDate('tgl_booking', $booking->tgl_booking)
@@ -79,13 +86,22 @@ class ServiceController extends Controller
             $jam = (int)$waktuArray[0];
             $menit = (int)$waktuArray[1];
             $totalMenitEstimasi = ($jam * 60) + $menit;
-
+            $dataArray = json_decode($dataWO->layanan, true);
+            $names = [];
+            foreach ($dataArray as $item) {
+                $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+                $names[] = $itemArray['nama'];
+    
+    
+            }
+    
+            $layananString = implode(', ', $names);
     
             $detail = [
                 'NoWO' => $dataWO->no_wo,
                 'NoRangka' => $dataPelanggan->no_rangka, 
                 'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
-                'JenisLayanan' => 'service rutin',  
+                'JenisLayanan' => $layananString,  
                 'SparePart' => json_decode($dataWO->sparepart), 
                 'EstimasiWaktu' => $totalMenitEstimasi 
             ];
@@ -114,6 +130,15 @@ class ServiceController extends Controller
             return response()->json(['error' => 'Data teknisi tidak ditemukan', $id_teknisi], 404);
         }
         
+        $dbbooking = BookingModel::where('no_wo', $dataWO->no_wo)
+        ->where('status', '<>', 'Done')
+        ->where('no_polisi', $dataWO->no_polisi) // Ganti $nomor_polisi dengan nilai nomor polisi yang diinginkan
+        ->first();
+        $pengerjaan = "";
+        if ($dbbooking !== null){
+            $pengerjaan = $dbbooking->pengerjaan;
+            
+        }
         
         
         
@@ -127,6 +152,17 @@ $layananNames = []; // Inisialisasi array untuk menyimpan nama-nama layanan
 foreach ($layananData as $layanan) {
     $layananObj = json_decode($layanan); // Dekode data JSON dalam setiap elemen
     $layananNames[] = $layananObj->nama; // Ambil dan tambahkan nama layanan ke dalam array
+}
+
+$pengerjaan = $dbbooking->pengerjaan; // Contoh: "busi"
+       
+       
+        // Temukan indeks pertama dari nilai $pengerjaan dalam array $layananNames
+$firstKeyToRemove = array_search($pengerjaan, $layananNames);
+
+// Jika indeks ditemukan, hapus elemen-elemen dari indeks tersebut hingga akhir array
+if ($firstKeyToRemove !== false) {
+    $layananNames = array_slice($layananNames, $firstKeyToRemove + 1);
 }
 
 $layananNamesString = implode(', ', $layananNames);
@@ -172,6 +208,17 @@ $layananNamesString = implode(', ', $layananNames);
 
         $sparepartsFormatted = implode(', ', $sparepartsArray);
 
+        $dataArray = json_decode($workingOrder->layanan, true);
+            $names = [];
+            foreach ($dataArray as $item) {
+                $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+                $names[] = $itemArray['nama'];
+    
+    
+            }
+    
+            $layananString = implode(', ', $names);
+
         return response()->json([
             'kebutuhan' => $workingOrder->no_wo, 
             'invoice_police' => $workingOrder->no_polisi,
@@ -179,7 +226,7 @@ $layananNamesString = implode(', ', $layananNames);
             'address' => $pelanggan->alamat,
             'price' => $formattedPrice,
             'sparepart' => $sparepartsFormatted,
-            'layanan' => 'Service Rutin',
+            'layanan' => $layananString,
         ]);
 }
 
@@ -264,6 +311,26 @@ public function updateDone(Request $request, $id )
         'status' => 'success',
         'message' => 'Data berhasil diproses',
     ]);
+    
+    return redirect()->back();
+
+}
+
+public function updatePembayaran(Request $request, $id )
+{
+    
+    $workingOrder = WorkingOrderModel::where('id_teknisi', $id)->first();
+
+    // Pastikan working order ditemukan
+    if ($workingOrder) {
+        // Ubah status working order menjadi "On Progress"
+        $workingOrder->status = "Menunggu Pembayaran";
+        $workingOrder->save();
+
+        return response()->json(['message' => 'Status working order berhasil diubah.']);
+    } else {
+        return response()->json(['error' => 'Working order tidak ditemukan.'], 404);
+    }
     
     return redirect()->back();
 

@@ -53,6 +53,7 @@ Route::get('/invoice/{id}', [ServiceController::class, 'invoiceAPI'])->name('Inv
 Route::post('/kerjakan/{id}', [ServiceController::class, 'kerjakanAPI'])->name('kerjakanAPI');
 Route::post('/pengerjaan/{id}', [ServiceController::class, 'pengerjaanAPI'])->name('pengerjaanAPI');
 Route::get('/updateDone/{id}', [ServiceController::class, 'updateDone'])->name('updateDone');
+Route::get('/updatePembayaran/{id}', [ServiceController::class, 'updatePembayaran'])->name('updatePembayaran');
 Route::get('/teknisi/mengerjakan/{id}',[ServiceController::class, 'teknisiWO'])->name('teknisiWO');
 
 

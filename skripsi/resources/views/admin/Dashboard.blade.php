@@ -399,7 +399,8 @@
             <label for="listTechnicians" class="form-label" style="color: rgb(0, 0, 0); font-weight: bold;" >Sparepart Pengerjaan:  </label>
                     <div id="maintenanceForm">
                 </div>
-                    <button type="submit" style="font-weight: bold;border-radius: 10px;" class="btn btn-primary">Submit</button>
+                <button type="submit" style="font-weight: bold; border-radius: 10px; " class="btn btn-primary">Kerjakan</button>
+
         </div>
         </form>
 
@@ -416,18 +417,23 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(0)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(0)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(0)->status == 'On Working')
                 <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">See Detail</button>
-                @if(session($teknisi->get(0)->nama_teknisi))
-                        <p>Sedang Mengerjakan : {{ session($teknisi->get(0)->nama_teknisi) }}</p>
-                    @endif 
-                @endif             
+                <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+                <div id="serviceButton" style="display: none; background-color: #dff0d8; border: 1px solid #d0e9c6; padding: 10px; border-radius: 5px; margin-top: 10px;"></div>
+
+                @endif      
+                
+
                 <!-- Pindahkan area drop ke sini -->
             </div>
+            
             <div class="mechanic-info" onClick()>
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(1)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(1)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(1)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(1)->id_teknisi }}">See Detail</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+
                 @endif
                 <!-- Modal Detail WO dan Pilih Teknisi-->
                 <form method="POST" id="kerjakanForm" action="">
@@ -490,6 +496,8 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(2)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(2)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(2)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(2)->id_teknisi }}">See Detail</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+
                 @endif
                 
                 <!-- Pindahkan area drop ke sini -->
@@ -500,6 +508,8 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(3)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(3)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(3)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(3)->id_teknisi }}">See Detail</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+
                 @endif
                 
             </div>
@@ -509,6 +519,8 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(4)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(4)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(4)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(4)->id_teknisi }}">See Detail</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+
                 @endif
                 
                 <!-- Pindahkan area drop ke sini -->
@@ -535,6 +547,35 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
+
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const choice = document.querySelector('input[name="choice"]:checked');
+            if (choice) {
+                if (choice.value === "yes") {
+                    document.getElementById("submitButton").classList.add("hidden");
+                }
+                console.log("Selected: " + choice.value);
+            }
+        });
+    </script>
+
+
+
+
+
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const dropdowns = document.querySelectorAll(".form-select"); // Mengambil semua dropdown
@@ -597,6 +638,8 @@
                             modalEsWElement.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
                             
                             const maintenanceForm = document.getElementById('maintenanceForm');
+                            const submitButton = document.getElementById('submitButton');
+
                             maintenanceForm.innerHTML = '';
                             data.SparePart.forEach(sparepart => {
                             const label = document.createElement('label');
@@ -678,6 +721,20 @@ document.addEventListener("DOMContentLoaded", function() {
             minLength: 2 // Jumlah karakter minimal sebelum mulai pencarian
         });
     });
+</script>
+
+<script>
+    function performService(teknisiId) {
+        // Panggil fungsi update melalui Ajax atau metode lain
+        // Contoh: fetch('url', { method: 'POST', body: teknisiId });
+
+        // Tampilkan notifikasi di elemen "notification"
+        var notificationElement = document.getElementById('serviceButton');
+        notificationElement.innerHTML = 'Service selesai dapat melanjutkan pembayaran.';
+        notificationElement.style.display = 'block';
+        alert('Service selesai. Silakan melanjutkan pembayaran.');
+
+    }
 </script>
 
 
@@ -823,6 +880,27 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         });
     });
+</script>
+
+<script>
+    // Fungsi yang akan dijalankan saat tombol diklik dengan parameter
+    function performService(param1) {
+        // Jalankan API di sini dengan menggunakan parameter yang diberikan
+        // Misalnya, menggunakan metode fetch untuk melakukan GET request ke suatu URL dengan parameter
+        fetch(`/updatePembayaran/${param1}`, {
+            method: 'GET'
+            // Tambahkan konfigurasi lain yang diperlukan untuk API Anda
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('API Response:', data);
+            // Lakukan sesuatu dengan data response API
+        })
+        .catch(error => {
+            console.error('API Error:', error);
+            // Lakukan sesuatu jika terjadi error pada API
+        });
+    }
 </script>
 
 </body>
