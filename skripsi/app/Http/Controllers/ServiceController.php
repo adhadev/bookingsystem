@@ -88,6 +88,54 @@ class ServiceController extends Controller
     
          return response()->json($detail);
     }
+
+    public function teknisiWO($id_teknisi)
+    {
+        $dataWO = WorkingOrderModel::where('id_teknisi', $id_teknisi)
+        ->where('status', '<>', 'Done')
+        ->first();
+        
+            $dataPelanggan = PelangganModel::where('no_polisi', $dataWO->no_polisi)->first();
+            $waktuArray = explode(':', $dataWO->waktu_estimasi_selesai);
+            $jam = (int)$waktuArray[0];
+            $menit = (int)$waktuArray[1];
+            $totalMenitEstimasi = ($jam * 60) + $menit;
+
+        $dataTeknisi = TeknisiModel::where('id_teknisi', $id_teknisi)
+        ->where('status', '<>', 'available')
+        ->first();
+        if ($dataTeknisi !== null) {
+            // Lakukan operasi pada objek yang ditemukan
+        } else {
+            // Tangani kasus jika objek null
+        }
+      
+        if ($dataTeknisi !== null) {
+        } else {
+            return response()->json(['error' => 'Data teknisi tidak ditemukan', $id_teknisi], 404);
+        }
+        
+        
+        
+        
+        
+        
+        // dd(dataTeknisi);
+
+
+    
+            $detail = [
+                'NoWO' => $dataWO->no_wo,
+                'NamaTeknisi' => $dataTeknisi->nama_teknisi,
+                'NoRangka' => $dataPelanggan->no_rangka, 
+                'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
+                'JenisLayanan' => 'service rutin',  
+                'SparePart' => json_decode($dataWO->sparepart), 
+                'EstimasiWaktu' => $totalMenitEstimasi 
+            ];
+    
+         return response()->json($detail);
+    }
     
     public function teknisiAvailable()
     {
@@ -158,7 +206,9 @@ public function kerjakanAPI(Request $request, $id )
 public function pengerjaanAPI(Request $request, $id )
 {
 
-    $noWo = $request->input('listWo3'); 
+    $noWo = $request->input('noWO'); 
+    $noWO = preg_replace('/\D/', '', $noWo); // Ini akan menghapus semua karakter non-digit
+
     $selectedSparepart = $request->input('maintenance');
 
 
@@ -168,10 +218,14 @@ public function pengerjaanAPI(Request $request, $id )
     // $workingOrder->id_teknisi = $teknisiId;
     // $workingOrder->save();
 
-    $booking = BookingModel::where('no_wo', $noWo)->first();
+    $booking = BookingModel::where('no_wo', $noWO)->first();
     $booking->status = 'On Progress';
     $booking->pengerjaan = $selectedSparepart;
     $booking->save();
+
+
+
+
 
     // $teknisi = TeknisiModel::where('id_teknisi', $teknisiId)->first();
     // $teknisi->status = 'On Working';
@@ -182,6 +236,7 @@ public function pengerjaanAPI(Request $request, $id )
         'status' => 'success',
         'message' => 'Data berhasil diproses',
     ]);
+   
     
     return redirect()->back();
 
@@ -218,7 +273,7 @@ public function updateDone(Request $request, $id )
     $workingOrder->status = 'Done';
     $workingOrder->id_teknisi = null;
     $workingOrder->save();
-
+    //edited
     $workingOrder = WorkingOrderModel::find($id);
     $booking = BookingModel::where('no_wo', $workingOrder->no_wo)->first(); 
     if ($booking !== null) {

@@ -210,7 +210,6 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            //test
                             <div class="fw-bold font-size-24">
                                 <i margin-bottom: 10px; class="bx bx-stopwatch"></i> Started Time: 
                                 @if ($wo && $wo->waktu_mulai !== null)
@@ -255,13 +254,15 @@
                                 <i class="bx bx-stats icon"></i> Status: 
                                 @if ($wo && $wo->status !== null)
                                 {{ $wo->status }}
+
+                                @else
+                                {{$booking->status}}
+                                @endif
+                                @if ($booking && ($booking->pengerjaan !== null && $booking->pengerjaan !== '') )
+                                <button id="openModalBtn" class="btn-modal">View Progress</button>
                                 @else
                                 
                                 @endif
-                        
-                                <button id="openModalBtn" class="btn-modal">View Progress</button>
-                                
-                                
                             </div>
                         </div>
                         <div class="card2">
