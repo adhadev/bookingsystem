@@ -98,6 +98,10 @@
   
 }
 .status-text {
+    text-align: left;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: bold;
+    font-size: 16px;
             color: rgb(252, 252, 255); /* Ubah warna font sesuai keinginan, misalnya biru */
         }
 
@@ -257,7 +261,7 @@
                                 {{ $wo->status }}
 
                                 @else
-                                pending
+                                {{$booking->status}}
                                 @endif
                                 @if ($booking && ($booking->pengerjaan !== null && $booking->pengerjaan !== '') )
                                 <button id="openModalBtn" class="btn-modal">View Progress</button>
@@ -265,24 +269,32 @@
                                 
                                 @endif
                             </div>
-                        </div>
-                        <div class="card2">
+                        </div>                     
+                            @if ($booking->status == 'pending' || $booking->status == 'prepare')
+                            <div class="card2">
                             <img class="loading-icon" src="https://media3.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif?cid=ecf05e470vpxw78r00rqgvq4ef5vt5gik7rstttk9stu34dv&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Loading">
-    <div class="number">
-    {{$antrian}}/20
-    </div>
-    <div class="text">
-        Queue number
-    </div>
+                                <div class="number">
+                                    {{$antrian}}/20
+                                </div>
+                                <div class="text">
+                                     Queue number
+                                </div>
+                            @else
+                            @endif     
                         
                         <div id="modal" class="modal">
                             <div class="modal-content">
                                 <body>
+                                        <p class="status-text"> Technician: @if ($namaTeknisi !== null)
+                                            {{ $namaTeknisi }}
+                                            @else
+                                            
+                                            @endif</p>
                                     <p class="status-text">Status Pengerjaan: @if ($booking && $booking->pengerjaan !== null)
                                         {{ $booking->pengerjaan }}
                                         @else
                                         
-                                        @endif</p>
+                                        @endif
                                 </body>
                                 <div class="progress-container">
                                     <div id="progress-bar" class="bar"></div>
@@ -388,6 +400,23 @@ function updateProgressBar() {
 
 const interval = setInterval(updateProgressBar, 1000);
 </script>
+<script>
+    // Fungsi untuk memeriksa status dan mengatur tampilan tombol
+    function checkStatusAndDisplayButton(status) {
+        const button = document.getElementById("openModalBtn");
+
+        if (status === "on progress") {
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    }
+
+    // Simulasikan perubahan status (misalnya: saat halaman dimuat atau status berubah)
+    const simulatedStatus = "on progress"; // Ganti dengan status aktual Anda
+    checkStatusAndDisplayButton(simulatedStatus);
+</script>
+
   <script>
     function updateProgress(progress) {
         const progressBar = document.getElementById('progress');
