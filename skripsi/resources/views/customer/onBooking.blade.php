@@ -98,6 +98,10 @@
   
 }
 .status-text {
+    text-align: left;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: bold;
+    font-size: 16px;
             color: rgb(252, 252, 255); /* Ubah warna font sesuai keinginan, misalnya biru */
         }
 
@@ -280,11 +284,16 @@
                         <div id="modal" class="modal">
                             <div class="modal-content">
                                 <body>
+                                        <p class="status-text"> Technician: @if ($booking && $booking->pengerjaan !== null)
+                                            {{ $booking->pengerjaan }}
+                                            @else
+                                            
+                                            @endif</p>
                                     <p class="status-text">Status Pengerjaan: @if ($booking && $booking->pengerjaan !== null)
                                         {{ $booking->pengerjaan }}
                                         @else
                                         
-                                        @endif</p>
+                                        @endif
                                 </body>
                                 <div class="progress-container">
                                     <div id="progress-bar" class="bar"></div>
