@@ -41,6 +41,8 @@ class ServiceController extends Controller
         } else {
             $sparepart = "";
         }
+        $teknisi = TeknisiModel::find($wo->id_teknisi); // Mengambil data teknisi berdasarkan id_teknisi
+        $namaTeknisi = $teknisi ? $teknisi->nama_teknisi : "";
 
         if ($booking !== null) {
             $sameDayBookings = BookingModel::whereDate('tgl_booking', $booking->tgl_booking)
@@ -61,7 +63,7 @@ class ServiceController extends Controller
             $antrian = null;
         }
 
-        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'  ,'antrian' ));
+        return view('customer.onBooking', compact('title', 'pelanggan', 'booking', 'wo', 'sparepart'  ,'antrian','namaTeknisi' ));
     }
 
     public function detailTASK($no_wo)
@@ -106,11 +108,6 @@ class ServiceController extends Controller
         $dataTeknisi = TeknisiModel::where('id_teknisi', $id_teknisi)
         ->where('status', '<>', 'available')
         ->first();
-        if ($dataTeknisi !== null) {
-            // Lakukan operasi pada objek yang ditemukan
-        } else {
-            // Tangani kasus jika objek null
-        }
       
         if ($dataTeknisi !== null) {
         } else {
@@ -123,15 +120,25 @@ class ServiceController extends Controller
         
         
         // dd(dataTeknisi);
+        $layananData = json_decode($dataWO->layanan); // Mendekode data JSON menjadi array
 
+$layananNames = []; // Inisialisasi array untuk menyimpan nama-nama layanan
+
+foreach ($layananData as $layanan) {
+    $layananObj = json_decode($layanan); // Dekode data JSON dalam setiap elemen
+    $layananNames[] = $layananObj->nama; // Ambil dan tambahkan nama layanan ke dalam array
+}
+
+$layananNamesString = implode(', ', $layananNames);
 
     
             $detail = [
                 'NoWO' => $dataWO->no_wo,
                 'NamaTeknisi' => $dataTeknisi->nama_teknisi,
+                'NomorPolisi' => $dataWO->no_polisi,
                 'NoRangka' => $dataPelanggan->no_rangka, 
                 'JenisKendaraan' => $dataPelanggan->jenis_mobil, 
-                'JenisLayanan' => 'service rutin',  
+                'JenisLayanan' => $layananNames,  
                 'SparePart' => json_decode($dataWO->sparepart), 
                 'EstimasiWaktu' => $totalMenitEstimasi 
             ];

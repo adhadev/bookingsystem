@@ -290,6 +290,11 @@
     font-weight: bold;
     color: rgb(0, 0, 0);
   }
+  #modalNoPol,
+  .mb-1 label {
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
 
 .off {
     background-color: red; /* Merah untuk status off */
@@ -387,6 +392,7 @@
             <p id="noWO"></p>
             <input type="hidden" name="noWO" id="dataToSubmit" value="">
             <p id="noRangka"></p>
+            <p id="modalNoPol"></p>
             <p id="modalNoPS1">Pergantian Sparepart :</p>
             <p id="modalEsW1">Estimasi Waktu :</p>
             <div style="margin-top: 10px">  
@@ -695,8 +701,9 @@ document.addEventListener("DOMContentLoaded", function() {
         function openModalWithTeknisiId(teknisiId) {
             console.log('Teknisi ID yang dipilih:', teknisiId);
             const teknisiIdElement = document.getElementById('teknisiId');
-            const modalNoPSElement = document.getElementById("modalNoPS");
-            const modalEsWElement = document.getElementById("modalEsW");
+            const modalNoPS1Element = document.getElementById("modalNoPS1");
+            const modalEsW1Element = document.getElementById("modalEsW1");
+            const modalNoPolElement = document.getElementById("modalNoPol");
             teknisiIdElement.textContent = ""
             // teknisiIdElement.textContent = "Teknisi ID :" + teknisiId;// Menyimpan id_teknisi di elemen tersembunyi
         fetch(`/teknisi/mengerjakan/${teknisiId}`)
@@ -711,14 +718,16 @@ document.addEventListener("DOMContentLoaded", function() {
             noRangkaElement.textContent = "No Rangka: " + data.NoRangka;
             noRangkaElement.textContent = "No Rangka: " + data.NoRangka;
             namaTeknisi.textContent = "Nama Teknisi: " + data.NamaTeknisi;
-        
+            modalNoPolElement.textContent = "No Polisi: " + data.NomorPolisi;
+
             const spareparts = data.SparePart.join(', ');
-            modalNoPSElement.textContent = `Pergantian Sparepart : ${spareparts}`;
-            modalEsWElement.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
+            modalNoPS1Element.textContent = `Pergantian Sparepart : ${spareparts}`;
+            modalEsW1Element.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
+
             console.log(spareparts);
             const maintenanceForm = document.getElementById('maintenanceForm');
             maintenanceForm.innerHTML = '';
-            data.SparePart.forEach(sparepart => {
+            data.JenisLayanan.forEach(sparepart => {
             const label = document.createElement('label');
             const input = document.createElement('input');
             input.type = 'radio';

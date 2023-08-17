@@ -284,8 +284,8 @@
                         <div id="modal" class="modal">
                             <div class="modal-content">
                                 <body>
-                                        <p class="status-text"> Technician: @if ($booking && $booking->pengerjaan !== null)
-                                            {{ $booking->pengerjaan }}
+                                        <p class="status-text"> Technician: @if ($namaTeknisi !== null)
+                                            {{ $namaTeknisi }}
                                             @else
                                             
                                             @endif</p>
