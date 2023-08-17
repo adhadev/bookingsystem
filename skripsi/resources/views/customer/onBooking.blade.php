@@ -256,7 +256,7 @@
                                 {{ $wo->status }}
 
                                 @else
-                                
+                                {{$booking->status}}
                                 @endif
                                 @if ($booking && ($booking->pengerjaan !== null && $booking->pengerjaan !== '') )
                                 <button id="openModalBtn" class="btn-modal">View Progress</button>

@@ -197,23 +197,22 @@
     <header>
         <button class="logout-button">Logout</button>
     </header>
-    <form method="POST" id="pengerjaanForm" action="">
-    @csrf
+  
 
     <div class="sidebar">
         <div class="mb-1">
             <select class="form-select" id="listWo3" name="listWo3">
                 <option value="" disabled selected>Pilih Nomor WO</option>
-                @foreach ($dataWOAll as $wo)
+                @foreach ($dataWO as $wo)
                     <option value="{{ $wo->no_wo }}">{{ $wo->no_wo }}</option>
                 @endforeach
             </select>
         </div>
 
-        <div style="margin-top: 10px">  
+        <!-- <div style="margin-top: 10px">  
             <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Ganti Sparepart Pengerjaan:  </label>
-                    <!-- <form id="maintenanceForm"> -->
-                        <!-- <label><input type="radio" name="maintenance" value="oli"> Oli</label>
+                    <form id="maintenanceForm">
+                         <label><input type="radio" name="maintenance" value="oli"> Oli</label>
                         <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
                         <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
                         <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
@@ -221,14 +220,14 @@
                         <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
                         <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label> -->
                     <!-- </form> -->
-                    <div id="maintenanceForm">
+                    <!-- <div id="maintenanceForm"> -->
 
 
-                </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+                <!-- </div> -->
+                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+        <!-- </div> --> 
     </div>
-</form>
+
     <div class="container">
         <h1>Foreman Control Panel</h1>
         <h2>List Working Order</h2>
@@ -284,81 +283,124 @@
 </body>
 </html>
     <div class="container"style="padding-right: 6px;">
+     <!-- Modal Detail Teknisi -->
+   
+     <div class="modal" id="modalDetail">
+        <div class="modal-content">
+              <form method="POST" id="pengerjaanForm" action="/pengerjaan/000001">
+    @csrf
+            <h2 id="namaTeknisi"></h2>
+            <p>Sedang Mengerjakan</p>
+            <p id="teknisiId"></p>
+            <p id="noWO"></p>
+            <input type="hidden" name="noWO" id="dataToSubmit" value="">
+            <p id="noRangka"></p>
+            <p id="modalNoPS">Pergantian Sparepart :</p>
+            <p id="modalEsW">Estimasi Waktu :</p>
+            <div style="margin-top: 10px">  
+            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Sparepart Pengerjaan:  </label>
+                    <!-- <form id="maintenanceForm"> -->
+                        <!-- <label><input type="radio" name="maintenance" value="oli"> Oli</label>
+                        <label ><input type="radio" name="maintenance" value="filter_udara"> Ganti Filter Udara</label><br>
+                        <label><input type="radio" name="maintenance" value="filter_ac"> Ganti Filter AC</label>
+                        <label ><input type="radio" name="maintenance" value="ganti_busi"> Ganti Busi</label><br>
+                        <label ><input type="radio" name="maintenance" value="ganti_minyak_rem"> Ganti Minyak Rem</label>
+                        <label ><input type="radio" name="maintenance" value="rem_depan"> Rem Depan</label><br>
+                        <label><input type="radio" name="maintenance" value="rem_belakang"> Rem Belakang</label> -->
+                    <!-- </form> -->
+                    <div id="maintenanceForm">
+
+
+                </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+
+            <button id="closeModal">Tutup</button>
+        </div>
+    </div>
         <div col-auto class="mechanic">
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(0)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(0)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(0)->status}}</p>
-                
+                @if (!$teknisi->isEmpty() && $teknisi->get(0)->status == 'On Working')
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                    @if(session($teknisi->get(0)->nama_teknisi))
+                        <p>Sedang Mengerjakan : {{ session($teknisi->get(0)->nama_teknisi) }}</p>
+                    @endif 
+                @endif             
                 <!-- Pindahkan area drop ke sini -->
             </div>
-            <div class="mechanic-info">
+            <div class="mechanic-info" onClick()>
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(1)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(1)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(1)->status}}</p>
-                
-                <!-- Pindahkan area drop ke sini -->
-                <!-- Modal -->
+                @if (!$teknisi->isEmpty() && $teknisi->get(1)->status == 'On Working')
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                @endif
+                <!-- Modal Detail WO dan Pilih Teknisi-->
                 <form method="POST" id="kerjakanForm" action="">
                     @csrf
-<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="taskModalLabel">Detail Task</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-body">
-                    <p id="modalNoWo">No Wo : </p>
-                    <p id="modalNoRangka">No Rangka :</p>
-                    <p id="modalJenisKendaraan">Jenis Kendaraan:</p>
-                    <p id="modalJL">Jenis Layanan :</p>
-                    <p id="modalNoPS">Pergantian Sparepart :</p>
-                    <p id="modalEsW">Estimasi Waktu :</p>
-                    <div class="mb-1">
-                        <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;">Pilih Teknisi:</label>
-                        <div class="d-flex">
-                            @foreach($teknisiAvailable as $teknisiList)
-                            <div class="mr-3">
-                                <input type="radio" id="technicianInput{{ $teknisiList->id_teknisi }}" name="technician" value="{{ $teknisiList->id_teknisi }}">
-                                <label for="technicianInput{{ $teknisiList->id_teknisi }}">{{ $teknisiList->nama_teknisi }}</label>
+                    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="taskModalLabel">Detail Task</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="modal-body">
+                                        <p id="modalNoWo">No Wo : </p>
+                                        <p id="modalNoRangka">No Rangka :</p>
+                                        <p id="modalJenisKendaraan">Jenis Kendaraan:</p>
+                                        <p id="modalJL">Jenis Layanan :</p>
+                                        <p id="modalNoPS">Pergantian Sparepart :</p>
+                                        <p id="modalEsW">Estimasi Waktu :</p>
+                                        <div class="mb-1">
+                                            <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;">Pilih Teknisi:</label>
+                                            <div class="d-flex">
+                                                @foreach($teknisiAvailable as $teknisiList)
+                                                <div class="mr-3">
+                                                    <input type="radio" id="technicianInput{{ $teknisiList->id_teknisi }}" name="technician" value="{{ $teknisiList->id_teknisi }}">
+                                                    <label for="technicianInput{{ $teknisiList->id_teknisi }}">{{ $teknisiList->nama_teknisi }}</label>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="mb-1">
+                                            <!-- <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label> -->
+                                            <form >
+                                                <div id="maintenanceForm">
+
+                                                </div>
+                                            </form>
+                                            <!-- <input type="hidden" name="selectedSparepart" id="selectedSparepart"> -->
+                                        </div>
+                                    </div>  
+                                
+                                    
+                                    <!-- Isi konten modal di sini -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    
+                                        <button type="submit" class="btn btn-primary">Kerjakan</button>
+                                </div>
                             </div>
-                            @endforeach
                         </div>
                     </div>
-                
-                    <div class="mb-1">
-                        <!-- <label for="listTechnicians" class="form-label" style="color: black; font-weight: bold;" >Pilih Sparepart:</label> -->
-                        <form >
-                            <div id="maintenanceForm">
-
-                            </div>
-                        </form>
-                        <!-- <input type="hidden" name="selectedSparepart" id="selectedSparepart"> -->
-                    </div>
-                </div>  
-            
-                
-                <!-- Isi konten modal di sini -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                
-                    <button type="submit" class="btn btn-primary">Kerjakan</button>
-            </div>
-        </div>
-    </div>
-</div>
-</form>
-
-
+                </form>
                 
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(2)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(2)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(2)->status}}</p>
+                @if (!$teknisi->isEmpty() && $teknisi->get(2)->status == 'On Working')
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                @endif
                 
                 <!-- Pindahkan area drop ke sini -->
             </div>
@@ -366,12 +408,18 @@
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(3)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(3)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(3)->status}}</p>
+                @if (!$teknisi->isEmpty() && $teknisi->get(3)->status == 'On Working')
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                @endif
                 
             </div>
             <div class="mechanic-info">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/016/007/776/small_2x/mechanic-creative-icon-design-free-vector.jpg" alt="Mekanik 2" width="100" height="100">
                 <h2 class="teknisi">{{ $teknisi->isEmpty() ? 'Tidak ada teknisi' : $teknisi->get(4)->nama_teknisi }}</h2>
                 <p>Status: <span class="status-icon {{ $teknisi->get(4)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(4)->status}}</p>
+                @if (!$teknisi->isEmpty() && $teknisi->get(4)->status == 'On Working')
+                    <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">Lihat Detail</button>
+                @endif
                 
                 <!-- Pindahkan area drop ke sini -->
             </div>
@@ -401,7 +449,6 @@
         document.addEventListener("DOMContentLoaded", function() {
             const dropdowns = document.querySelectorAll(".form-select"); // Mengambil semua dropdown
             const kerjakanForm = document.getElementById('kerjakanForm');
-            const pengerjaanForm = document.getElementById('pengerjaanForm');
 
             const modalNoWoElement = document.getElementById("modalNoWo");
             kerjakanForm.addEventListener('submit', function(event) {
@@ -435,22 +482,7 @@
 
         const selectWo = document.getElementById('listWo3');
 
-        pengerjaanForm.addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            
-
-            const noWoText = document.getElementById('modalNoWo').textContent;
-                const colonIndex = noWoText.indexOf(':');
-                const noWo = colonIndex !== -1 ? noWoText.substring(colonIndex + 2) : noWoText;
-                const cleanNoWo = noWo.replace(/\D/g, '');
-
-            console.log(cleanNoWo);
-
-        
-            pengerjaanForm.action = `/pengerjaan/${cleanNoWo}`;
-            pengerjaanForm.submit();
-        
-        });
+       
 
             const modalNoRangkaElement = document.getElementById("modalNoRangka");
             const modalJenisKendaraanElement = document.getElementById("modalJenisKendaraan");
@@ -558,6 +590,101 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
+<script> //script buat detail teknisi mengerjakan apa
+ const detailButtons = document.querySelectorAll('.detail-button');
+        const modal = document.getElementById('modalDetail');
+        const closeModalButton = document.getElementById('closeModal');
+
+        detailButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const teknisiId = this.getAttribute('data-teknisi-id');
+                openModalWithTeknisiId(teknisiId);
+            });
+        });
+
+        closeModalButton.addEventListener('click', function() {
+            closeModal();
+        });
+
+        function openModalWithTeknisiId(teknisiId) {
+            console.log('Teknisi ID yang dipilih:', teknisiId);
+            const teknisiIdElement = document.getElementById('teknisiId');
+            const modalNoPSElement = document.getElementById("modalNoPS");
+            const modalEsWElement = document.getElementById("modalEsW");
+            teknisiIdElement.textContent = ""
+            // teknisiIdElement.textContent = "Teknisi ID :" + teknisiId;// Menyimpan id_teknisi di elemen tersembunyi
+        fetch(`/teknisi/mengerjakan/${teknisiId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Isi elemen-elemen di dalam modal dengan data dari respons JSON
+            const noWOElement = document.getElementById('noWO');
+            const noRangkaElement = document.getElementById('noRangka');
+            const namaTeknisi = document.getElementById('namaTeknisi');
+
+            noWOElement.textContent = "No WO: " + data.NoWO;
+            noRangkaElement.textContent = "No Rangka: " + data.NoRangka;
+            noRangkaElement.textContent = "No Rangka: " + data.NoRangka;
+            namaTeknisi.textContent = "Nama Teknisi: " + data.NamaTeknisi;
+        
+            const spareparts = data.SparePart.join(', ');
+            modalNoPSElement.textContent = `Pergantian Sparepart : ${spareparts}`;
+            modalEsWElement.textContent = `Estimasi Waktu : ${data.EstimasiWaktu} menit`;
+            console.log(spareparts);
+            const maintenanceForm = document.getElementById('maintenanceForm');
+            maintenanceForm.innerHTML = '';
+            data.SparePart.forEach(sparepart => {
+            const label = document.createElement('label');
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'maintenance';
+            input.className = 'maintenance-option';
+            input.value = sparepart;
+                            
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(` ${sparepart}`));
+                            
+            maintenanceForm.appendChild(label);
+            maintenanceForm.appendChild(document.createElement('br'));
+            });
+                        const radioButtons = maintenanceForm.querySelectorAll('.maintenance-option');
+
+                        radioButtons.forEach(radioButton => {
+                            radioButton.addEventListener('change', function() {
+                                const selectedValue = this.value;
+                                console.log(`Anda memilih: ${selectedValue}`);
+                                // const selectedSparepartElement = document.getElementById('selectedSparepart');
+                                // selectedSparepartElement.textContent = `${selectedValue}`;                          
+                              });
+                        });
+
+
+                  
+
+
+
+
+
+
+            // Tampilkan modal
+            modal.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+
+
+        
+            modal.style.display = 'block'; // Tampilkan modal
+        }
+
+        function closeModal() {
+            // Tutup modal
+            modal.style.display = 'none';
+        }
+
+
+</script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     $("#technicianInput").autocomplete({
@@ -573,6 +700,28 @@ document.addEventListener("DOMContentLoaded", function() {
         minLength: 0 // Mengubah minLength menjadi 0 agar tampilan semua hasil saat mengetik
     });
 });
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var form = document.getElementById('pengerjaanForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah formulir dikirimkan secara langsung
+            console.log("error")
+        var selectedMaintenance = document.querySelector('input[name="maintenance"]:checked');
+        console.log(selectedMaintenance)
+        var noWO = document.getElementById("noWO").textContent;
+        document.getElementById("dataToSubmit").value = noWO;
+
+        if (!selectedMaintenance) {
+            event.preventDefault(); // Mencegah pengiriman jika tidak ada opsi yang dipilih
+            console.log('Pilih opsi sparepart terlebih dahulu.');
+        } else {
+            console.log('Form dikirim dengan opsi: ' + selectedMaintenance.value);
+            form.submit(); // Uncomment ini untuk mengirim formulir secara otomatis setelah validasi
+        }
+        });
+    });
 </script>
 
 </body>
