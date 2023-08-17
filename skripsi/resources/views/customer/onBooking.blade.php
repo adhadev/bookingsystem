@@ -261,6 +261,7 @@
                         
                                 <button id="openModalBtn" class="btn-modal">View Progress</button>
                                 
+                                
                             </div>
                         </div>
                         <div class="card2">
@@ -385,6 +386,23 @@ function updateProgressBar() {
 
 const interval = setInterval(updateProgressBar, 1000);
 </script>
+<script>
+    // Fungsi untuk memeriksa status dan mengatur tampilan tombol
+    function checkStatusAndDisplayButton(status) {
+        const button = document.getElementById("openModalBtn");
+
+        if (status === "on progress") {
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    }
+
+    // Simulasikan perubahan status (misalnya: saat halaman dimuat atau status berubah)
+    const simulatedStatus = "on progress"; // Ganti dengan status aktual Anda
+    checkStatusAndDisplayButton(simulatedStatus);
+</script>
+
   <script>
     function updateProgress(progress) {
         const progressBar = document.getElementById('progress');
