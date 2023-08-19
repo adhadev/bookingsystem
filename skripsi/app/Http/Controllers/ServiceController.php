@@ -326,11 +326,23 @@ public function updatePembayaran(Request $request, $id )
         // Ubah status working order menjadi "On Progress"
         $workingOrder->status = "Menunggu Pembayaran";
         $workingOrder->save();
+        $booking = BookingModel::where('no_polisi', $workingOrder->no_polisi)
+        ->where('no_wo', $workingOrder->no_wo)
+        ->first();
+
+        if ($booking) {
+            // Ubah status working order menjadi "On Progress"
+            $booking->status = "Menunggu Pembayaran";
+            $booking->pengerjaan = "";
+            $booking->save();
+
+        }
 
         return response()->json(['message' => 'Status working order berhasil diubah.']);
     } else {
         return response()->json(['error' => 'Working order tidak ditemukan.'], 404);
     }
+
     
     return redirect()->back();
 
@@ -350,7 +362,7 @@ public function updatePembayaran(Request $request, $id )
     
         $jumlahBookingHariIni = BookingModel::whereDate('tgl_booking', $tglBooking)->count(); 
 
-        $batasBookingPerHari = 3;
+        $batasBookingPerHari = 2;
     
         if ($jumlahBookingHariIni >= $batasBookingPerHari) {
             $errorMessage = "Daily Service Limit Reached<br>Please Try a Different Date !!";

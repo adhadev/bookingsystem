@@ -432,7 +432,7 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(1)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(1)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(1)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(1)->id_teknisi }}">See Detail</button>
-                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(1)->id_teknisi }}')">Service Done.</button>
 
                 @endif
                 <!-- Modal Detail WO dan Pilih Teknisi-->
@@ -496,7 +496,7 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(2)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(2)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(2)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(2)->id_teknisi }}">See Detail</button>
-                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(2)->id_teknisi }}')">Service Done.</button>
 
                 @endif
                 
@@ -508,7 +508,7 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(3)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(3)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(3)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(3)->id_teknisi }}">See Detail</button>
-                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(3)->id_teknisi }}')">Service Done.</button>
 
                 @endif
                 
@@ -519,7 +519,7 @@
                 <p>Status: <span class="status-icon {{ $teknisi->get(4)->status == 'On Working' ? 'off' : 'on' }}"></span> <br>{{$teknisi->get(4)->status}}</p>
                 @if (!$teknisi->isEmpty() && $teknisi->get(4)->status == 'On Working')
                     <button class="detail-button" data-teknisi-id="{{ $teknisi->get(4)->id_teknisi }}">See Detail</button>
-                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
+                    <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(4)->id_teknisi }}')">Service Done.</button>
 
                 @endif
                 
