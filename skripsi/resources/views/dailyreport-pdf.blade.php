@@ -23,7 +23,7 @@ font-weight: bold;
 font-style: italic;
 font-size: 24px;
 text-align: center;
-text-decoration: underline;">Dialy Report BMW TEBET <br> {{$date}}.</p>
+text-decoration: underline;">Daily Report BMW TEBET <br> {{$date}}.</p>
 <div id="container">
 
 </div>
