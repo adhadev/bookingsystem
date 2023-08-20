@@ -1,3 +1,5 @@
+
+
 @extends('main')
 @section('content')
 
@@ -56,12 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($dates as $date)
-                        <tr data-date="{{ $date }}">
-
-                            <td class="text-center" >{{ $date}}</td>
-                        </tr>
-                    @endforeach
+                   
                         <!-- You can add more rows here -->
                     </tbody>
                 </table>
@@ -79,9 +76,8 @@
                    
                     
                     <button id="exportButton" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
-   <a href="" onClick="this.href='/cetakSA/'+document.getElementById('datedialyReport').textContent"> Export to PDF </a>
-  <button id="" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;" 
-  >
+    Export to PDF
+  <button id="exportButtonPDF" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
                 </div>
             </div>
             
@@ -120,7 +116,7 @@
         </main>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const exportButtonPDF = document.getElementById('exportButtonPDF');
@@ -156,7 +152,7 @@
             }, 1000); // Sesuaikan waktu delay sesuai kebutuhan Anda
         });
     });
-</script>
+</script> -->
 
 
 
@@ -168,7 +164,7 @@
 
 
 
-<script>
+<!-- <script>
     var modal = document.getElementById("myModal");
     var span = document.getElementsByClassName("close")[0];
 
@@ -181,7 +177,6 @@
             datedialyReport.textContent = selectedDate;
 
             console.log(selectedDate);
-            console.log(document.getElementById('datedialyReport').textContent);
 
             fetch(`/get-payment-data?date=${selectedDate}`)
             .then(response => response.json())
@@ -237,14 +232,6 @@
             console.log(container);
 
         
-            // Set other data here
-            // document.getElementById("customerName").textContent = "John Doe";
-            // document.getElementById("noPlat").textContent = "AB 123 CD";
-            // document.getElementById("alamat").textContent = "123 Main Street, City";
-            // document.getElementById("jenisMobil").textContent = "Sedan";
-            // document.getElementById("noRangka").textContent = "1234567890";
-            // document.getElementById("jenisLayanan").textContent = "Service";
-            // document.getElementById("harga").textContent = "$100";
             });
 
             modal.style.display = "block";
@@ -304,5 +291,5 @@
             });
 
         });
-    </script>
+    </script> -->
 @endsection
