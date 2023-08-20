@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Models\BookingModel;
 use App\Models\PelangganModel;
 use App\Models\WorkingOrderModel;
@@ -621,6 +622,13 @@ public function updatePembayaran(Request $request, $id )
         $teknisi = $foreman->teknisi;
         
         return response()->json(['foreman' => $foreman, 'teknisi' => $teknisi]);
+    }
+
+    public function exportpdf(){
+        // $dataWo = WorkingOrderModel::all();
+        // view()->share('no_wo', $dataWo);
+        // $pdf = PDF::loadview('dailyreport-pdf');
+        // return $pdf->download('dataWo.pdf');
     }
 
     public function updateTeknisiInWo($id, Request $request)

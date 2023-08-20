@@ -120,12 +120,9 @@
                         <p style="color: black;">Harga Sparepart: <span id="harga"></span></p>
                     </div>
                     
-                    <button id="exportButton" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
+                    <a href="/exportpdf" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
     Export to PDF
-</button>
-  <button id="exportButton" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
-    ini di apus buat ngepush aja rul
-</button>
+                    </a>
                 </div>
             </div>
             
