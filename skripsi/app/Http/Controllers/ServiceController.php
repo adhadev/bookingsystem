@@ -695,7 +695,8 @@ public function updatePembayaran(Request $request, $id )
             'date' => $selectedDate,
             'data' => $mergedData,// Mengirim data tanggal ke view
         ];
-        $pdf = PDF::loadView('dailyreport-pdf', $data); // Mengirim data ke view
+        $pdf = PDF::loadView('dailyreport-pdf', $data); 
+        $pdf->setPaper('A4', 'landscape'); 
         return $pdf->download('dataWo.pdf');
     }
 
