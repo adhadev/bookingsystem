@@ -76,7 +76,7 @@ Route::get('/logout/kasir', [AuthController::class, 'logoutAdmin'])->name('logou
 
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 Route::get('/kasir', [AuthController::class, 'kasir'])->name('kasir');
-Route::get('/exportpdf', [ServiceController::class, 'exportpdf'])->name('exportpdf'); 
+Route::get('/exportpdf/{tgl}', [ServiceController::class, 'exportpdf'])->name('exportpdf'); 
 
 
 

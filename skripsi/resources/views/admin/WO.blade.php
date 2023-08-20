@@ -80,7 +80,7 @@
                     
                     <button id="exportButton" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">
    <a href="" onClick="this.href='/cetakSA/'+document.getElementById('datedialyReport').textContent"> Export to PDF </a>
-  <button id="" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;" 
+ <a href="" onClick="this.href='/exportpdf/'+document.getElementById('datedialyReport').textContent"style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;">Export lagi</a>  <button id="" style="background-color: #008CBA; color: white; padding: 10px 20px; border: none; cursor: pointer;" 
   >
                 </div>
             </div>

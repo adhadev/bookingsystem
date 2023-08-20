@@ -632,8 +632,71 @@ public function updatePembayaran(Request $request, $id )
     public function exportpdf(){
         // $dataWo = WorkingOrderModel::all();
         // view()->share('no_wo', $dataWo);
-        // $pdf = PDF::loadview('dailyreport-pdf');
-        // return $pdf->download('dataWo.pdf');
+        $historyWo = WorkingOrderModel::all();
+
+        $dates = $historyWo->pluck('tanggal_mulai')->unique();
+
+        $selectedDate = request()->segment(2); 
+        // Lakukan logika untuk mengambil data dari tanggal tertentu, misalnya:
+        $paymentData = WorkingOrderModel::whereDate('tanggal_mulai', $selectedDate)->get();
+
+        $noPlatArray = $paymentData->pluck('no_polisi')->toArray();
+
+        // Mengambil data pelanggan berdasarkan nomor polisi
+        $pelangganData = PelangganModel::whereIn('no_polisi', $noPlatArray)->get();
+
+        // Kembalikan data dalam format JSON
+        $mergedData = [];
+        foreach ($paymentData as $payment) {
+            $pelanggan = $pelangganData->where('no_polisi', $payment->no_polisi)->first();
+            $dataArray = json_decode($payment->layanan, true);
+            $names = [];
+            $prices = [];
+            $hargaSparepart=[];
+            foreach ($dataArray as $item) {
+                $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+                $names[] = $itemArray['nama'];
+                
+                $formattedPrice = 'Rp. ' . number_format(floatval($itemArray['harga']), 0, ',', '.');
+                 $prices[] = $formattedPrice;
+            }
+    
+            $layananString = implode(', ', $names);
+            $hargaString = implode(', ', $prices);
+
+            $sparepartArray = json_decode($payment->sparepart); 
+            foreach ($sparepartArray as $sparepart) {
+                $sparepart = LayananModel::where('nama', $sparepart)->first();
+
+                $formattedPrice = 'Rp. ' . number_format(floatval($sparepart->harga), 0, ',', '.');
+                $hargaSparepart[] = $formattedPrice;
+            }
+            
+
+            $mergedData[] = [
+                'no_wo' => $payment->no_wo,
+                'payment_date' => $payment->tanggal_mulai,
+                'no_polisi' => $payment->no_polisi,
+                'customer_name' => optional($pelanggan)->nama,
+                'jenis_mobil' => optional($pelanggan)->jenis_mobil,
+                'alamat' => optional($pelanggan)->alamat,
+                'no_rangka' => optional($pelanggan)->no_rangka,
+                'layanan' => $names,
+                'layananHarga' => $prices,
+                'sparepart' => $sparepartArray,
+                'sparepartHarga' => $hargaSparepart,
+
+
+            ];
+        }
+
+        $data = [
+            'title' => 'value2',
+            'date' => $selectedDate,
+            'data' => $mergedData,// Mengirim data tanggal ke view
+        ];
+        $pdf = PDF::loadView('dailyreport-pdf', $data); // Mengirim data ke view
+        return $pdf->download('dataWo.pdf');
     }
 
     public function updateTeknisiInWo($id, Request $request)
