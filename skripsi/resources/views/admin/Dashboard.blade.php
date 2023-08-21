@@ -30,6 +30,8 @@
     margin-top: 10%; /* Mengatur jarak vertikal dari atas */
     padding: 20px;
     position: relative;
+    max-height: 80%; /* Set maximum height for content area */
+    overflow-y: auto; /* Add scroll when content exceeds max-height */
 }
 
 .modal-content1 {
@@ -40,6 +42,8 @@
     margin-top: 10%; /* Mengatur jarak vertikal dari atas */
     padding: 20px;
     position: relative;
+    max-height: 80%; /* Set maximum height for content area */
+    overflow-y: auto; /* Add scroll when content exceeds max-height */
 }
     .sidebar {
         text-align: center;
@@ -141,6 +145,8 @@
     background-color: rgba(0, 0, 0, 0.6); /* Warna latar belakang transparan */
     display: none;
 }
+
+
 
         .sidebar {
             text-align: center;
@@ -734,8 +740,17 @@ document.addEventListener("DOMContentLoaded", function() {
         notificationElement.style.display = 'block';
         alert('Service selesai. Silakan melanjutkan pembayaran.');
 
+        var button = document.getElementById('serviceButton');
+        button.style.backgroundColor = 'darkgreen'; // Ubah warna latar belakang
+        button.style.color = 'white'; // Ubah warna teks
+        button.disabled = true; // Nonaktifkan tombol
+        button.innerHTML = "Service Completed"; // Ubah teks tombol
+        
+
     }
+    
 </script>
+
 
 
 <script> //script buat detail teknisi mengerjakan apa

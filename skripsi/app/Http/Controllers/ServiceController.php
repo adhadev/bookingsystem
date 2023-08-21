@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Models\BookingModel;
 use App\Models\PelangganModel;
 use App\Models\WorkingOrderModel;
@@ -14,6 +15,7 @@ use App\Models\TeknisiModel;
 use App\Models\LayananModel;
 use Carbon\Carbon; 
 use Illuminate\Support\Facades\Validator;
+
 
 
 
@@ -408,8 +410,12 @@ public function updatePembayaran(Request $request, $id )
     ////
     public function woTable()
     {
-        $title = 'BMW OFFICE';
-        return view('admin.WO', ['title' => $title]);
+        $title = 'BMW OFFICE';  
+        $historyWo = WorkingOrderModel::all();
+
+        $dates = $historyWo->pluck('tanggal_mulai')->unique();
+
+        return view('admin.WO', compact('dates', 'title'));
     }
     public function dashboardTable(Request $request)
     {
@@ -576,7 +582,7 @@ public function updatePembayaran(Request $request, $id )
 
     public function dataWO(Request $request)
     {
-        if ($request->ajax()) {
+              if ($request->ajax()) {
             $data = WorkingOrderModel::with('pelanggan')->select('*');
             return Datatables::of($data)
                 ->addColumn('no_wo', function ($data) {
@@ -591,8 +597,8 @@ public function updatePembayaran(Request $request, $id )
                 })
                 ->rawColumns(['no_wo', 'pelanggan', 'jenis_mobil'])
                 ->make(true);
-        }
-        // return  view('createWO', [
+                        }
+              // return  view('createWO', [
         //     "title" => 'Create WO'
         // ], compact('data'));
     }
@@ -621,6 +627,77 @@ public function updatePembayaran(Request $request, $id )
         $teknisi = $foreman->teknisi;
         
         return response()->json(['foreman' => $foreman, 'teknisi' => $teknisi]);
+    }
+
+    public function exportpdf(){
+        // $dataWo = WorkingOrderModel::all();
+        // view()->share('no_wo', $dataWo);
+        $historyWo = WorkingOrderModel::all();
+
+        $dates = $historyWo->pluck('tanggal_mulai')->unique();
+
+        $selectedDate = request()->segment(2); 
+        // Lakukan logika untuk mengambil data dari tanggal tertentu, misalnya:
+        $paymentData = WorkingOrderModel::whereDate('tanggal_mulai', $selectedDate)->get();
+
+        $noPlatArray = $paymentData->pluck('no_polisi')->toArray();
+
+        // Mengambil data pelanggan berdasarkan nomor polisi
+        $pelangganData = PelangganModel::whereIn('no_polisi', $noPlatArray)->get();
+
+        // Kembalikan data dalam format JSON
+        $mergedData = [];
+        foreach ($paymentData as $payment) {
+            $pelanggan = $pelangganData->where('no_polisi', $payment->no_polisi)->first();
+            $dataArray = json_decode($payment->layanan, true);
+            $names = [];
+            $prices = [];
+            $hargaSparepart=[];
+            foreach ($dataArray as $item) {
+                $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+                $names[] = $itemArray['nama'];
+                
+                $formattedPrice = 'Rp. ' . number_format(floatval($itemArray['harga']), 0, ',', '.');
+                 $prices[] = $formattedPrice;
+            }
+    
+            $layananString = implode(', ', $names);
+            $hargaString = implode(', ', $prices);
+
+            $sparepartArray = json_decode($payment->sparepart); 
+            foreach ($sparepartArray as $sparepart) {
+                $sparepart = LayananModel::where('nama', $sparepart)->first();
+
+                $formattedPrice = 'Rp. ' . number_format(floatval($sparepart->harga), 0, ',', '.');
+                $hargaSparepart[] = $formattedPrice;
+            }
+            
+
+            $mergedData[] = [
+                'no_wo' => $payment->no_wo,
+                'payment_date' => $payment->tanggal_mulai,
+                'no_polisi' => $payment->no_polisi,
+                'customer_name' => optional($pelanggan)->nama,
+                'jenis_mobil' => optional($pelanggan)->jenis_mobil,
+                'alamat' => optional($pelanggan)->alamat,
+                'no_rangka' => optional($pelanggan)->no_rangka,
+                'layanan' => $names,
+                'layananHarga' => $prices,
+                'sparepart' => $sparepartArray,
+                'sparepartHarga' => $hargaSparepart,
+
+
+            ];
+        }
+
+        $data = [
+            'title' => 'value2',
+            'date' => $selectedDate,
+            'data' => $mergedData,// Mengirim data tanggal ke view
+        ];
+        $pdf = PDF::loadView('dailyreport-pdf', $data); 
+        $pdf->setPaper('A4', 'landscape'); 
+        return $pdf->download('dataWo.pdf');
     }
 
     public function updateTeknisiInWo($id, Request $request)
@@ -654,5 +731,78 @@ public function updatePembayaran(Request $request, $id )
         return response()->json(['message' => 'Teknisi updated successfully', 'teknisi_id' => $teknisiId], 200);
     }
 
+    public function getPaymentData(Request $request)
+    {
+        $selectedDate = $request->query('date'); // Ambil tanggal dari parameter query
 
+        // Lakukan logika untuk mengambil data dari tanggal tertentu, misalnya:
+        $paymentData = WorkingOrderModel::whereDate('tanggal_mulai', $selectedDate)->get();
+
+        $noPlatArray = $paymentData->pluck('no_polisi')->toArray();
+
+        // Mengambil data pelanggan berdasarkan nomor polisi
+        $pelangganData = PelangganModel::whereIn('no_polisi', $noPlatArray)->get();
+
+        // Kembalikan data dalam format JSON
+        $mergedData = [];
+        foreach ($paymentData as $payment) {
+            $pelanggan = $pelangganData->where('no_polisi', $payment->no_polisi)->first();
+            $dataArray = json_decode($payment->layanan, true);
+            $names = [];
+            $prices = [];
+            $hargaSparepart=[];
+            foreach ($dataArray as $item) {
+                $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
+                $names[] = $itemArray['nama'];
+                
+                $formattedPrice = 'Rp. ' . number_format(floatval($itemArray['harga']), 0, ',', '.');
+                 $prices[] = $formattedPrice;
+            }
+    
+            $layananString = implode(', ', $names);
+            $hargaString = implode(', ', $prices);
+
+            $sparepartArray = json_decode($payment->sparepart); 
+            foreach ($sparepartArray as $sparepart) {
+                $sparepart = LayananModel::where('nama', $sparepart)->first();
+
+                $formattedPrice = 'Rp. ' . number_format(floatval($sparepart->harga), 0, ',', '.');
+                $hargaSparepart[] = $formattedPrice;
+            }
+            
+
+            $mergedData[] = [
+                'no_wo' => $payment->no_wo,
+                'payment_date' => $payment->tanggal_mulai,
+                'no_polisi' => $payment->no_polisi,
+                'customer_name' => optional($pelanggan)->nama,
+                'jenis_mobil' => optional($pelanggan)->jenis_mobil,
+                'alamat' => optional($pelanggan)->alamat,
+                'no_rangka' => optional($pelanggan)->no_rangka,
+                'layanan' => $names,
+                'layananHarga' => $prices,
+                'sparepart' => $sparepartArray,
+                'sparepartHarga' => $hargaSparepart,
+
+
+            ];
+        }
+
+        // Kembalikan data dalam format JSON
+        return response()->json([
+            'data' => $mergedData,
+        ]);
+    }
+
+    public function cetakSA($tgl)
+    {
+
+        // dd($tgl);
+        $data = []; // Isi dengan data yang diperlukan untuk view
+
+        $title = "hore";
+        $pdf = Pdf::loadView('admin.CetakSaPertanggal',compact('title', 'data'));
+        return $pdf->download('invoice.pdf');
+        // return view('admin.CetakSaPertanggal');
+    }
 }
