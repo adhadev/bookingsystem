@@ -219,7 +219,7 @@
                                 @if ($wo && $wo->waktu_mulai !== null)
                                 {{ $wo->waktu_mulai }}
                                 @else
-                                0
+                                -
                                 @endif
                             </div>
                         </div>
@@ -229,7 +229,7 @@
                                 @if ($wo && $wo->biaya !== null)
                                 Rp.{{ $wo->biaya }}
                                 @else
-                                0
+                                -
                                 @endif
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                                 @if ($wo && $wo->waktu_estimasi_selesai !== null)
                                 {{ $wo->waktu_estimasi_selesai }}
                                 @else
-                                0
+                                -
                                 @endif
                             </div>
                         </div>

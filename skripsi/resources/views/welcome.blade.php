@@ -109,7 +109,11 @@
                                     name="email" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="text" class="form-control" placeholder="Fullname" aria-label="nama"
+                                <input 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="Fullname" 
+                                aria-label="nama"
                                     name="nama" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
@@ -117,7 +121,7 @@
                                     name="alamat" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
-                                <input type="tnumber" class="form-control" placeholder="Phone Number" aria-label="no_telp"
+                                <input type="number" class="form-control" placeholder="Phone Number" aria-label="no_telp"
                                     name="no_telp" aria-describedby="addon-wrapping">
                             </div>
                             <div class="input-group input-group-lg flex-nowrap mb-2">
@@ -195,7 +199,7 @@
                             <i class="fas fa-mobile-alt text-primary mb-2"></i>
                             <h4 class="text-uppercase m-0">Phone</h4>
                             <hr class="my-4 mx-auto" />
-                            <div class="small text-black-50">+1 (555) 902-8832</div>
+                            <div class="small text-black-50">(021) 902-8832</div>
                         </div>
                     </div>
                 </div>

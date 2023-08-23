@@ -69,7 +69,7 @@
                                                 <div class="col-6">
                                                     <div class="mb-3">
                                                         <label for="no_tlp_pic" class="form-label">Phone Number</label>
-                                                        <input required type="tel" class="form-control" id="no_tlp_pic" placeholder="+62" name="no_tlp_pic"
+                                                        <input required type="number" class="form-control" id="no_tlp_pic" placeholder="+62" name="no_tlp_pic"
                                                             value="{{ Auth::user()->no_telp }}">
                                                     </div>
                                                 </div>
