@@ -16,7 +16,6 @@
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-
 /* Modal content */
 .modal-content {
     background-color: white;

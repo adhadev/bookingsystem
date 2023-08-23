@@ -425,7 +425,7 @@
                 <button class="detail-button" data-teknisi-id="{{ $teknisi->get(0)->id_teknisi }}">See Detail</button>
                 <button id="serviceButton" style="border-radius: 10px; font-size: 10px; background-color: green;margin-top: 20px;" class="btn btn-primary" onclick="performService('{{ $teknisi->get(0)->id_teknisi }}')">Service Done.</button>
                 <div id="serviceButton" style="display: none; background-color: #dff0d8; border: 1px solid #d0e9c6; padding: 10px; border-radius: 5px; margin-top: 10px;"></div>
-
+                
                 @endif      
                 
 
