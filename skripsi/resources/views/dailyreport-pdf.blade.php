@@ -45,6 +45,7 @@ text-decoration: underline;">Daily Report BMW TEBET <br> {{$date}}.</p>
                         <th>Harga Layanan</th>
                         <th>Jenis Sparepart</th>
                         <th>Harga Sparepart</th>
+                        <th>Total Harga</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,10 +79,16 @@ text-decoration: underline;">Daily Report BMW TEBET <br> {{$date}}.</p>
                                 {{ $sparepartHarga }}<br>
                             @endforeach
                         </td>
-                    </tr>
+                        <td>{{$item['totalHarga']}}</td>
                     </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                        <tr>
+                            <td colspan="11" style="text-align: center;"><strong>Total Pemasukan per Tanggal : {{$date}}</strong></td>
+                            <td colspan="2">{{$hargaPerhari}}</td>
+                        </tr>
+                </tfoot>
             </table>
            
 

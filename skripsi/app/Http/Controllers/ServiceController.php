@@ -647,6 +647,7 @@ public function updatePembayaran(Request $request, $id )
 
         // Kembalikan data dalam format JSON
         $mergedData = [];
+        $TotalHargaPerHari = 0 ;
         foreach ($paymentData as $payment) {
             $pelanggan = $pelangganData->where('no_polisi', $payment->no_polisi)->first();
             $dataArray = json_decode($payment->layanan, true);
@@ -672,7 +673,8 @@ public function updatePembayaran(Request $request, $id )
                 $hargaSparepart[] = $formattedPrice;
             }
             
-
+            $TotalHargaRupiah = 'Rp. ' . number_format(floatval($payment->biaya), 0, ',', '.');
+            $TotalHargaPerHari += $payment->biaya;
             $mergedData[] = [
                 'no_wo' => $payment->no_wo,
                 'payment_date' => $payment->tanggal_mulai,
@@ -685,18 +687,22 @@ public function updatePembayaran(Request $request, $id )
                 'layananHarga' => $prices,
                 'sparepart' => $sparepartArray,
                 'sparepartHarga' => $hargaSparepart,
+                'totalHarga' => $TotalHargaRupiah,
 
 
             ];
         }
 
+        $TotalHargaPerHari = 'Rp. ' . number_format(floatval($TotalHargaPerHari), 0, ',', '.');
+
         $data = [
             'title' => 'value2',
             'date' => $selectedDate,
             'data' => $mergedData,// Mengirim data tanggal ke view
+            'hargaPerhari' => $TotalHargaPerHari,
         ];
         $pdf = PDF::loadView('dailyreport-pdf', $data); 
-        $pdf->setPaper('A4', 'landscape'); 
+        $pdf->setPaper('A3', 'landscape'); 
         return $pdf->download('dataWo.pdf');
     }
 
@@ -745,16 +751,17 @@ public function updatePembayaran(Request $request, $id )
 
         // Kembalikan data dalam format JSON
         $mergedData = [];
+        $totalHarga = 0;
         foreach ($paymentData as $payment) {
             $pelanggan = $pelangganData->where('no_polisi', $payment->no_polisi)->first();
             $dataArray = json_decode($payment->layanan, true);
             $names = [];
             $prices = [];
             $hargaSparepart=[];
+            $totalHarga += $payment->biaya;
             foreach ($dataArray as $item) {
                 $itemArray = json_decode($item, true); // Melakukan decode JSON pada setiap string JSON
                 $names[] = $itemArray['nama'];
-                
                 $formattedPrice = 'Rp. ' . number_format(floatval($itemArray['harga']), 0, ',', '.');
                  $prices[] = $formattedPrice;
             }
@@ -765,11 +772,11 @@ public function updatePembayaran(Request $request, $id )
             $sparepartArray = json_decode($payment->sparepart); 
             foreach ($sparepartArray as $sparepart) {
                 $sparepart = LayananModel::where('nama', $sparepart)->first();
-
-                $formattedPrice = 'Rp. ' . number_format(floatval($sparepart->harga), 0, ',', '.');
+               $formattedPrice = 'Rp. ' . number_format(floatval($sparepart->harga), 0, ',', '.');
                 $hargaSparepart[] = $formattedPrice;
             }
             
+            $totalperWO = 'Rp. ' . number_format(floatval($payment->biaya), 0, ',', '.');
 
             $mergedData[] = [
                 'no_wo' => $payment->no_wo,
@@ -783,14 +790,16 @@ public function updatePembayaran(Request $request, $id )
                 'layananHarga' => $prices,
                 'sparepart' => $sparepartArray,
                 'sparepartHarga' => $hargaSparepart,
-
-
+                'totalPerWo' => $totalperWO,
             ];
         }
 
+        $totalHargaString = 'Rp. ' . number_format(floatval($totalHarga), 0, ',', '.');
         // Kembalikan data dalam format JSON
         return response()->json([
             'data' => $mergedData,
+            'totalHarga' => $totalHargaString,
+
         ]);
     }
 

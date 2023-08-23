@@ -229,11 +229,33 @@
                     `).join('')}
 
                     <hr style="border-top: 1px solid black; margin: 10px 0;">
-                    
+                    <div style="color: black; display: flex; justify-content: space-between; font-size: 16px;">
+                        <p style="color: black;"> <span>Total Harga </span></p>
+                        <p style="color: black;"> <span>${item.totalPerWo}</span></p>
+                    </div>
                     <hr style="border-top: 1px solid black; margin: 10px 0;">
+                    <hr style="border-top: 1px solid black; margin: 10px 0;">
+
             `).join('');
 
             container.innerHTML = templateHTML;
+
+
+                    // Menghitung total harga per hari
+                const totalHargaPerHari = data.data.reduce((total, item) => {
+                    const totalLayanan = item.layananHarga.reduce((sum, harga) => sum + parseFloat(harga), 0);
+                    const totalSparepart = item.sparepartHarga.reduce((sum, harga) => sum + parseFloat(harga), 0);
+                    return total + totalLayanan + totalSparepart;
+                }, 0);
+
+                // Menambahkan elemen total harga per hari
+                const totalHargaPerHariElement = document.createElement('div');
+                totalHargaPerHariElement.style.color = 'black';
+                totalHargaPerHariElement.style.fontSize = '16px';
+                totalHargaPerHariElement.style.marginTop = '10px';
+                totalHargaPerHariElement.textContent = `Total Harga per Tanggal {{ $date}} : ${data.totalHarga}`;
+                container.appendChild(totalHargaPerHariElement);
+
             console.log(container);
 
         

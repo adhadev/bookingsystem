@@ -269,7 +269,7 @@
         const hourlyRate = 15000; // Biaya per jam kerja
 
         // const totalCost = baseCost + (costPerService[selectedService] || 0) + (selectedParts * costPerPart) + (hoursOfWork * hourlyRate);
-        const totalCost = (baseCost + totalCostForServices + totalCostForParts + (totalWaktuInJam * hourlyRate));
+        const totalCost = ( totalCostForServices + totalCostForParts );
         // const totalCost = totalWaktuInJam;
         estimatedCostSpan.textContent = totalCost.toLocaleString('id-ID');
         estimatedTimeSpan.textContent = totalAllwaktu;
