@@ -44,7 +44,7 @@
 }
 
     </style>
-<div class="container-fluid pb-3 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto">
+<div class="container-fluid pb-3 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto ml-5">
     <div class="row flex-grow-sm-1 flex-grow-0">
         <aside class="col-sm-3 flex-grow-sm-1 flex-shrink-1 flex-grow-0 sticky-top pb-sm-0 pb-3">
             <div class="bg-light border rounded-3 p-1 h-100 sticky-top">
@@ -86,7 +86,7 @@
             
             
         </aside>
-        <main class="col overflow-auto h-100">
+        <main class="col overflow-auto h-100 ml-5">
             <div class="bg-light border rounded-3 p-3">
                 <div class="card-header">
                     <div class="row flex-justify-content-between text-center">
@@ -96,9 +96,9 @@
                         <div class="col-4"><a href="/input/wo" class="btn btn-outline-secondary">Input
                                 Working Order </a></div>
                     </div>
-                </div>
-                <div class="table-responsive p-3">
-                    <table class="table table-bordered m-3 data-table">
+                </div>  
+                <div class="table-responsive p-3 mr-5 ">
+                    <table class="table table-bordered m-3  data-table">
                         <thead>
                             <th>NO WO</th>
                             <th>Nama Customer</th>
@@ -106,7 +106,6 @@
                             <th>Jenis Mobil</th>
                             <th>Tanggal Mulai</th>
                             <th>Status</th>
-                            <th>Sparepart</th>
                             
                         </thead>
                         <tbody>
@@ -252,7 +251,7 @@
                 totalHargaPerHariElement.style.color = 'black';
                 totalHargaPerHariElement.style.fontSize = '16px';
                 totalHargaPerHariElement.style.marginTop = '10px';
-                totalHargaPerHariElement.textContent = `Total Harga per Tanggal {{ $date}} : ${data.totalHarga}`;
+                totalHargaPerHariElement.textContent = `Total Harga per Tanggal ${selectedDateCD} : ${data.totalHarga}`;
                 container.appendChild(totalHargaPerHariElement);
 
             console.log(container);
@@ -317,10 +316,7 @@
                         data: 'status',
                         name: 'status'
                     },
-                    {
-                        data: 'no_polisi',
-                        name: 'no_polisi'
-                    },
+                    
                 ]
             });
 
